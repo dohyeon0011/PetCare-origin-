@@ -61,6 +61,6 @@ tasks.named('test') {
  * 이때는 gradle을 clean하는 경우에 해당 파일도 함께 지워야 하기 때문에 포함되어 있습니다 🙂
  * 대부분 빌드를 gradle로 하기 때문에 크게 고민하지 않으셔도 괜찮습니다.
  */
-clean {
+/*clean {
 	delete file('src/main/generated')
-}
+}*/
