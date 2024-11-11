@@ -41,6 +41,7 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 
+	// 소스 코드 변경시 서버 재가동 하지 않고도 자동으로 페이지 리로드 해주는 라이브러리
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	runtimeOnly 'com.h2database:h2'
