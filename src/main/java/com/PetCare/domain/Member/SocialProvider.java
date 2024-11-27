@@ -1,5 +1,5 @@
 package com.PetCare.domain.Member;
 
 public enum SocialProvider {
-    KAKAO, NAVER, GOOGLE
+    KAKAO, NAVER, GOOGLE, DEFAULT
 }
