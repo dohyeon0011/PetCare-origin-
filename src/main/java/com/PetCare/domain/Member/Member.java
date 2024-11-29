@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -36,63 +37,80 @@ public class Member {
     private long no;
 
     // @Column에서 nullable은 데이터베이스 레벨에서 작동(DDL 생성 시 not null 제약 조건 추가, 데이터가 데이터 베이스에 직접 저장될 때 null 값이 들어오면 데이터베이스에서 오류 발생)
+    @Comment("사용자가 로그인 할 아이디")
     @NotBlank // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
     @Column(nullable = false, unique = true, updatable = false)
-    private String id; // 사용자가 로그인 할 아이디
+    private String id;
 
+    @Comment("비밀번호")
     @NotBlank
     @Column(nullable = false)
-    private String password; // 비밀번호
+    private String password;
 
+    @Comment("사용자 실제 이름")
     @NotBlank
     @Column(nullable = false)
-    private String name; // 사용자 실제 이름
+    private String name;
 
+    @Comment("사용자가 활동할 닉네임")
     @NotBlank
     @Column(nullable = false)
-    private String nickName; // 사용자가 활동할 닉네임
+    private String nickName;
 
     @Email
     private String email;
 
     private String phoneNumber;
 
+    @Comment("우편번호")
     @NotEmpty
     @Column(nullable = false)
-    private String address1; // 우편번호
+    private String address1;
 
+    @Comment("상세주소")
     @NotEmpty
     @Column(nullable = false)
-    private String address2; // 상세주소
+    private String address2;
 
+    @Comment("회원 역할(고객, 돌봄사, 관리자)")
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // 회원 역할(고객, 돌봄사, 관리자)
+    private Role role;
 
     // 사용자 가입 날짜 확인 : 사용자가 언제 가입했는지 추적할 수 있다
     // 리프레시 토큰 발급 시간 확인 : 리프레시 토큰이 언제 생성되었는지 확인하여 비정상적인 패턴(예: 짧은 시간 내 다중 발급)을 탐지할 수 있다
     // 이벤트 기반 처리 : 가입 후 X일 후 이메일 알림, 혜택 제공 등 타임라인 기반 기능에 사용된다
+    @Comment("회원가입 날짜")
     @CreatedDate
     @Column(name = "created_at")
-    private LocalDateTime createdAt; // 회원가입 날짜
+    private LocalDateTime createdAt;
 
     // 최근 로그인 시간 확인 : 소셜 로그인 사용자가 로그인할 때마다 정보를 갱신하면, 사용자의 마지막 활동을 추적할 수 있다
     // 리프레시 토큰 갱신 확인 : 리프레시 토큰을 재발급하면 해당 토큰의 updated_at을 갱신하여, 최근 발급 시점을 기록
     // 데이터 무결성 확인 : 예상치 못한 데이터 변경(예: 수동으로 수정된 경우)을 확인하거나, 기록으로 추적할 수 있다
+    @Comment("최근 수정 날짜")
     @LastModifiedDate
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt; // 최근 수정 날짜
+    private LocalDateTime updatedAt;
 
+    @Comment("소셜 로그인 제공자(KAKAO, NAVER, GOOGLE), 기본 값 null")
     @Column(nullable = true)
     @Enumerated(EnumType.STRING)
-    private SocialProvider socialProvider; // 소셜 로그인 제공자(KAKAO, NAVER, GOOGLE), 기본 값 null
+    private SocialProvider socialProvider;
 
-    private String introduction; // 사용자 프로필 소개
+    @Comment("사용자 프로필 소개")
+    private String introduction;
 
+    @Comment("고객이 보유한 반려견 목록")
     @OneToMany(mappedBy = "member")
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
+
+    @Comment("돌봄사가 보유한 자격증")
+    @Convert(converter = CertificateListConverter.class)
+    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
+    private List<String> certificates;
 
     @Builder
     public Member(String id, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
