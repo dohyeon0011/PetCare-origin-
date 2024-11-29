@@ -22,11 +22,11 @@ import java.util.List;
 public class AddMemberRequest {
 
     @NotBlank(message = "아이디는 필수입니다.")
-//    @Size(min = 5, max = 15, message = "아이디는 5자 이상, 15자 이하로 입력해야 합니다.")
+    @Size(min = 5, max = 15, message = "아이디는 5자 이상, 15자 이하로 입력해야 합니다.")
     private String id;
 
     @NotBlank(message = "비밀번호는 필수입니다.")
-//    @Size(min = 8, max = 20, message = "비밀번호는 8자 이상, 20자 이하로 입력해야 합니다.")
+    @Size(min = 8, max = 20, message = "비밀번호는 8자 이상, 20자 이하로 입력해야 합니다.")
     private String password;
 
     @NotBlank(message = "이름은 필수입니다.")
@@ -42,7 +42,7 @@ public class AddMemberRequest {
     private String phoneNumber;
 
     @NotEmpty(message = "우편번호는 필수입니다.")
-//    @Size(min = 5, max = 5)
+    @Size(min = 5, max = 5)
     private String address1;
 
     @NotEmpty(message = "상세주소는 필수입니다.")
