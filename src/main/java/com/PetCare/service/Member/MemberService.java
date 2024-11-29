@@ -45,7 +45,7 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        authorizeArticleMember(member);
+        authorizetionMember(member);
         memberRepository.delete(member);
     }
 
@@ -54,7 +54,7 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        authorizeArticleMember(member);
+        authorizetionMember(member);
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
@@ -64,7 +64,7 @@ public class MemberService {
         return member;
     }
 
-    private static void authorizeArticleMember(Member member) {
+    private static void authorizetionMember(Member member) {
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이다 값 반환
 //
 //        if(!member.getLoginId().equals(userName)) {
