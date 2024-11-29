@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +48,7 @@ class MemberRepositoryTest {
     @Test
     public void member_join() {
         //given
-        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요");
+        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요", 3, null);
         memberRepository.save(member);
 
         //when
@@ -75,6 +76,8 @@ class MemberRepositoryTest {
                 .role("CUSTOMER")
                 .socialProvider(null)
                 .introduction("하이요")
+                .careerYear(3)
+                .certificates(Collections.singletonList("돌봄1급, 돌봄2급"))
                 .build();
 
         /*AddMemberRequest savedMember = new AddMemberRequest(
@@ -88,7 +91,9 @@ class MemberRepositoryTest {
                 "경기도",
                 "CUSTOMER",
                 null,
-                "하이"
+                "하이",
+                3,
+                null
         );*/
 
         //when
@@ -101,6 +106,8 @@ class MemberRepositoryTest {
         assertEquals(findMember.getNickName(), member.getNickName());
         assertThat(findMember.getEmail()).isEqualTo("email@naver.com");
         assertThat(findMember.getSocialProvider()).isEqualTo(SocialProvider.DEFAULT);
+        assertThat(findMember.getCareerYear()).isEqualTo(3);
+        assertThat(findMember.getCertificates()).containsExactly("돌봄1급, 돌봄2급");
     }
 
     @DisplayName("회원조회")
