@@ -42,6 +42,7 @@ public class AddMemberRequest {
     private String phoneNumber;
 
     @NotEmpty(message = "우편번호는 필수입니다.")
+//    @Size(min = 5, max = 5)
     private String address1;
 
     @NotEmpty(message = "상세주소는 필수입니다.")
