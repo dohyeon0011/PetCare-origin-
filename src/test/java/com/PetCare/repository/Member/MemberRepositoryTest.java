@@ -5,6 +5,7 @@ import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Member.SocialProvider;
 import com.PetCare.dto.Member.AddMemberRequest;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    /*@BeforeEach
+    @BeforeEach
     public void setUp() {
-        // Given: 테스트에 사용할 DTO 데이터 설정
-        AddMemberRequest.builder()
+        //given: 테스트에 사용할 DTO 데이터 설정
+        /*AddMemberRequest.builder()
                 .id("user1")
                 .password("aaw131")
                 .name("구창모")
@@ -39,8 +40,8 @@ class MemberRepositoryTest {
                 .role("CUSTOMER")
                 .socialProvider(null)
                 .introduction("하이요")
-                .build();
-    }*/
+                .build();*/
+    }
 
     @DisplayName("회원가입_엔티티로 가입")
     @Test
@@ -105,7 +106,22 @@ class MemberRepositoryTest {
     @DisplayName("회원조회")
     @Test
     public void member_findAll() {
-
+        //given
+        AddMemberRequest savedMember = AddMemberRequest.builder()
+                .id("user1")
+                .password("aaw131")
+                .name("구창모")
+                .nickName("창모")
+                .email("email@naver.com")
+                .phoneNumber("010-1234-5678")
+                .address1("123-456")
+                .address2("경기도")
+                .role("CUSTOMER")
+                .socialProvider(null)
+                .introduction("하이요")
+                .build();
     }
+
+    
 
 }
