@@ -107,13 +107,16 @@ public class Member {
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
+    @Comment("돌봄사 경력 연차")
+    private int careerYear;
+
     @Comment("돌봄사가 보유한 자격증")
     @Convert(converter = CertificateListConverter.class)
     @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
     private List<String> certificates;
 
     @Builder
-    public Member(String id, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
+    public Member(String id, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, int careerYear, List<String> certificates) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -125,9 +128,12 @@ public class Member {
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
+        this.careerYear = careerYear;
+        this.certificates = certificates;
     }
 
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String introduction) {
+    @Comment("회원정보 수정")
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String introduction, int careerYear, List<String> certificates) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -136,6 +142,8 @@ public class Member {
         this.address1 = address1;
         this.address2 = address2;
         this.introduction = introduction;
+        this.careerYear = careerYear;
+        this.certificates = certificates;
     }
 
 }
