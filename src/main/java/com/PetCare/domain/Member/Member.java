@@ -40,7 +40,7 @@ public class Member {
 
     // @Column에서 nullable은 데이터베이스 레벨에서 작동(DDL 생성 시 not null 제약 조건 추가, 데이터가 데이터 베이스에 직접 저장될 때 null 값이 들어오면 데이터베이스에서 오류 발생)
     @Comment("사용자가 로그인 할 아이디")
-    @NotBlank // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
+    @NotNull // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
     @Column(nullable = false, unique = true, updatable = false)
     private String id;
 
