@@ -135,7 +135,7 @@ public class Member {
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String introduction, int careerYear, List<String> certificates) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, int careerYear, List<String> certificates) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -143,6 +143,7 @@ public class Member {
         this.phoneNumber = phoneNumber;
         this.address1 = address1;
         this.address2 = address2;
+        this.role = Role.valueOf(role);
         this.introduction = introduction;
         this.careerYear = careerYear;
         this.certificates = certificates;
