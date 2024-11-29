@@ -32,7 +32,7 @@ class MemberRepositoryTest {
     @BeforeEach
     public void setUp() {
         AddMemberRequest savedMember1 = AddMemberRequest.builder()
-                .id("user1")
+                .loginId("user1")
                 .password("aaw131")
                 .name("구창모")
                 .nickName("창모")
@@ -48,7 +48,7 @@ class MemberRepositoryTest {
                 .build();
 
         AddMemberRequest savedMember2 = AddMemberRequest.builder()
-                .id("user2")
+                .loginId("user2")
                 .password("aaw131")
                 .name("윤진영")
                 .nickName("애쉬아일랜드")
@@ -73,7 +73,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //when
-        Optional<Member> findMember = memberRepository.findById(member.getNo());
+        Optional<Member> findMember = memberRepository.findById(member.getId());
 
         //then
         assertEquals(member, findMember.get()); // Optional에서 값 추출 후 비교
@@ -124,8 +124,8 @@ class MemberRepositoryTest {
         Member member = memberRepository.findById(1L).get();
 
         //then
-        Member findMember = memberRepository.findById(member.getNo()).orElseThrow();
-        assertEquals(findMember.getId(), member.getId());
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow();
+        assertEquals(findMember.getLoginId(), member.getLoginId());
         assertEquals(findMember.getNickName(), member.getNickName());
         assertThat(findMember.getEmail()).isEqualTo("email@naver.com");
         assertThat(findMember.getSocialProvider()).isEqualTo(SocialProvider.NONE);
@@ -151,7 +151,7 @@ class MemberRepositoryTest {
         Member member = memberRepository.findById(1L).get();
 
         //then
-        assertThat(member.getNo()).isEqualTo(1L);
+        assertThat(member.getId()).isEqualTo(1L);
         assertThat(member.getNickName()).isEqualTo("창모");
     }
 
