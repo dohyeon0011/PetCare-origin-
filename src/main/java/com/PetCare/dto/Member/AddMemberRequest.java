@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /* @NoArgsConstructor -> DTO에서 필요한가?
     DTO가 JSON 요청 데이터를 매핑할 때 Jackson이나 다른 직렬화/역직렬화 라이브러리가 기본 생성자가 필요
     예를 들어, 컨트롤러에서 요청 본문으로 들어온 JSON 데이터를 @RequestBody로 매핑할 경우 @NoArgsConstructor가 필요
@@ -52,6 +54,10 @@ public class AddMemberRequest {
 
     private String introduction;
 
+    private int careerYear;
+
+    private List<String> certificates;
+
     // DTO에서 엔티티 객체로 변환하는 메서드
     public Member toEntity() {
         // socialProvider가 null이면 기본값을 설정
@@ -69,6 +75,8 @@ public class AddMemberRequest {
                 .role(Role.valueOf(role))  // Role을 Enum으로 변환
                 .socialProvider(provider)  // SocialProvider 처리
                 .introduction(introduction)
+                .careerYear(careerYear)
+                .certificates(certificates)
                 .build();
     }
 
