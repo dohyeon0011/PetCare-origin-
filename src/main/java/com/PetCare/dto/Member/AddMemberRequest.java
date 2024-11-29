@@ -59,8 +59,6 @@ public class AddMemberRequest {
 
     private List<String> certificates;
 
-
-
     // DTO에서 엔티티 객체로 변환하는 메서드
     public Member toEntity() {
         // socialProvider가 null이면 기본값을 설정
