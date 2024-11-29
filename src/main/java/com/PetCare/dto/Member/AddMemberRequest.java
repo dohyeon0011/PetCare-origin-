@@ -23,7 +23,7 @@ public class AddMemberRequest {
 
     @NotBlank(message = "아이디는 필수입니다.")
     @Size(min = 5, max = 15, message = "아이디는 5자 이상, 15자 이하로 입력해야 합니다.")
-    private String id;
+    private String loginId;
 
     @NotBlank(message = "비밀번호는 필수입니다.")
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상, 20자 이하로 입력해야 합니다.")
@@ -65,7 +65,7 @@ public class AddMemberRequest {
         SocialProvider provider = (socialProvider != null) ? SocialProvider.valueOf(socialProvider) : SocialProvider.NONE;
 
         return Member.builder()
-                .id(id)
+                .loginId(loginId)
                 .password(password)
                 .name(name)
                 .nickName(nickName)
