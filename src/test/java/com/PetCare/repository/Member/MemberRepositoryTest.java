@@ -71,7 +71,7 @@ class MemberRepositoryTest {
                 .nickName("창모")
                 .email("email@naver.com")
                 .phoneNumber("010-1234-5678")
-                .address1("123-456")
+                .address1("12345")
                 .address2("경기도")
                 .role("CUSTOMER")
                 .socialProvider(null)
