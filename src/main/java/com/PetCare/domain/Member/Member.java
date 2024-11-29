@@ -64,7 +64,7 @@ public class Member {
 
     @Comment("우편번호")
     @NotEmpty
-    @Column(nullable = false)
+    @Column(length = 5, nullable = false)
     private String address1;
 
     @Comment("상세주소")
