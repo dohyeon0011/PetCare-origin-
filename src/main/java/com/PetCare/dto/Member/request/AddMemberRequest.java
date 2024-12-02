@@ -1,4 +1,4 @@
-package com.PetCare.dto.Member;
+package com.PetCare.dto.Member.request;
 
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
