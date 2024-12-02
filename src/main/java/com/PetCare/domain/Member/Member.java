@@ -5,9 +5,6 @@ import com.PetCare.domain.Pet.Pet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,22 +38,18 @@ public class Member {
 
     // @Column에서 nullable은 데이터베이스 레벨에서 작동(DDL 생성 시 not null 제약 조건 추가, 데이터가 데이터 베이스에 직접 저장될 때 null 값이 들어오면 데이터베이스에서 오류 발생)
     @Comment("사용자가 로그인 할 아이디")
-    @NotNull // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
     @Column(nullable = false, unique = true, updatable = false)
     private String loginId;
 
     @Comment("비밀번호")
-    @NotBlank
     @Column(nullable = false)
     private String password;
 
     @Comment("사용자 실제 이름")
-    @NotBlank
     @Column(nullable = false)
     private String name;
 
     @Comment("사용자가 활동할 닉네임")
-    @NotBlank
     @Column(nullable = false)
     private String nickName;
 
@@ -66,17 +59,14 @@ public class Member {
     private String phoneNumber;
 
     @Comment("우편번호")
-    @NotEmpty
     @Column(length = 5, nullable = false)
     private String address1;
 
     @Comment("상세주소")
-    @NotEmpty
     @Column(nullable = false)
     private String address2;
 
     @Comment("회원 역할(고객, 돌봄사, 관리자)")
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -104,7 +94,6 @@ public class Member {
 
     @Comment("사용자 프로필 소개")
     private String introduction;
-
 
     @Comment("고객이 보유한 반려견 목록")
     @OneToMany(mappedBy = "member")
