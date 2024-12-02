@@ -21,7 +21,7 @@ import java.util.List;
 @Builder
 public class AddMemberRequest {
 
-    @NotBlank(message = "아이디는 필수입니다.")
+    @NotBlank(message = "아이디는 필수입니다.") // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
     @Size(min = 5, max = 15, message = "아이디는 5자 이상, 15자 이하로 입력해야 합니다.")
     private String loginId;
 
