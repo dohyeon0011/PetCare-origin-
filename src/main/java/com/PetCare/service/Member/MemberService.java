@@ -1,8 +1,8 @@
 package com.PetCare.service.Member;
 
 import com.PetCare.domain.Member.Member;
-import com.PetCare.dto.Member.AddMemberRequest;
-import com.PetCare.dto.Member.UpdateMemberRequest;
+import com.PetCare.dto.Member.request.AddMemberRequest;
+import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
