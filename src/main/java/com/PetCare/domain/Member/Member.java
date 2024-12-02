@@ -104,10 +104,13 @@ public class Member {
     @Comment("사용자 프로필 소개")
     private String introduction;
 
+
     @Comment("고객이 보유한 반려견 목록")
     @OneToMany(mappedBy = "member")
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
+
+    // ----------- 여기까지 고객 필드 -----------
 
     @Comment("돌봄사 경력 연차")
     private int careerYear;
@@ -116,6 +119,8 @@ public class Member {
     @Convert(converter = CertificateListConverter.class)
     @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
     private List<String> certificates;
+
+    // ----------- 여기는 돌봄사 필드 -----------
 
     @Builder
     public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, int careerYear, List<String> certificates) {
