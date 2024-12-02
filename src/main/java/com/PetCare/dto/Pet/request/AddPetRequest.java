@@ -1,4 +1,4 @@
-package com.PetCare.dto.Pet;
+package com.PetCare.dto.Pet.request;
 
 import com.PetCare.domain.Pet.Pet;
 import jakarta.validation.constraints.NotBlank;
