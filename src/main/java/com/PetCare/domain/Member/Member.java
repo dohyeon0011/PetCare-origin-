@@ -1,5 +1,6 @@
 package com.PetCare.domain.Member;
 
+import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Pet.Pet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -115,15 +116,19 @@ public class Member {
     @Comment("돌봄사 경력 연차")
     private int careerYear;
 
-    @Comment("돌봄사가 보유한 자격증")
-    @Convert(converter = CertificateListConverter.class)
-    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
-    private List<String> certificates;
+//    @Comment("돌봄사가 보유한 자격증")
+//    @Convert(converter = CertificateListConverter.class)
+//    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
+//    private List<String> certificates;
+
+    @OneToMany(mappedBy = "member")
+    @JsonIgnore
+    private List<Certification> certifications = new ArrayList<>();
 
     // ----------- 여기는 돌봄사 필드 -----------
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, int careerYear, List<String> certificates) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -135,12 +140,10 @@ public class Member {
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
-        this.careerYear = careerYear;
-        this.certificates = certificates;
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, int careerYear, List<String> certificates) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -150,8 +153,6 @@ public class Member {
         this.address2 = address2;
         this.role = Role.valueOf(role);
         this.introduction = introduction;
-        this.careerYear = careerYear;
-        this.certificates = certificates;
     }
 
 }
