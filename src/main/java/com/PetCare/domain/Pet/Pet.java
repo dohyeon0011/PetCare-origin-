@@ -18,7 +18,7 @@ public class Pet {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_no")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private String name; // 반려견 이름
