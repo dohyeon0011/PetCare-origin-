@@ -1,4 +1,4 @@
-package com.PetCare.dto.Member;
+package com.PetCare.dto.Member.request;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
