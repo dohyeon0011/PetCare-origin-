@@ -76,8 +76,6 @@ public class AddMemberRequest {
                 .role(Role.valueOf(role))  // Role을 Enum으로 변환
                 .socialProvider(provider)  // SocialProvider 처리
                 .introduction(introduction)
-                .careerYear(careerYear)
-                .certificates(certificates)
                 .build();
     }
 
