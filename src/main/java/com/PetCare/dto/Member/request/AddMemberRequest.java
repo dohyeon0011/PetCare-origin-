@@ -57,7 +57,7 @@ public class AddMemberRequest {
 
     private Integer careerYear;
 
-    private List<String> certificates;
+    private List<String> certifications;
 
     // DTO에서 엔티티 객체로 변환하는 메서드
     public Member toEntity() {
@@ -77,7 +77,7 @@ public class AddMemberRequest {
                 .socialProvider(provider)  // SocialProvider 처리
                 .introduction(introduction)
                 .careerYear(careerYear)
-                .certifications(certificates)
+                .certifications(certifications)
                 .build();
     }
 
