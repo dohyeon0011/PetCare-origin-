@@ -14,20 +14,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members")
+@RequestMapping("/api/members/customer")
 public class MemberApiController {
 
     private final MemberService memberService;
 
     @PostMapping("/new")
     public ResponseEntity<Member> addMember(@RequestBody @Valid AddMemberRequest request) {
-        Member member = memberService.save(request); // 회원 공통 속성 저장
-
-        if ("CUSTOMER".equals(request.getRole())) { // 고객일 경우 반려견 정보 저장
-
-        } else if ("PET_SITTER".equals(request.getRole())) { // 돌봄사일 경우 자격증 정보 저장
-
-        }
+        Member member = memberService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(member);
