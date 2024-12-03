@@ -1,6 +1,5 @@
 package com.PetCare.domain.Member;
 
-import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Pet.Pet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -30,6 +29,8 @@ import java.util.List;
 @Table(name = "members")
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class Member {
 
     @Id @GeneratedValue
@@ -68,7 +69,7 @@ public class Member {
 
     @Comment("회원 역할(고객, 돌봄사, 관리자)")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     private Role role;
 
     // 사용자 가입 날짜 확인 : 사용자가 언제 가입했는지 추적할 수 있다
@@ -103,21 +104,21 @@ public class Member {
     // ----------- 여기까지 고객 필드 -----------
 
     @Comment("돌봄사 경력 연차")
-    private int careerYear;
+    private Integer careerYear;
 
-//    @Comment("돌봄사가 보유한 자격증")
-//    @Convert(converter = CertificateListConverter.class)
-//    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
-//    private List<String> certificates;
+    @Comment("돌봄사가 보유한 자격증")
+    @Convert(converter = CertificateListConverter.class)
+    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
+    private List<String> certificates;
 
-    @OneToMany(mappedBy = "member")
-    @JsonIgnore
-    private List<Certification> certifications = new ArrayList<>();
+//    @OneToMany(mappedBy = "petSitter")
+//    @JsonIgnore
+//    private List<Certification> certifications = new ArrayList<>();
 
     // ----------- 여기는 돌봄사 필드 -----------
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear, List<String> certifications) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -129,10 +130,12 @@ public class Member {
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
+        this.careerYear = careerYear;
+        this.certificates = certifications;
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, Integer careerYear, List<String> certifications) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -142,6 +145,8 @@ public class Member {
         this.address2 = address2;
         this.role = Role.valueOf(role);
         this.introduction = introduction;
+        this.careerYear = careerYear;
+        this.certificates = certifications;
     }
 
 }
