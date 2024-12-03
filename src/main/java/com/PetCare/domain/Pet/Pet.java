@@ -33,7 +33,7 @@ public class Pet {
     private String profileImgUrl; // 반려견 프로필 사진
 
     // 고객-반려견 연관관계 편의 메서드
-    public void addMember(Member member) {
+    public void addCustomer(Member member) {
         this.member = member;
         member.getPets().add(this);
     }
