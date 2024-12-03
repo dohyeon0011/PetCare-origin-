@@ -69,7 +69,7 @@ class MemberRepositoryTest {
     @Test
     public void member_join() {
         //given
-        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요");
+        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요", null, null);
         memberRepository.save(member);
 
         //when
