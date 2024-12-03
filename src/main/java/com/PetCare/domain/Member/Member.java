@@ -69,7 +69,7 @@ public class Member {
 
     @Comment("회원 역할(고객, 돌봄사, 관리자)")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, insertable = false, updatable = false)
+    @Column(nullable = false)
     private Role role;
 
     // 사용자 가입 날짜 확인 : 사용자가 언제 가입했는지 추적할 수 있다
@@ -109,7 +109,7 @@ public class Member {
     @Comment("돌봄사가 보유한 자격증")
     @Convert(converter = CertificateListConverter.class)
     @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
-    private List<String> certificates;
+    private List<String> certifications;
 
 //    @OneToMany(mappedBy = "petSitter")
 //    @JsonIgnore
@@ -119,6 +119,7 @@ public class Member {
 
     @Builder
     public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear, List<String> certifications) {
+
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -131,7 +132,7 @@ public class Member {
         this.socialProvider = socialProvider;
         this.introduction = introduction;
         this.careerYear = careerYear;
-        this.certificates = certifications;
+        this.certifications = certifications;
     }
 
     @Comment("회원정보 수정")
@@ -146,7 +147,7 @@ public class Member {
         this.role = Role.valueOf(role);
         this.introduction = introduction;
         this.careerYear = careerYear;
-        this.certificates = certifications;
+        this.certifications = certifications;
     }
 
 }
