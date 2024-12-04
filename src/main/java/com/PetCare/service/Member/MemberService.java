@@ -48,7 +48,7 @@ public class MemberService {
         Member member = memberRepository.findById(id).
                 orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
-        return memberRepository.findPetsByMemberId(id);
+        return memberRepository.findPetsByMemberId(member.getId());
     }
 
     @Transactional
