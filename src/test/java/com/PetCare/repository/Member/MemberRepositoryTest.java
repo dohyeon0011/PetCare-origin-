@@ -44,7 +44,7 @@ class MemberRepositoryTest {
                 .socialProvider(null)
                 .introduction("하이요")
                 .careerYear(3)
-                .certificates(Collections.singletonList("돌봄1급, 돌봄2급"))
+                .certifications(Collections.singletonList("돌봄1급, 돌봄2급"))
                 .build();
 
         AddMemberRequest savedMember2 = AddMemberRequest.builder()
@@ -130,7 +130,7 @@ class MemberRepositoryTest {
         assertThat(findMember.getEmail()).isEqualTo("email@naver.com");
         assertThat(findMember.getSocialProvider()).isEqualTo(SocialProvider.NONE);
         assertThat(findMember.getCareerYear()).isEqualTo(3);
-        assertThat(findMember.getCertificates()).containsExactly("돌봄1급, 돌봄2급");
+        assertThat(findMember.getCertifications()).containsExactly("돌봄1급, 돌봄2급");
         System.out.println("생성시간 : " + findMember.getCreatedAt());
     }
 
