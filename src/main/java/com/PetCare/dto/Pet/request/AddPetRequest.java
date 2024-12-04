@@ -2,6 +2,7 @@ package com.PetCare.dto.Pet.request;
 
 import com.PetCare.domain.Pet.Pet;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class AddPetRequest {
 
     private String name;
 
-    @NotBlank(message = "반려견 나이 입력은 필수입니다.")
+    @NotNull(message = "반려견 나이 입력은 필수입니다.")
     private int age;
 
     @NotBlank(message = "반려견 품종 입력은 필수입니다.")
