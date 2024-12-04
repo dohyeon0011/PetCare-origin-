@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,17 +21,22 @@ public class Pet {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String name; // 반려견 이름
+    @Comment("반려견 이름")
+    private String name;
 
+    @Comment("반려견 나이")
     @Column(nullable = false)
-    private int age; // 반려견 나이
+    private int age;
 
+    @Comment("반려견 품종")
     @Column(nullable = false)
-    private String breed; // 반려견 품종
+    private String breed;
 
-    private String medicalConditions; // 반려견 건강 상태 및 특이사항
+    @Comment("반려견 건강 상태 및 특이사항")
+    private String medicalConditions;
 
-    private String profileImgUrl; // 반려견 프로필 사진
+    @Comment("반려견 프로필 사진")
+    private String profileImgUrl;
 
     // 고객-반려견 연관관계 편의 메서드
     public void addMember(Member member) {
