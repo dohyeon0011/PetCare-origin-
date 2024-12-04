@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +38,13 @@ public class MemberService {
 
     public Member findById(long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
     }
 
     @Transactional
     public void delete(long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
         authorizetionMember(member);
         memberRepository.delete(member);
@@ -52,7 +53,7 @@ public class MemberService {
     @Transactional
     public Member update(long id, UpdateMemberRequest request) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
         authorizetionMember(member);
         member.update(
