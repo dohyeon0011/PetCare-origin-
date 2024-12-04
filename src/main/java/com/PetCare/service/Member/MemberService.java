@@ -1,6 +1,7 @@
 package com.PetCare.service.Member;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.repository.Member.MemberRepository;
@@ -36,9 +37,18 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    // 회원 정보만 조회
     public Member findById(long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+    }
+
+    // 회원 + 보유중인 반려견 목록 조회
+    public List<Pet> findPetsByMemberId(long id) {
+        Member member = memberRepository.findById(id).
+                orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+
+        return memberRepository.findPetsByMemberId(id);
     }
 
     @Transactional
