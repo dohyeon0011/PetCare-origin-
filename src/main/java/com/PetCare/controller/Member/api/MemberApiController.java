@@ -1,11 +1,11 @@
 package com.PetCare.controller.Member.api;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.dto.Member.response.CustomerResponse;
-import com.PetCare.dto.Member.response.MemberResponse;
 import com.PetCare.dto.Member.response.PetSitterResponse;
 import com.PetCare.service.Member.MemberService;
 import jakarta.validation.Valid;
@@ -19,12 +19,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members")
+@RequestMapping("/api")
 public class MemberApiController {
 
     private final MemberService memberService;
 
-    @PostMapping("/new")
+    @PostMapping("/members/new")
     public ResponseEntity<Member> addMember(@RequestBody @Valid AddMemberRequest request) {
         Member member = memberService.save(request);
 
@@ -32,19 +32,18 @@ public class MemberApiController {
                 .body(member);
     }
 
-    @GetMapping
-    public ResponseEntity<List<MemberResponse>> findAllMember() {
+    @GetMapping("/members")
+    public ResponseEntity<List<?>> findAllMember() {
         List<Member> members = memberService.findAll();
-        List<MemberResponse> memberResponses = new ArrayList<>(); // 각 회원에 대해 MemberResponse 생성
+        List<Object> memberResponses = new ArrayList<>();
 
         for (Member member : members) {
-            List<Pet> pets = member.getPets(); // 해당 회원에 반려견이 있다면 반려견 목록을 가져오기
+            if (Role.CUSTOMER.equals(member.getRole())) {
+                List<Pet> pets = member.getPets();
 
-            if (!pets.isEmpty()) {
-                memberResponses.add(new MemberResponse(member, pets));
-            } else {
-                // 반려견이 없는 경우에는 반려견 목록을 비워서 넣거나 null 처리
-                memberResponses.add(new MemberResponse(member, new ArrayList<Pet>()));
+                memberResponses.add(new CustomerResponse(member, pets));
+            } else if (Role.PET_SITTER.equals(member.getRole())) {
+                memberResponses.add(new PetSitterResponse(member));
             }
         }
 
@@ -52,26 +51,25 @@ public class MemberApiController {
                 .body(memberResponses);
     }
 
-    // 돌봄사 회원 정보만 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<PetSitterResponse> findMember(@PathVariable long id) {
+    @GetMapping("/members/{id}")
+    public ResponseEntity<?> findMember(@PathVariable long id) {
         Member member = memberService.findById(id);
 
-        return ResponseEntity.ok()
-                .body(new PetSitterResponse(member));
+        if (Role.CUSTOMER.equals(member.getRole())) { // 고객일 경우
+            List<Pet> pets = memberService.findPetsByMemberId(id);
+
+            return ResponseEntity.ok()
+                    .body(new CustomerResponse(member, pets));
+        } else if (Role.PET_SITTER.equals(member.getRole())) { // 돌봄사일 경우
+            return ResponseEntity.ok()
+                    .body(new PetSitterResponse(member));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("존재하지 않는 회원입니다.");
     }
 
-    // 회원 + 보유중인 반려견 목록 조회(고객)
-    @GetMapping("/{memberId}/pets")
-    public ResponseEntity<CustomerResponse> findPetsByMemberId(@PathVariable("memberId") long id) {
-        Member member = memberService.findById(id);
-        List<Pet> pets = memberService.findPetsByMemberId(id);
-
-        return ResponseEntity.ok()
-                .body(new CustomerResponse(member, pets));
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/members/{id}")
     public ResponseEntity<Void> deleteMember(@PathVariable long id) {
         memberService.delete(id);
 
@@ -79,7 +77,7 @@ public class MemberApiController {
                 .build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/members/{id}")
     public ResponseEntity<Member> updateMember(@PathVariable long id, @RequestBody @Valid UpdateMemberRequest request) {
         Member updateMember = memberService.update(id, request);
 
@@ -87,4 +85,23 @@ public class MemberApiController {
                 .body(updateMember);
     }
 
+    // 돌봄사 회원 정보만 조회
+    /*@GetMapping("/petsitters/{memberId}")
+    public ResponseEntity<PetSitterResponse> findMember(@PathVariable("memberId") long id) {
+        Member member = memberService.findById(id);
+
+        return ResponseEntity.ok()
+                .body(new PetSitterResponse(member));
+    }
+
+    // 회원 + 보유중인 반려견 목록 조회(고객)
+    @GetMapping("/customers/{memberId}")
+    public ResponseEntity<CustomerResponse> findPetsByMemberId(@PathVariable("memberId") long id) {
+        Member member = memberService.findById(id);
+        List<Pet> pets = memberService.findPetsByMemberId(id);
+
+        return ResponseEntity.ok()
+                .body(new CustomerResponse(member, pets));
+    }*/
+    
 }
