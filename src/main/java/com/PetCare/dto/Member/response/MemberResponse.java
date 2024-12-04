@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 public class MemberResponse {
+    private long id;
     private String name;
     private String nickName;
     private String email;
@@ -29,6 +30,7 @@ public class MemberResponse {
     private List<String> certifications;
 
     public MemberResponse(Member member, List<Pet> pets) {
+        this.id = member.getId();
         this.name = member.getName();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
