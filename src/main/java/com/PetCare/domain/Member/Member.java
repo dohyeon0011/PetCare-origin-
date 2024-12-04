@@ -51,7 +51,7 @@ public class Member {
     private String name;
 
     @Comment("사용자가 활동할 닉네임")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickName;
 
     @Email
