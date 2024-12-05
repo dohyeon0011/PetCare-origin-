@@ -1,11 +1,12 @@
 package com.PetCare.dto.Member.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,8 +40,8 @@ public class UpdateMemberRequest {
 
     private String introduction;
 
-    private int careerYear;
+//    private int careerYear;
 
-    private List<String> certificates;
+//    private List<String> certificates;
 
 }
