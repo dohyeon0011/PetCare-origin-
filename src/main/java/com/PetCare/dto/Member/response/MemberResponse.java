@@ -1,9 +1,11 @@
 package com.PetCare.dto.Member.response;
 
+import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Member.SocialProvider;
 import com.PetCare.domain.Pet.Pet;
+import com.PetCare.dto.Certification.response.CertificationResponse;
 import com.PetCare.dto.Pet.response.PetResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 public class MemberResponse {
-    private long id;
     private String name;
     private String nickName;
     private String email;
@@ -27,10 +28,9 @@ public class MemberResponse {
     private String introduction;
     private List<PetResponse> pets = new ArrayList<>();
     private Integer careerYear;
-    private List<String> certifications;
+    private List<CertificationResponse> certifications;
 
-    public MemberResponse(Member member, List<Pet> pets) {
-        this.id = member.getId();
+    public MemberResponse(Member member, List<Pet> pets, List<Certification> certifications) {
         this.name = member.getName();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
@@ -44,6 +44,8 @@ public class MemberResponse {
                 .map(PetResponse::new)
                 .collect(Collectors.toList());
         this.careerYear = member.getCareerYear();
-        this.certifications = member.getCertifications();
+        this.certifications = certifications.stream()
+                .map(CertificationResponse::new)
+                .collect(Collectors.toList());
     }
 }
