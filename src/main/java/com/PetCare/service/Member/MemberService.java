@@ -1,7 +1,6 @@
 package com.PetCare.service.Member;
 
 import com.PetCare.domain.Member.Member;
-import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.repository.Member.MemberRepository;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,23 +33,29 @@ public class MemberService {
         }
     }
 
-    public List<Member> findAll() {
-        return memberRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<Object> findAll() {
+        List<Member> members = memberRepository.findAll();
+
+        return members.stream()
+                .map(Member::toResponse)
+                .collect(Collectors.toList());
     }
 
-    // 회원 정보만 조회
-    public Member findById(long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+    @Transactional(readOnly = true)
+    public Object findById(long id) {
+        Member member = memberRepository.findById(id).get();
+
+        return member.toResponse();
     }
 
     // 회원 + 보유중인 반려견 목록 조회
-    public List<Pet> findPetsByMemberId(long id) {
-        Member member = memberRepository.findById(id).
-                orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
-
-        return memberRepository.findPetsByMemberId(member.getId());
-    }
+//    public List<Pet> findPetsByMemberId(long id) {
+//        Member member = memberRepository.findById(id).
+//                orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+//
+//        return memberRepository.findPetsByMemberId(member.getId());
+//    }
 
     @Transactional
     public void delete(long id) {
@@ -61,7 +67,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member update(long id, UpdateMemberRequest request) {
+    public Object update(long id, UpdateMemberRequest request) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
@@ -69,10 +75,10 @@ public class MemberService {
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
-                request.getRole(), request.getIntroduction(), request.getCareerYear(), request.getCertificates()
+                request.getRole(), request.getIntroduction()
         );
 
-        return member;
+        return member.toResponse();
     }
 
     private static void authorizetionMember(Member member) {
