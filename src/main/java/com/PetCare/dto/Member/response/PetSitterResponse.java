@@ -1,12 +1,15 @@
 package com.PetCare.dto.Member.response;
 
+import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Member.SocialProvider;
+import com.PetCare.dto.Certification.response.CertificationResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -21,9 +24,9 @@ public class PetSitterResponse {
     private SocialProvider socialProvider;
     private String introduction;
     private Integer careerYear;
-    private List<String> certifications;
+    private List<CertificationResponse> certifications;
 
-    public PetSitterResponse(Member member) {
+    public PetSitterResponse(Member member, List<Certification> certifications) {
         this.name = member.getName();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
@@ -34,6 +37,8 @@ public class PetSitterResponse {
         this.socialProvider = member.getSocialProvider();
         this.introduction = member.getIntroduction();
         this.careerYear = member.getCareerYear();
-        this.certifications = member.getCertifications();
+        this.certifications = certifications.stream()
+                .map(CertificationResponse::new)
+                .collect(Collectors.toList());
     }
 }
