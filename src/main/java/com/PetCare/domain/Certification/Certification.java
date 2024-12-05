@@ -31,7 +31,7 @@ public class Certification {
     }
 
     // 돌봄사-자격증 연관관계 편의 메서드
-    public void addMember(Member member) {
+    public void addPetSitter(Member member) {
         this.member = member;
         member.getCertifications().add(this);
     }
