@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class PetResponse {
-    private long id;
     private String name;
     private int age;
     private String breed;
@@ -15,7 +14,6 @@ public class PetResponse {
     private String profileImgUrl;
 
     public PetResponse(Pet pet) {
-        this.id = getId();
         this.name = pet.getName();
         this.age = pet.getAge();
         this.breed = pet.getBreed();
