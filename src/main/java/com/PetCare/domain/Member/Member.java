@@ -1,6 +1,9 @@
 package com.PetCare.domain.Member;
 
+import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Pet.Pet;
+import com.PetCare.dto.Member.response.CustomerResponse;
+import com.PetCare.dto.Member.response.PetSitterResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -16,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /* 왜 엔티티에서만 @NoArgsConstructor가 필요한지 ??
     JPA는 엔티티를 관리하기 위해 리플렉션과 프록시 객체를 사용하며, 이 과정에서 기본 생성자가 필요함
@@ -106,20 +110,20 @@ public class Member {
     @Comment("돌봄사 경력 연차")
     private Integer careerYear;
 
-    @Comment("돌봄사가 보유한 자격증")
-    @Convert(converter = CertificateListConverter.class)
-    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
-    private List<String> certifications;
+//    @Comment("돌봄사가 보유한 자격증")
+//    @Convert(converter = CertificateListConverter.class)
+//    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
+//    private List<String> certifications;
 
-//    @OneToMany(mappedBy = "petSitter")
-//    @JsonIgnore
-//    private List<Certification> certifications = new ArrayList<>();
+    @Comment("돌봄사가 보유한 자격증")
+    @OneToMany(mappedBy = "member")
+    @JsonIgnore
+    private List<Certification> certifications = new ArrayList<>();
 
     // ----------- 여기는 돌봄사 필드 -----------
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear, List<String> certifications) {
-
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -131,12 +135,12 @@ public class Member {
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
-        this.careerYear = careerYear;
-        this.certifications = certifications;
+//        this.careerYear = careerYear;
+//        this.certifications.get().addPetSitter(this);
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, Integer careerYear, List<String> certifications) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -146,8 +150,23 @@ public class Member {
         this.address2 = address2;
         this.role = Role.valueOf(role);
         this.introduction = introduction;
-        this.careerYear = careerYear;
-        this.certifications = certifications;
+
+//        if (Role.PET_SITTER.equals(this.getRole())) {
+//            this.careerYear = careerYear;
+//            this.certifications = certifications;
+//        }
+    }
+
+    // 이러한 상황(Member의 Role)에 따른 로직은 도메인 내부에 있어야 변경사항이 있을 때 도메인만 수정하면 돼서 유지보수가 쉽다.
+    // 이런 로직 같은 경우는 서비스, 컨트롤러 레벨에 작성해도 되지만 컨트롤러 레벨에서는 요청 전달 및 응답 반환만 해야 하는 것이 정석이고,
+    // 서비스 레벨에서는 데이터 조회 및 비즈니스 로직 처리 요청만을 하는 것이 좋다.
+    public Object toResponse() {
+        if (Role.CUSTOMER.equals(this.getRole())) {
+            return new CustomerResponse(this, this.pets);
+        } else if (Role.PET_SITTER.equals(this.getRole())) {
+            return new PetSitterResponse(this, this.certifications);
+        }
+        throw new NoSuchElementException("존재하지 않는 회원입니다.");
     }
 
 }
