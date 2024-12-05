@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +42,8 @@ class MemberRepositoryTest {
                 .role("CUSTOMER")
                 .socialProvider(null)
                 .introduction("하이요")
-                .careerYear(3)
-                .certifications(Collections.singletonList("돌봄1급, 돌봄2급"))
+//                .careerYear(3)
+//                .certifications(Collections.singletonList("돌봄1급, 돌봄2급"))
                 .build();
 
         AddMemberRequest savedMember2 = AddMemberRequest.builder()
