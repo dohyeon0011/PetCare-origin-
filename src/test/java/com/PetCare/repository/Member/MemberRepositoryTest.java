@@ -161,13 +161,13 @@ class MemberRepositoryTest {
     public void member_update() {
         //given
         Member member = memberRepository.findById(1L).get();
-        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER",  5, null);
+        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER");
 
         //when
         member.update(
                 updateMemberRequest.getPassword(), updateMemberRequest.getName(), updateMemberRequest.getNickName(), updateMemberRequest.getEmail(),
                 updateMemberRequest.getPhoneNumber(), updateMemberRequest.getAddress1(), updateMemberRequest.getAddress2(),
-                updateMemberRequest.getIntroduction(), updateMemberRequest.getRole(), updateMemberRequest.getCareerYear(), updateMemberRequest.getCertificates()
+                updateMemberRequest.getIntroduction(), updateMemberRequest.getRole()
         );
 
         //then
