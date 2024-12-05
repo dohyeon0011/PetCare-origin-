@@ -37,8 +37,8 @@ public class PetApiController {
     }
 
     @DeleteMapping("{memberId}/pets/edit")
-    public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id) {
-        petService.delete(id);
+    public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id, @RequestBody List<Long> petIds) {
+        petService.delete(id, petIds);
 
         return ResponseEntity.ok()
                 .build();
