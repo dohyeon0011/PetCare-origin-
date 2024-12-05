@@ -2,6 +2,8 @@ package com.PetCare.controller.Pet.api;
 
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Pet.request.AddPetRequest;
+import com.PetCare.dto.Pet.request.UpdatePetRequest;
+import com.PetCare.dto.Pet.response.PetResponse;
 import com.PetCare.service.Pet.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,30 @@ public class PetApiController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(pets);
+    }
+
+    @GetMapping("/{memberId}/pets")
+    public ResponseEntity<List<PetResponse>> findById(@PathVariable("memberId") long id) {
+        List<PetResponse> pets = petService.findById(id);
+
+        return ResponseEntity.ok()
+                .body(pets);
+    }
+
+    @DeleteMapping("{memberId}/pets/edit")
+    public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id) {
+        petService.delete(id);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PutMapping("{memberId}/pets/edit")
+    public ResponseEntity<List<PetResponse>> updatePet(@PathVariable("memberId") long id, @RequestBody @Valid List<UpdatePetRequest> requests) {
+        List<PetResponse> updatePets = petService.update(id, requests);
+
+        return ResponseEntity.ok()
+                .body(updatePets);
     }
 
 
