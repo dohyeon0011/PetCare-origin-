@@ -11,6 +11,7 @@ import org.hibernate.annotations.Comment;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Comment("돌봄사 자격증 엔티티")
 public class Certification {
 
     @Id
