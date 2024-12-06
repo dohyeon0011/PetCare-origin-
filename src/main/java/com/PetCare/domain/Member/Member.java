@@ -123,7 +123,7 @@ public class Member {
     // ----------- 여기는 돌봄사 필드 -----------
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -135,12 +135,12 @@ public class Member {
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
-//        this.careerYear = careerYear;
+        this.careerYear = careerYear;
 //        this.certifications.get().addPetSitter(this);
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, Integer careerYear) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -151,10 +151,9 @@ public class Member {
         this.role = Role.valueOf(role);
         this.introduction = introduction;
 
-//        if (Role.PET_SITTER.equals(this.getRole())) {
-//            this.careerYear = careerYear;
-//            this.certifications = certifications;
-//        }
+        if (Role.PET_SITTER.equals(this.getRole())) {
+            this.careerYear = careerYear;
+        }
     }
 
     // 이러한 상황(Member의 Role)에 따른 로직은 도메인 내부에 있어야 변경사항이 있을 때 도메인만 수정하면 돼서 유지보수가 쉽다.
