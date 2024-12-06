@@ -7,6 +7,11 @@ import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
 
+    // 특정 회원의 반려견 목록 조회
+    public List<Pet> findByMemberId(long memberId);
+
+    public Pet findByMemberIdAndId(long memberId, long id);
+
     // 특정 회원이 보유중인 특정 반려견 목록만 조회
     public List<Pet> findByMemberIdAndIdIn(long memberId, List<Long> ids);
 }
