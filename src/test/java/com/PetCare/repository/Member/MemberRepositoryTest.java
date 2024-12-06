@@ -42,7 +42,7 @@ class MemberRepositoryTest {
                 .role("CUSTOMER")
                 .socialProvider(null)
                 .introduction("하이요")
-//                .careerYear(3)
+                .careerYear(null)
 //                .certifications(Collections.singletonList("돌봄1급, 돌봄2급"))
                 .build();
 
@@ -58,6 +58,7 @@ class MemberRepositoryTest {
                 .role("PET_SITTER")
                 .socialProvider("KAKAO")
                 .introduction("하이요")
+                .careerYear(5)
                 .build();
 
         memberRepository.save(savedMember1.toEntity());
@@ -68,7 +69,7 @@ class MemberRepositoryTest {
     @Test
     public void member_join() {
         //given
-        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요");
+        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요", null);
         memberRepository.save(member);
 
         //when
@@ -160,13 +161,13 @@ class MemberRepositoryTest {
     public void member_update() {
         //given
         Member member = memberRepository.findById(1L).get();
-        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER");
+        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER", 3);
 
         //when
         member.update(
                 updateMemberRequest.getPassword(), updateMemberRequest.getName(), updateMemberRequest.getNickName(), updateMemberRequest.getEmail(),
                 updateMemberRequest.getPhoneNumber(), updateMemberRequest.getAddress1(), updateMemberRequest.getAddress2(),
-                updateMemberRequest.getIntroduction(), updateMemberRequest.getRole()
+                updateMemberRequest.getIntroduction(), updateMemberRequest.getRole(), updateMemberRequest.getCareerYear()
         );
 
         //then
