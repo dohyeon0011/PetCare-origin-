@@ -12,7 +12,7 @@ public class UpdateCertificationRequest {
 
     private long id;
 
-    @NotBlank(message = "자격증 입력은 필수입니다.")
+    @NotBlank(message = "자격증 이름 입력은 필수입니다.")
     private String name;
 
 }
