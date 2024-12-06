@@ -77,14 +77,14 @@ public class MemberService {
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
-                request.getRole(), request.getIntroduction()
+                request.getRole(), request.getIntroduction(), request.getCareerYear()
         );
 
         return member.toResponse();
     }
 
     private static void authorizetionMember(Member member) {
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이다 값 반환
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이디 값 반환
 //
 //        if(!member.getLoginId().equals(userName)) {
 //            throw new IllegalArgumentException("회원 본인만 가능합니다.");
