@@ -53,7 +53,7 @@ public class AddMemberRequest {
 
     private String introduction;
 
-//    private Integer careerYear;
+    private Integer careerYear;
 
     // DTO에서 엔티티 객체로 변환하는 메서드
     public Member toEntity() {
@@ -72,7 +72,7 @@ public class AddMemberRequest {
                 .role(Role.valueOf(role))  // Role을 Enum으로 변환
                 .socialProvider(provider)  // SocialProvider 처리
                 .introduction(introduction)
-//                .careerYear(careerYear)
+                .careerYear(careerYear)
                 .build();
     }
 
