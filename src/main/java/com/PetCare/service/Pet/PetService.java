@@ -8,6 +8,7 @@ import com.PetCare.dto.Pet.response.PetResponse;
 import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.Pet.PetRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,8 @@ public class PetService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public List<Pet> save(long id, List<AddPetRequest> request) {
-        Member member = memberRepository.findById(id)
+    public List<Pet> save(long memberId, List<AddPetRequest> request) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("반려견 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
         List<Pet> pets = new ArrayList<>();
@@ -36,42 +37,48 @@ public class PetService {
             pet.addMember(member); // Member와 연관관계 설정
             pets.add(pet);
         }
+
         return petRepository.saveAll(pets);
     }
 
-    // 특정 회원의 반려견 조회
+    @Comment("특정 회원의 반려견 조회")
     @Transactional(readOnly = true)
-    public List<PetResponse> findById(long id){
-        List<PetResponse> pets = memberRepository.findPetsByMemberId(id)
+    public List<PetResponse> findById(long memberId){
+        List<PetResponse> pets = petRepository.findByMemberId(memberId)
                 .stream()
                 .map(PetResponse::new)
                 .collect(Collectors.toList());
 
-        if (pets.isEmpty()) {
-            throw new NoSuchElementException("조회 오류: 등록된 반려견이 존재하지 않습니다.");
-        }
-
         return pets;
     }
 
+    @Comment("특정 회원의 특정 반려견 삭제")
     @Transactional
-    public void delete(long id, List<Long> petIds) {
-        List<Pet> pets = petRepository.findByMemberIdAndIdIn(id, petIds);
+    public void delete(long memberId, long petId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        if (pets.isEmpty()) {
-            throw new NoSuchElementException("삭제 오류: 등록된 반려견이 존재하지 않습니다.");
-        }
+        authorizetionMember(member);
+
+        Pet pet = petRepository.findByMemberIdAndId(memberId, petId);
 
         // 여러 개의 엔티티를 한 번의 쿼리로 삭제하는 방식으로 성능을 개선
         // 이 방식은 영속성 컨텍스트(Persistence Context)에서 해당 엔티티들을 관리하지 않으므로, 엔티티 상태가 영속성 컨텍스트와 동기화되지 않음
         // 즉, 삭제 후 해당 엔티티는 더 이상 영속성 컨텍스트에서 관리되지 않으며, 이후에 해당 엔티티에 접근하려면 다시 조회해야 함
-        petRepository.deleteAllInBatch(pets);
+        petRepository.delete(pet);
+//        petRepository.deleteAllInBatch(pets);
 //        petRepository.deleteAll(pets); // 얘는 여러번 쿼리 나감
     }
 
+    @Comment("특정 회원의 반려견 수정")
     @Transactional
-    public List<PetResponse> update(long id, List<UpdatePetRequest> requests) {
-        List<Pet> pets = memberRepository.findPetsByMemberId(id);
+    public List<PetResponse> update(long memberId, List<UpdatePetRequest> requests) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
+
+        authorizetionMember(member);
+
+        List<Pet> pets = petRepository.findByMemberId(memberId);
 
         for (UpdatePetRequest request : requests) {
             Pet pet = pets.stream()
@@ -91,4 +98,11 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
+    private static void authorizetionMember(Member member) {
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이디 값 반환
+//
+//        if(!member.getLoginId().equals(userName)) {
+//            throw new IllegalArgumentException("회원 본인만 가능합니다.");
+//        }
+    }
 }
