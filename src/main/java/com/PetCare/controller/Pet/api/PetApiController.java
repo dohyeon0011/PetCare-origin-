@@ -29,28 +29,27 @@ public class PetApiController {
     }
 
     @GetMapping("/{memberId}/pets")
-    public ResponseEntity<List<PetResponse>> findById(@PathVariable("memberId") long id) {
+    public ResponseEntity<List<PetResponse>> findPets(@PathVariable("memberId") long id) {
         List<PetResponse> pets = petService.findById(id);
 
         return ResponseEntity.ok()
                 .body(pets);
     }
 
-    @DeleteMapping("{memberId}/pets/edit")
-    public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id, @RequestBody List<Long> petIds) {
-        petService.delete(id, petIds);
+    @DeleteMapping("{memberId}/pets/{petId}")
+    public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id, @PathVariable("petId") long petId) {
+        petService.delete(id, petId);
 
         return ResponseEntity.ok()
                 .build();
     }
 
-    @PutMapping("{memberId}/pets/edit")
+    @PutMapping("{memberId}/pets")
     public ResponseEntity<List<PetResponse>> updatePet(@PathVariable("memberId") long id, @RequestBody @Valid List<UpdatePetRequest> requests) {
         List<PetResponse> updatePets = petService.update(id, requests);
 
         return ResponseEntity.ok()
                 .body(updatePets);
     }
-
 
 }
