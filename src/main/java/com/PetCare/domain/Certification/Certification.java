@@ -37,4 +37,8 @@ public class Certification {
         member.getCertifications().add(this);
     }
 
+    public void update(String name) {
+        this.name = name;
+    }
+
 }
