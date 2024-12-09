@@ -2,6 +2,7 @@ package com.PetCare.service.Certification;
 
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Member.Role;
 import com.PetCare.dto.Certification.request.AddCertificationRequest;
 import com.PetCare.dto.Certification.request.UpdateCertificationRequest;
 import com.PetCare.dto.Certification.response.CertificationResponse;
@@ -29,6 +30,10 @@ public class CertificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("자격증 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
+        if (!member.getRole().equals(Role.PET_SITTER)) {
+            throw new IllegalArgumentException("돌봄사만 자격증 등록이 가능합니다.");
+        }
+
         List<Certification> certifications = new ArrayList<>();
 
         for (AddCertificationRequest request : requests) {
@@ -47,7 +52,6 @@ public class CertificationService {
                 .stream()
                 .map(CertificationResponse::new)
                 .collect(Collectors.toList());
-
 
         return certifications;
     }
