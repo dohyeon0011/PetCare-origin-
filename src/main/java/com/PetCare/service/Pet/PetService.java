@@ -1,6 +1,7 @@
 package com.PetCare.service.Pet;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Pet.request.AddPetRequest;
 import com.PetCare.dto.Pet.request.UpdatePetRequest;
@@ -29,6 +30,10 @@ public class PetService {
     public List<Pet> save(long memberId, List<AddPetRequest> request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("반려견 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
+
+        if (!member.getRole().equals(Role.CUSTOMER)) {
+            throw new IllegalArgumentException("고객만 반려견 등록이 가능합니다.");
+        }
 
         List<Pet> pets = new ArrayList<>();
 
