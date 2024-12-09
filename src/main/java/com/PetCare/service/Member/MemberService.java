@@ -30,7 +30,7 @@ public class MemberService {
         Optional<List<Member>> members = memberRepository.findByLoginId(request.getLoginId());
 
         if (!members.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
     }
 
