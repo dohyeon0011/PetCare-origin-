@@ -1,5 +1,6 @@
 package com.PetCare.domain.Member;
 
+import com.PetCare.domain.CareAvailability.CareAvailability;
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.response.CustomerResponse;
@@ -100,8 +101,14 @@ public class Member {
     @Comment("사용자 프로필 소개")
     private String introduction;
 
+    // CascadeType.REMOVE만 하면 실 데이터는 삭제된 것처럼 숨어있고, orphanRemoval = true이면 연관관계와 실 데이터까지 모두 삭제 (논리적으로 참조를 변경시켜서 무결성 오류를 안 나게 할 뿐, 데이터는 남게 됨)
+    // 지금과 같이 회원 - 반려견, 회원 - 자격증과 같이 부모 자식 관계가 뚜렷한 경우에만 cascade 옵션 쓰고,
+    // 학생 - 수강 중인 수업과 같은 하나의 자식에 여러 부모가 있는 경우에는 사용 자제
+    // Cascade도 결국엔 해당 테이블의 기본키가 다른 테이블의 외래키로 사용되는 경우 데이터 삭제가 불가능한데 강제로 삭제시키려는 것이니 무결성 오류가 나야하는 것임.
+    // 1. Cascade되는 엔티티와 Cascade를 설정하는 엔티티의 라이프사이클이 동일하거나 비슷해야한다.
+    // 2. Cascade되는 엔티티가 Cascade를 설정하는 엔티티에서만 사용되어야 한다.
     @Comment("고객이 보유한 반려견 목록")
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
@@ -110,17 +117,22 @@ public class Member {
     @Comment("돌봄사 경력 연차")
     private Integer careerYear;
 
-//    @Comment("돌봄사가 보유한 자격증")
-//    @Convert(converter = CertificateListConverter.class)
-//    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
-//    private List<String> certifications;
-
     @Comment("돌봄사가 보유한 자격증")
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonIgnore
     private List<Certification> certifications = new ArrayList<>();
 
-    // ----------- 여기는 돌봄사 필드 -----------
+    @Comment("돌봄사가 돌봄 가능한 시간")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
+    private List<CareAvailability> careAvailabilities = new ArrayList<>();
+
+    // ----------- 여기까지는 돌봄사 필드 -----------
+
+    //    @Comment("돌봄사가 보유한 자격증")
+//    @Convert(converter = CertificateListConverter.class)
+//    @Column(columnDefinition = "TEXT") // 필요 시 길이를 늘림
+//    private List<String> certifications;
 
     @Builder
     public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
