@@ -30,9 +30,7 @@ public class CertificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("자격증 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
-        if (!member.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄사만 자격증 등록이 가능합니다.");
-        }
+        verifyingPermissions(member);
 
         List<Certification> certifications = new ArrayList<>();
 
@@ -75,6 +73,7 @@ public class CertificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
+        verifyingPermissions(member);
         authorizetionMember(member);
 
         List<Certification> certifications = certificationRepository.findByMemberId(memberId);
@@ -99,6 +98,12 @@ public class CertificationService {
 //        if(!member.getLoginId().equals(userName)) {
 //            throw new IllegalArgumentException("회원 본인만 가능합니다.");
 //        }
+    }
+
+    private static void verifyingPermissions(Member member) {
+        if (!member.getRole().equals(Role.PET_SITTER)) {
+            throw new IllegalArgumentException("돌봄사만 자격증 등록 및 수정이 가능합니다.");
+        }
     }
 
 }
