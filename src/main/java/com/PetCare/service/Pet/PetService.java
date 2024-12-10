@@ -61,9 +61,11 @@ public class PetService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
+        verifyingPermissions(member);
         authorizetionMember(member);
 
-        Pet pet = petRepository.findByMemberIdAndId(memberId, petId);
+        Pet pet = petRepository.findByMemberIdAndId(memberId, petId)
+                .orElseThrow(() -> new NoSuchElementException("등록한 반려견이 존재하지 않습니다."));
 
         // 여러 개의 엔티티를 한 번의 쿼리로 삭제하는 방식으로 성능을 개선
         // 이 방식은 영속성 컨텍스트(Persistence Context)에서 해당 엔티티들을 관리하지 않으므로, 엔티티 상태가 영속성 컨텍스트와 동기화되지 않음
@@ -112,7 +114,7 @@ public class PetService {
 
     private static void verifyingPermissions(Member member) {
         if (!member.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("고객만 반려견 등록 및 수정이 가능합니다.");
+            throw new IllegalArgumentException("고객만 반려견 등록 및 수정,삭제가 가능합니다.");
         }
     }
 
