@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,14 +23,6 @@ public class MemberService {
         validateDuplicateMember(request);
 
         return memberRepository.save(request.toEntity());
-    }
-
-    private void validateDuplicateMember(AddMemberRequest request) {
-        Optional<List<Member>> members = memberRepository.findByLoginId(request.getLoginId());
-
-        if (!members.isEmpty()) {
-            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
-        }
     }
 
     @Transactional(readOnly = true)
@@ -65,6 +56,7 @@ public class MemberService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
         authorizetionMember(member);
+
         memberRepository.delete(member);
     }
 
@@ -74,6 +66,7 @@ public class MemberService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
         authorizetionMember(member);
+
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
@@ -89,6 +82,14 @@ public class MemberService {
 //        if(!member.getLoginId().equals(userName)) {
 //            throw new IllegalArgumentException("회원 본인만 가능합니다.");
 //        }
+    }
+
+    private void validateDuplicateMember(AddMemberRequest request) {
+        List<Member> members = memberRepository.findByLoginId(request.getLoginId());
+
+        if (!members.isEmpty()) {
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+        }
     }
 
 }
