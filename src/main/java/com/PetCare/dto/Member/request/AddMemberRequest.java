@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor // 테스트 코드용 -> 임시로 빠르게 데이터를 생성해내려고 하기 위해 쓰임
 @Getter
-@Builder
+@Builder // 테스트 코드에서 쓰려고
 public class AddMemberRequest {
 
     @NotBlank(message = "아이디는 필수입니다.") // 애플리케이션 레벨에서 작동(데이터를 데이터베이스에 저장하기 전 검사, 유효성 통과 못 하면 예외 터짐)
