@@ -1,5 +1,6 @@
 package com.PetCare;
 
+import com.PetCare.domain.CareAvailability.CareAvailability;
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
@@ -10,6 +11,8 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -142,6 +145,23 @@ public class InitDB {
                     .build();
 
             em.persist(member);
+
+            CareAvailability careAvailability1 = CareAvailability.builder()
+                    .availabilityAt(LocalDate.parse("2024-12-31"))
+                    .price(30000)
+                    .build();
+
+            CareAvailability careAvailability2 = CareAvailability.builder()
+                    .availabilityAt(LocalDate.parse("2023-12-31"))
+                    .price(50000)
+                    .build();
+
+            careAvailability1.addPetSitter(member);
+            careAvailability2.addPetSitter(member);
+            careAvailability2.assigned();
+
+            em.persist(careAvailability1);
+            em.persist(careAvailability2);
         }
     }
 }
