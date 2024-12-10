@@ -60,9 +60,11 @@ public class CertificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
+        verifyingPermissions(member);
         authorizetionMember(member);
 
-        Certification certification = certificationRepository.findByMemberIdAndId(memberId, certificationId);
+        Certification certification = certificationRepository.findByMemberIdAndId(memberId, certificationId)
+                .orElseThrow(() -> new NoSuchElementException("등록한 자격증이 존재하지 않습니다."));
 
         certificationRepository.delete(certification);
     }
@@ -102,7 +104,7 @@ public class CertificationService {
 
     private static void verifyingPermissions(Member member) {
         if (!member.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄사만 자격증 등록 및 수정이 가능합니다.");
+            throw new IllegalArgumentException("돌봄사만 자격증 등록 및 수정,삭제가 가능합니다.");
         }
     }
 
