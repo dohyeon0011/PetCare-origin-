@@ -2,10 +2,12 @@ package com.PetCare.dto.Certification.request;
 
 import com.PetCare.domain.Certification.Certification;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class AddCertificationRequest {
 
