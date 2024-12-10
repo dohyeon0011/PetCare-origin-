@@ -30,6 +30,7 @@ public class MemberResponse {
     private Integer careerYear;
     private List<CertificationResponse> certifications;
 
+    // entity to DTO
     public MemberResponse(Member member, List<Pet> pets, List<Certification> certifications) {
         this.name = member.getName();
         this.nickName = member.getNickName();
