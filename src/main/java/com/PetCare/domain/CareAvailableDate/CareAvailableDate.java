@@ -1,7 +1,7 @@
-package com.PetCare.domain.CareAvailability;
+package com.PetCare.domain.CareAvailableDate;
 
 import com.PetCare.domain.Member.Member;
-import com.PetCare.dto.CareAvailability.response.CareAvailabilityResponse;
+import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,10 +14,10 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CareAvailability { // 예약 가능 날짜(돌봄사)
+public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
 
     @Id @GeneratedValue
-    @Column(name = "care_availability_id", updatable = false)
+    @Column(name = "care_available_date_id", updatable = false)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class CareAvailability { // 예약 가능 날짜(돌봄사)
     @Comment("예약 가능 상태")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AvailabilityStatus status;
+    private CareAvailableDateStatus status;
 
     // 돌봄사-예약 가능 날짜 연관관계 편의 메서드
     public void addPetSitter(Member member) {
@@ -44,10 +44,10 @@ public class CareAvailability { // 예약 가능 날짜(돌봄사)
     }
 
     @Builder
-    public CareAvailability(LocalDate availabilityAt, int price) {
+    public CareAvailableDate(LocalDate availabilityAt, int price) {
         this.availabilityAt = availabilityAt;
         this.price = price;
-        this.status = AvailabilityStatus.POSSIBILITY;
+        this.status = CareAvailableDateStatus.POSSIBILITY;
     }
 
     public void update(LocalDate availabilityAt, int price) {
@@ -58,16 +58,16 @@ public class CareAvailability { // 예약 가능 날짜(돌봄사)
     }
 
     public void assigned() { // 테스트용 : 예약 상태 변경(불가능)
-        this.status = AvailabilityStatus.IMPOSSIBILITY;
+        this.status = CareAvailableDateStatus.IMPOSSIBILITY;
     }
 
-    public CareAvailabilityResponse toResponse() {
-        return new CareAvailabilityResponse(this);
+    public CareAvailableDateResponse toResponse() {
+        return new CareAvailableDateResponse(this);
     }
 
     @Comment("예약 상태 확인")
     private void verifyingStatus() {
-        if (!this.status.equals(AvailabilityStatus.POSSIBILITY)) {
+        if (!this.status.equals(CareAvailableDateStatus.POSSIBILITY)) {
             throw new IllegalArgumentException("돌봄 예약이 배정된 상태라 수정이 불가합니다.");
         }
     }
