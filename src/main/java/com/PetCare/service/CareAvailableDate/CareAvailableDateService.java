@@ -1,13 +1,13 @@
-package com.PetCare.service.CareAvailability;
+package com.PetCare.service.CareAvailableDate;
 
-import com.PetCare.domain.CareAvailability.CareAvailability;
+import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
-import com.PetCare.dto.CareAvailability.request.AddCareAvailabilityRequest;
-import com.PetCare.dto.CareAvailability.request.UpdateCareAvailabilityRequest;
-import com.PetCare.dto.CareAvailability.response.CareAvailabilityResponse;
-import com.PetCare.repository.CareAvailability.CareAvailabilityRepository;
+import com.PetCare.dto.CareAvailableDate.request.AddCareAvailableDateRequest;
+import com.PetCare.dto.CareAvailableDate.request.UpdateCareAvailableDateRequest;
+import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
 import com.PetCare.repository.Member.MemberRepository;
+import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Service;
@@ -19,65 +19,74 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CareAvailabilityService {
+public class CareAvailableDateService {
 
     private final MemberRepository memberRepository;
-    private final CareAvailabilityRepository careAvailabilityRepository;
+    private final CareAvailableDateRepository careAvailableDateRepository;
 
     @Transactional
-    public CareAvailability save(long memberId, AddCareAvailabilityRequest request) {
+    public CareAvailableDate save(long memberId, AddCareAvailableDateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("돌봄 날짜 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
         verifyingPermissions(member);
 
-        CareAvailability careAvailability = request.toEntity();
-        careAvailability.addPetSitter(member);
+        CareAvailableDate careAvailableDate = request.toEntity();
+        careAvailableDate.addPetSitter(member);
 
-        return careAvailabilityRepository.save(careAvailability);
+        return careAvailableDateRepository.save(careAvailableDate);
     }
 
     @Comment("등록한 돌봄 가능 날짜 조회")
     @Transactional(readOnly = true)
-    public List<CareAvailabilityResponse> findById(long memberId) {
-        List<CareAvailabilityResponse> availabilityList = careAvailabilityRepository.findByMemberId(memberId)
+    public List<CareAvailableDateResponse> findAllById(long memberId) {
+        List<CareAvailableDateResponse> availabilityList = careAvailableDateRepository.findByMemberId(memberId)
                 .stream()
-                .map(CareAvailabilityResponse::new)
+                .map(CareAvailableDateResponse::new)
                 .collect(Collectors.toList());
 
         return availabilityList;
     }
 
+    @Comment("등록한 돌봄 가능 날짜 단건 조회")
+    @Transactional(readOnly = true)
+    public CareAvailableDateResponse findById(long memberId, long careAvailableDateId) {
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(memberId, careAvailableDateId)
+                .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
+
+        return careAvailableDate.toResponse();
+    }
+
     @Comment("등록한 돌봄 가능 날짜 삭제")
     @Transactional
-    public void delete(long memberId, long careAvailabilityId) {
+    public void delete(long memberId, long careAvailableDateId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        CareAvailability careAvailability = careAvailabilityRepository.findByMemberIdAndId(memberId, careAvailabilityId)
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(memberId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
-        careAvailabilityRepository.delete(careAvailability);
+        careAvailableDateRepository.delete(careAvailableDate);
     }
 
     @Comment("등록한 돌봄 가능 정보 수정")
     @Transactional
-    public CareAvailabilityResponse update(long memberId, long careAvailabilityId, UpdateCareAvailabilityRequest request) {
+    public CareAvailableDateResponse update(long memberId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        CareAvailability careAvailability = careAvailabilityRepository.findByMemberIdAndId(memberId, careAvailabilityId)
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(memberId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
-        careAvailability.update(request.getAvailabilityAt(), request.getPrice());
+        careAvailableDate.update(request.getAvailabilityAt(), request.getPrice());
 
-        return careAvailability.toResponse();
+        return careAvailableDate.toResponse();
     }
 
     private static void authorizetionMember(Member member) {
