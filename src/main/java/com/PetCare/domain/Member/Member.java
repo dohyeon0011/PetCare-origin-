@@ -1,6 +1,6 @@
 package com.PetCare.domain.Member;
 
-import com.PetCare.domain.CareAvailability.CareAvailability;
+import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.response.CustomerResponse;
@@ -125,7 +125,7 @@ public class Member {
     @Comment("돌봄사가 돌봄 가능한 시간")
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonIgnore
-    private List<CareAvailability> careAvailabilities = new ArrayList<>();
+    private List<CareAvailableDate> careAvailabilities = new ArrayList<>();
 
     // ----------- 여기까지는 돌봄사 필드 -----------
 
