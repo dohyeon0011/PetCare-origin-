@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class CertificationResponse {
-
     private String name;
 
     public CertificationResponse(Certification certification) {
