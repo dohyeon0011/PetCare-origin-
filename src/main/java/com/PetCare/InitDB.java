@@ -1,6 +1,6 @@
 package com.PetCare;
 
-import com.PetCare.domain.CareAvailability.CareAvailability;
+import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
@@ -146,22 +146,22 @@ public class InitDB {
 
             em.persist(member);
 
-            CareAvailability careAvailability1 = CareAvailability.builder()
+            CareAvailableDate careAvailableDate1 = CareAvailableDate.builder()
                     .availabilityAt(LocalDate.parse("2024-12-31"))
                     .price(30000)
                     .build();
 
-            CareAvailability careAvailability2 = CareAvailability.builder()
+            CareAvailableDate careAvailableDate2 = CareAvailableDate.builder()
                     .availabilityAt(LocalDate.parse("2023-12-31"))
                     .price(50000)
                     .build();
 
-            careAvailability1.addPetSitter(member);
-            careAvailability2.addPetSitter(member);
-            careAvailability2.assigned();
+            careAvailableDate1.addPetSitter(member);
+            careAvailableDate2.addPetSitter(member);
+            careAvailableDate2.assigned();
 
-            em.persist(careAvailability1);
-            em.persist(careAvailability2);
+            em.persist(careAvailableDate1);
+            em.persist(careAvailableDate2);
         }
     }
 }
