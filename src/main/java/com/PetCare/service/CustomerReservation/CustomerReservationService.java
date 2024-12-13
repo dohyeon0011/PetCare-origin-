@@ -95,7 +95,8 @@ public class CustomerReservationService {
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByAvailableAt(customerReservation.getReservationAt())
+        // 돌봄사가 등록한 돌봄 가능 일정 중 일자가 일치한 것만을 불러와야 함.
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndAvailableAt(customerReservation.getReservationAt())
                 .orElseThrow(() -> new NoSuchElementException("해당 예약 날짜가 존재하지 않습니다."));
 
         careAvailableDate.cancel();
