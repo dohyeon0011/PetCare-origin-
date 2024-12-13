@@ -17,7 +17,7 @@ public class CareAvailableDateResponse {
 
     public CareAvailableDateResponse(CareAvailableDate careAvailableDate) {
         this.id = careAvailableDate.getId();
-        this.availabilityAt = careAvailableDate.getAvailabilityAt();
+        this.availabilityAt = careAvailableDate.getAvailableAt();
         this.price = careAvailableDate.getPrice();
         this.status = careAvailableDate.getStatus();
     }
