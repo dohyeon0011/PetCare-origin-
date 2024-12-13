@@ -74,7 +74,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     // 고객이 예약한 날짜 설정
-    public void addReservationAt(LocalDate reservationAt) {
+    public void changeReservationAt(LocalDate reservationAt) {
         this.reservationAt = reservationAt;
     }
 
@@ -93,7 +93,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     public CustomerReservationResponse toResponse() {
-        return new CustomerReservationResponse(this);
+        return new CustomerReservationResponse(member.getId(), member.getNickName(),this);
     }
 }
 
