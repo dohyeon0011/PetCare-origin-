@@ -5,9 +5,9 @@ import com.PetCare.dto.CareAvailableDate.request.AddCareAvailableDateRequest;
 import com.PetCare.dto.CareAvailableDate.request.UpdateCareAvailableDateRequest;
 import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
 import com.PetCare.service.CareAvailableDate.CareAvailableDateService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class CareAvailableDateApiController {
 
     private final CareAvailableDateService careAvailableDateService;
 
-    @Comment("돌봄 가능 일정 등록")
+    @Operation(description = "돌봄 가능 일정 등록 API")
     @PostMapping("/{memberId}/careAvailableDate/new")
     public ResponseEntity<CareAvailableDate> saveCareAvailability(@PathVariable("memberId") long id,
                                                                   @RequestBody @Valid AddCareAvailableDateRequest request) {
@@ -31,18 +31,27 @@ public class CareAvailableDateApiController {
                 .body(careAvailableDate);
     }
 
-    @Comment("특정 회원의 등록한 모든 돌봄 일정 조회")
+    @Operation(description = "모든 회원의 등록한 모든 돌봄 일정 조회 API")
+    @GetMapping("/careAvailableDateList")
+    public ResponseEntity<List<CareAvailableDateResponse>> findAllCareAvailableDate() {
+        List<CareAvailableDateResponse> careAvailableDateAll = careAvailableDateService.findAll();
+
+        return ResponseEntity.ok()
+                .body(careAvailableDateAll);
+    }
+
+    @Operation(description = "회원의 등록한 모든 돌봄 일정 조회 API")
     @GetMapping("/{memberId}/careAvailableDateList")
-    public ResponseEntity<List<CareAvailableDateResponse>> findCareAvailabilityList(@PathVariable("memberId") long id) {
+    public ResponseEntity<List<CareAvailableDateResponse>> findCareAvailableDateList(@PathVariable("memberId") long id) {
         List<CareAvailableDateResponse> sitterAvailableDateList = careAvailableDateService.findAllById(id);
 
         return ResponseEntity.ok()
                 .body(sitterAvailableDateList);
     }
 
-    @Comment("특정 회원의 등록한 돌봄 일정 단건 조회")
+    @Operation(description = "회원의 등록한 돌봄 일정 상세 조회 API")
     @GetMapping("/{memberId}/careAvailableDate/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse> findSitterAvailableDate(@PathVariable("memberId") long id,
+    public ResponseEntity<CareAvailableDateResponse> findCareAvailableDateOne(@PathVariable("memberId") long id,
                                                                              @PathVariable("careAvailableDateId") long careAvailableDateId) {
         CareAvailableDateResponse sitterAvailableDate = careAvailableDateService.findById(id, careAvailableDateId);
 
@@ -50,9 +59,9 @@ public class CareAvailableDateApiController {
                 .body(sitterAvailableDate);
     }
 
-    @Comment("특정 회원의 등록한 특정 돌봄 일정 삭제")
+    @Operation(description = "회원의 등록한 특정 돌봄 일정 삭제 API")
     @DeleteMapping("/{memberId}/careAvailableDate/{careAvailableDateId}")
-    public ResponseEntity<Void> deleteCareAvailability(@PathVariable("memberId") long id,
+    public ResponseEntity<Void> deleteCareAvailableDate(@PathVariable("memberId") long id,
                                                        @PathVariable("careAvailableDateId") long careAvailableDateId) {
         careAvailableDateService.delete(id, careAvailableDateId);
 
@@ -60,9 +69,9 @@ public class CareAvailableDateApiController {
                 .build();
     }
 
-    @Comment("특정 회원의 등록한 특정 돌봄 일정 수정")
+    @Operation(description = "회원의 등록한 특정 돌봄 일정 수정 API")
     @PutMapping("/{memberId}/careAvailableDate/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse> updateCareAvailability(@PathVariable("memberId") long id,
+    public ResponseEntity<CareAvailableDateResponse> updateCareAvailableDate(@PathVariable("memberId") long id,
                                                                             @PathVariable("careAvailableDateId") long careAvailableDateId,
                                                                             @RequestBody @Valid UpdateCareAvailableDateRequest request) {
         CareAvailableDateResponse updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
