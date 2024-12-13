@@ -26,8 +26,8 @@ public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
 
     @Comment("예약 가능한 날짜")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd") // 이 어노테이션은 주로 컨트롤러에서 바인딩할 때 사용됨, 엔티티는 가급적이면 데이터베이스 매핑에만 집중을 권장
-    @Column(name = "availability_at")
-    private LocalDate availabilityAt;
+    @Column(name = "available_at")
+    private LocalDate availableAt;
 
     @Comment("돌봄 비용")
     private int price;
@@ -45,7 +45,7 @@ public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
 
     @Builder
     public CareAvailableDate(LocalDate availabilityAt, int price) {
-        this.availabilityAt = availabilityAt;
+        this.availableAt = availabilityAt;
         this.price = price;
         this.status = CareAvailableDateStatus.POSSIBILITY;
     }
@@ -53,12 +53,24 @@ public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
     public void update(LocalDate availabilityAt, int price) {
         verifyingStatus();
 
-        this.availabilityAt = availabilityAt;
+        this.availableAt = availabilityAt;
         this.price = price;
     }
 
-    public void assigned() { // 테스트용 : 예약 상태 변경(불가능)
+    // 예약 상태
+    public void reservation() {
+        if (!this.status.equals(CareAvailableDateStatus.POSSIBILITY)) {
+            throw new IllegalArgumentException("요청하신 날짜는 이미 예약된 날짜입니다.");
+        }
         this.status = CareAvailableDateStatus.IMPOSSIBILITY;
+    }
+
+    // 예약 취소
+    public void cancel() {
+        if (!this.status.equals(CareAvailableDateStatus.IMPOSSIBILITY)) {
+            throw new IllegalArgumentException("요청하신 날짜는 이미 취소된 예약입니다.");
+        }
+        this.status = CareAvailableDateStatus.POSSIBILITY;
     }
 
     public CareAvailableDateResponse toResponse() {
