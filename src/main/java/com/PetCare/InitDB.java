@@ -156,12 +156,26 @@ public class InitDB {
                     .price(50000)
                     .build();
 
+            CareAvailableDate careAvailableDate3 = CareAvailableDate.builder()
+                    .availabilityAt(LocalDate.parse("2025-01-05"))
+                    .price(50000)
+                    .build();
+
+            CareAvailableDate careAvailableDate4 = CareAvailableDate.builder()
+                    .availabilityAt(LocalDate.parse("2024-01-14"))
+                    .price(50000)
+                    .build();
+
             careAvailableDate1.addPetSitter(member);
             careAvailableDate2.addPetSitter(member);
-            careAvailableDate2.assigned();
+            careAvailableDate3.addPetSitter(member);
+            careAvailableDate4.addPetSitter(member);
+            careAvailableDate2.reservation();
 
             em.persist(careAvailableDate1);
             em.persist(careAvailableDate2);
+            em.persist(careAvailableDate3);
+            em.persist(careAvailableDate4);
         }
     }
 }
