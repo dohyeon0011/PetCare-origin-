@@ -63,7 +63,7 @@ public class CertificationService {
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        Certification certification = certificationRepository.findByMemberIdAndId(memberId, certificationId)
+        Certification certification = certificationRepository.findByMemberIdAndId(member.getId(), certificationId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 자격증이 존재하지 않습니다."));
 
         certificationRepository.delete(certification);
