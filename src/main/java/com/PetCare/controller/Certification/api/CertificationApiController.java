@@ -5,9 +5,9 @@ import com.PetCare.dto.Certification.request.AddCertificationRequest;
 import com.PetCare.dto.Certification.request.UpdateCertificationRequest;
 import com.PetCare.dto.Certification.response.CertificationResponse;
 import com.PetCare.service.Certification.CertificationService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class CertificationApiController {
 
     private final CertificationService certificationService;
 
-    @Comment("특정 회원의 자격증 추가")
+    @Operation(description = "회원의 자격증 추가 API")
     @PostMapping("/{memberId}/certifications/new")
     public ResponseEntity<List<Certification>> addCertification(@PathVariable("memberId") long id, @RequestBody @Valid List<AddCertificationRequest> request) {
         List<Certification> certifications = certificationService.save(id, request);
@@ -30,7 +30,7 @@ public class CertificationApiController {
                 .body(certifications);
     }
 
-    @Comment("특정 회원의 모든 자격증 조회")
+    @Operation(description = "회원의 모든 자격증 조회 API")
     @GetMapping("/{memberId}/certifications")
     public ResponseEntity<List<CertificationResponse>> findCertifications(@PathVariable("memberId") long id) {
         List<CertificationResponse> certifications = certificationService.findById(id);
@@ -39,7 +39,7 @@ public class CertificationApiController {
                 .body(certifications);
     }
 
-    @Comment("특정 회원의 특정 자격증 삭제")
+    @Operation(description = "회원의 특정 자격증 삭제 API")
     @DeleteMapping("/{memberId}/certifications/{certificationId}")
     public ResponseEntity<Void> deleteCertification(@PathVariable("memberId") long id, @PathVariable("certificationId") long certificationId) {
         certificationService.delete(id, certificationId);
@@ -48,7 +48,7 @@ public class CertificationApiController {
                 .build();
     }
 
-    @Comment("특정 회원의 자격증 정보 수정")
+    @Operation(description = "회원의 자격증 정보 수정 API")
     @PutMapping("/{memberId}/certifications")
     public ResponseEntity<List<CertificationResponse>> updateCertification(@PathVariable("memberId") long id, @RequestBody @Valid List<UpdateCertificationRequest> requests) {
         List<CertificationResponse> updateCertifications = certificationService.update(id, requests);
