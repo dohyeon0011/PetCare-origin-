@@ -15,6 +15,6 @@ public interface CareAvailableDateRepository extends JpaRepository<CareAvailable
     // 특정 회원의 특정 돌봄 가능한 날짜 조회
     Optional<CareAvailableDate> findByMemberIdAndId(long memberId, long id);
 
-    // 특정 날짜 조회
-    Optional<CareAvailableDate> findByAvailableAt(LocalDate availableAt);
+    // 특정 회원의 특정 날짜 조회
+    Optional<CareAvailableDate> findByMemberIdAndAvailableAt(long memberId, LocalDate availableAt);
 }
