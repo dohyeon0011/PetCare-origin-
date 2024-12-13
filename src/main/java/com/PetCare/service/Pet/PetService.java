@@ -64,7 +64,7 @@ public class PetService {
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        Pet pet = petRepository.findByMemberIdAndId(memberId, petId)
+        Pet pet = petRepository.findByMemberIdAndId(member.getId(), petId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 반려견이 존재하지 않습니다."));
 
         // 여러 개의 엔티티를 한 번의 쿼리로 삭제하는 방식으로 성능을 개선
@@ -84,7 +84,7 @@ public class PetService {
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        List<Pet> pets = petRepository.findByMemberId(memberId);
+        List<Pet> pets = petRepository.findByMemberId(member.getId());
 
         for (UpdatePetRequest request : requests) {
             Pet pet = pets.stream()
