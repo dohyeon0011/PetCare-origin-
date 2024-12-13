@@ -5,9 +5,9 @@ import com.PetCare.dto.Pet.request.AddPetRequest;
 import com.PetCare.dto.Pet.request.UpdatePetRequest;
 import com.PetCare.dto.Pet.response.PetResponse;
 import com.PetCare.service.Pet.PetService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class PetApiController {
 
     private final PetService petService;
 
-    @Comment("반려견 등록")
+    @Operation(description = "반려견 등록 API")
     @PostMapping("/{memberId}/pets/new")
     public ResponseEntity<List<Pet>> addPet(@PathVariable("memberId") long id, @RequestBody @Valid List<AddPetRequest> requests) {
         List<Pet> pets = petService.save(id, requests);
@@ -30,7 +30,7 @@ public class PetApiController {
                 .body(pets);
     }
 
-    @Comment("특정 회원의 모든 반려견 조회")
+    @Operation(description = "특정 회원의 모든 반려견 조회 API")
     @GetMapping("/{memberId}/pets")
     public ResponseEntity<List<PetResponse>> findPets(@PathVariable("memberId") long id) {
         List<PetResponse> pets = petService.findById(id);
@@ -39,7 +39,7 @@ public class PetApiController {
                 .body(pets);
     }
 
-    @Comment("특정 회원의 특정 반려견 삭제")
+    @Operation(description = "회원의 특정 반려견 삭제 API")
     @DeleteMapping("{memberId}/pets/{petId}")
     public ResponseEntity<Void> deletePet(@PathVariable("memberId") long id, @PathVariable("petId") long petId) {
         petService.delete(id, petId);
@@ -48,7 +48,7 @@ public class PetApiController {
                 .build();
     }
 
-    @Comment("특정 회원의 반려견 정보 수정")
+    @Operation(description = "회원의 반려견 정보 수정 API")
     @PutMapping("{memberId}/pets")
     public ResponseEntity<List<PetResponse>> updatePet(@PathVariable("memberId") long id, @RequestBody @Valid List<UpdatePetRequest> requests) {
         List<PetResponse> updatePets = petService.update(id, requests);
