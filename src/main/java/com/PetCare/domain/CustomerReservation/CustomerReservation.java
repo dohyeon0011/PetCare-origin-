@@ -29,8 +29,13 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
 
     @Comment("예약한 회원(고객) 번호")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "customer_id")
+    private Member customer;
+
+    @Comment("예약된 회원(돌봄사) 번호")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sitter_id")
+    private Member sitter;
 
     @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.ALL)
     private List<PetReservation> petReservations = new ArrayList<>();
@@ -48,11 +53,12 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public static CustomerReservation createCustomerReservation(Member member, PetReservation... petReservations) {
-        authorization(member);
+    public static CustomerReservation createCustomerReservation(Member customer, Member sitter, PetReservation... petReservations) {
+        authorization(customer);
 
         CustomerReservation customerReservation = new CustomerReservation();
-        customerReservation.addCustomer(member);
+        customerReservation.addCustomer(customer);
+        customerReservation.addSitter(sitter);
 
         for (PetReservation petReservation : petReservations) {
             customerReservation.addPetReservation(petReservation);
@@ -63,8 +69,15 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     // 예약(고객 시점) - 회원(고객) 연관관계 편의 메서드
-    public void addCustomer(Member member) {
-        this.member = member;
+    public void addCustomer(Member customer) {
+        this.customer = customer;
+        customer.getCustomerReservations().add(this);
+    }
+
+    // 예약(고객 시점) - 회원(돌봄사) 연관관계 편의 메서드
+    public void addSitter(Member sitter) {
+        this.sitter = sitter;
+        sitter.getSitterReservations().add(this);
     }
 
     // 예약(고객 시점) - 중간 매핑 테이블 연관관계 편의 메서드
@@ -92,8 +105,9 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
         }
     }
 
-    public CustomerReservationResponse toResponse() {
-        return new CustomerReservationResponse(member.getId(), member.getNickName(),this);
+    // 해당 예약 상세 조회
+    public CustomerReservationResponse.GetDetail toResponse() {
+        return new CustomerReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
     }
 }
 
