@@ -2,6 +2,7 @@ package com.PetCare.domain.Member;
 
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
+import com.PetCare.domain.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.Member.response.CustomerResponse;
 import com.PetCare.dto.Member.response.PetSitterResponse;
@@ -112,6 +113,11 @@ public class Member {
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
+    @Comment("고객이 예약한 예약 목록")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CustomerReservation> customerReservations = new ArrayList<>();
+
     // ----------- 여기까지 고객 필드 -----------
 
     @Comment("돌봄사 경력 연차")
@@ -127,7 +133,12 @@ public class Member {
     @JsonIgnore
     private List<CareAvailableDate> careAvailabilities = new ArrayList<>();
 
-    // ----------- 여기까지는 돌봄사 필드 -----------
+    @Comment("돌봄사의 예약된 목록")
+    @OneToMany(mappedBy = "sitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CustomerReservation> sitterReservations = new ArrayList<>();
+
+    // ----------- 여기는 돌봄사 필드 -----------
 
     //    @Comment("돌봄사가 보유한 자격증")
 //    @Convert(converter = CertificateListConverter.class)
