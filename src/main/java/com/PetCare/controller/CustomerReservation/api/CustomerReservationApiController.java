@@ -30,8 +30,8 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회 API")
     @GetMapping("/{memberId}/reservationList")
-    public ResponseEntity<List<CustomerReservationResponse>> findCustomerReservationList(@PathVariable("memberId") long id) {
-        List<CustomerReservationResponse> customerReservationList = customerReservationService.findAllById(id);
+    public ResponseEntity<List<CustomerReservationResponse.GetList>> findCustomerReservationList(@PathVariable("memberId") long id) {
+        List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
 
         return ResponseEntity.ok()
                 .body(customerReservationList);
@@ -39,9 +39,9 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원의 특정 돌봄 예약 상세 조회 API")
     @GetMapping("/{memberId}/reservation/{customerReservationId}")
-    public ResponseEntity<CustomerReservationResponse> findCustomerReservationOne(@PathVariable("memberId") long id,
-                                                                                  @PathVariable("customerReservationId") long customerReservationId) {
-        CustomerReservationResponse customerReservation = customerReservationService.findById(id, customerReservationId);
+    public ResponseEntity<CustomerReservationResponse.GetDetail> findCustomerReservationOne(@PathVariable("memberId") long id,
+                                                                                            @PathVariable("customerReservationId") long customerReservationId) {
+        CustomerReservationResponse.GetDetail customerReservation = customerReservationService.findById(id, customerReservationId);
 
         return ResponseEntity.ok()
                 .body(customerReservation);
