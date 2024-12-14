@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 public class PetSitterResponse {
+    private long id;
     private String name;
     private String nickName;
     private String email;
@@ -27,6 +28,7 @@ public class PetSitterResponse {
     private List<CertificationResponse> certifications;
 
     public PetSitterResponse(Member member, List<Certification> certifications) {
+        this.id = member.getId();
         this.name = member.getName();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
