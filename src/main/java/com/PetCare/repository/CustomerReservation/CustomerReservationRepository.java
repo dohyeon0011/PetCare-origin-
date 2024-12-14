@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface CustomerReservationRepository extends JpaRepository<CustomerReservation, Long> {
 
     // 특정 회원의 예약 내역 전체 조회
-    List<CustomerReservation> findByMemberId(long memberId);
+    List<CustomerReservation> findByCustomerId(long customer);
 
     // 특정 회원의 특정 예약 내역 조회
-    Optional<CustomerReservation> findByMemberIdAndId(long memberId, long id);
+    Optional<CustomerReservation> findByCustomerIdAndId(long customerId, long id);
 }
