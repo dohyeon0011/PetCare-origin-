@@ -15,7 +15,8 @@ import java.util.List;
 @Getter
 public class AddCustomerReservationRequest {
 
-    private long memberId;
+    private long customerId; // 고객
+    private long sitterId; // 돌봄사
 
     @NotNull(message = "날짜 선택은 필수입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
