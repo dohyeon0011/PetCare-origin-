@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class AddPetRequest {
-
     private String name;
 
     @NotNull(message = "반려견 나이 입력은 필수입니다.")
