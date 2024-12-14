@@ -1,6 +1,6 @@
 package com.PetCare.dto.Pet.response;
 
-import com.PetCare.domain.Pet.Pet;
+import com.PetCare.domain.CustomerReservation.PetReservation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +11,9 @@ public class PetReservationResponse {
     private int age;
     private String breed;
 
-    public PetReservationResponse(Pet pet) {
-        this.name = pet.getName();
-        this.age = pet.getAge();
-        this.breed = pet.getBreed();
+    public PetReservationResponse(PetReservation petReservation) {
+        this.name = petReservation.getPet().getName();
+        this.age = petReservation.getPet().getAge();
+        this.breed = petReservation.getPet().getBreed();
     }
 }
