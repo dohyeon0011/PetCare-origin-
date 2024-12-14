@@ -8,7 +8,6 @@ import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.dto.CustomerReservation.request.AddCustomerReservationRequest;
 import com.PetCare.dto.CustomerReservation.response.CustomerReservationResponse;
-import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import com.PetCare.repository.CustomerReservation.CustomerReservationRepository;
 import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.Pet.PetRepository;
@@ -27,22 +26,22 @@ public class CustomerReservationService {
 
     private final MemberRepository memberRepository;
     private final PetRepository petRepository;
-    private final CareAvailableDateRepository careAvailableDateRepository;
     private final CustomerReservationRepository customerReservationRepository;
 
     @Transactional
     public CustomerReservation save(AddCustomerReservationRequest request) {
-        Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new NoSuchElementException("예약 오류: 현재 회원은 존재하지 않는 회원입니다."));
+        Member customer = memberRepository.findById(request.getCustomerId())
+                .orElseThrow(() -> new NoSuchElementException("예약 오류: 고객 정보 조회에 실패했습니다."));
 
-        verifyingPermissions(member);
+        verifyingPermissions(customer);
 
-        List<CareAvailableDate> careAvailableDateList = careAvailableDateRepository.findAll();
+        // 예약 배정되는 돌봄사 찾고 돌봄사가 등록했던 날짜중 선택된 날짜 찾아서 해당 날짜 예약 상태 바꾸기
+        Member sitter = memberRepository.findById(request.getSitterId())
+                .orElseThrow(() -> new NoSuchElementException("예약 오류: 돌봄사 정보 조회에 실패했습니다."));
 
-        CareAvailableDate careAvailableDate = careAvailableDateList.stream()
-                .filter(c -> c.getAvailableAt().equals(request.getReservationAt()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("요청하신 날짜는 예약이 불가능합니다."));
+        // 예약으로 선택된 날짜 찾기
+        CareAvailableDate careAvailableDate = memberRepository.findCareAvailableDatesByMemberIdAndAvailableAt(sitter.getId(), request.getReservationAt())
+                .orElseThrow(() -> new NoSuchElementException("예약 오류: 돌봄사가 해당 날짜를 예약 가능 날짜로 등록하지 않았습니다."));
 
         List<PetReservation> petReservations = request.getPetIds().stream()
                 .map(petId -> {
@@ -50,9 +49,9 @@ public class CustomerReservationService {
                             .orElseThrow(() -> new NoSuchElementException("반려견 정보 조회에 실패했습니다."));
                     return PetReservation.createPetReservation(pet);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
-        CustomerReservation customerReservation = CustomerReservation.createCustomerReservation(member, petReservations.toArray(new PetReservation[0]));
+        CustomerReservation customerReservation = CustomerReservation.createCustomerReservation(customer, sitter, petReservations.toArray(new PetReservation[0]));
         customerReservation.changeReservationAt(request.getReservationAt());
         careAvailableDate.reservation();
 
@@ -61,14 +60,13 @@ public class CustomerReservationService {
 
     @Comment("특정 회원의 예약 내역 전체 조회")
     @Transactional(readOnly = true)
-    public List<CustomerReservationResponse> findAllById(long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public List<CustomerReservationResponse.GetList> findAllById(long memberId) {
+        Member customer = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("예약 조회 오류 : 현재 회원은 존재하지 않는 회원입니다."));
 
-        List<CustomerReservationResponse> reservations = customerReservationRepository.findByMemberId(memberId)
+        List<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
                 .stream()
-                .map(reservation ->
-                        new CustomerReservationResponse(member.getId(), member.getNickName(), reservation))
+                .map(CustomerReservationResponse.GetList::new) // Constructor Reference 사용
                 .collect(Collectors.toList());
 
         return reservations;
@@ -76,8 +74,8 @@ public class CustomerReservationService {
 
     @Comment("특정 회원의 특정 예약 조회")
     @Transactional(readOnly = true)
-    public CustomerReservationResponse findById(long memberId, long customerReservationId) {
-        CustomerReservation customerReservation = customerReservationRepository.findByMemberIdAndId(memberId, customerReservationId)
+    public CustomerReservationResponse.GetDetail findById(long memberId, long customerReservationId) {
+        CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(memberId, customerReservationId)
                 .orElseThrow(() -> new NoSuchElementException("해당 예약 정보가 존재하지 않습니다."));
 
         return customerReservation.toResponse();
@@ -86,18 +84,17 @@ public class CustomerReservationService {
     @Comment("특정 회원의 특정 예약 취소")
     @Transactional
     public void delete(long memberId, long customerReservationId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
+        Member customer = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("로그인한 회원 정보를 불러오는데 실패했습니다."));
 
-        CustomerReservation customerReservation = customerReservationRepository.findByMemberIdAndId(memberId, customerReservationId)
+        CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(memberId, customerReservationId)
                 .orElseThrow(() -> new NoSuchElementException("해당 예약 정보가 존재하지 않습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(customer);
+        authorizetionMember(customer);
 
-        // 돌봄사가 등록한 돌봄 가능 일정 중 일자가 일치한 것만을 불러와야 함.
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndAvailableAt(customerReservation.getReservationAt())
-                .orElseThrow(() -> new NoSuchElementException("해당 예약 날짜가 존재하지 않습니다."));
+        CareAvailableDate careAvailableDate = memberRepository.findCareAvailableDatesByMemberIdAndAvailableAt(customerReservation.getSitter().getId(), customerReservation.getReservationAt())
+                .orElseThrow(() -> new NoSuchElementException("예약 취소 오류: 해당 예약 날짜를 찾을 수 없습니다."));
 
         careAvailableDate.cancel();
         customerReservationRepository.delete(customerReservation);
