@@ -40,7 +40,7 @@ public class UpdateMemberRequest {
 
     private String introduction;
 
-    private int careerYear;
+    private Integer careerYear;
 
 //    private List<String> certificates;
 
