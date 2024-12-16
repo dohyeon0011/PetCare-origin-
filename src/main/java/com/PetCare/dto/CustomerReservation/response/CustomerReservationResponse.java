@@ -1,9 +1,9 @@
 package com.PetCare.dto.CustomerReservation.response;
 
 import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.CustomerReservation.PetReservation;
 import com.PetCare.domain.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.dto.Pet.response.PetReservationResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +50,7 @@ public class CustomerReservationResponse {
             this.customerNickName = customer.getNickName();
             this.sitterId = sitter.getId();
             this.sitterNickName = sitter.getNickName();
+            this.price = customerReservation.getPrice();
             this.reservationAt = customerReservation.getReservationAt();
             this.createdAt = customerReservation.getCreatedAt();
             this.status = customerReservation.getStatus();
