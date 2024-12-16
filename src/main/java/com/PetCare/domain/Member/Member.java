@@ -4,8 +4,8 @@ import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
 import com.PetCare.domain.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Pet.Pet;
-import com.PetCare.dto.Member.response.CustomerResponse;
-import com.PetCare.dto.Member.response.PetSitterResponse;
+import com.PetCare.domain.SitterSchedule.SitterSchedule;
+import com.PetCare.dto.Member.response.MemberResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -136,7 +136,7 @@ public class Member {
     @Comment("돌봄사의 예약된 목록")
     @OneToMany(mappedBy = "sitter", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<CustomerReservation> sitterReservations = new ArrayList<>();
+    private List<SitterSchedule> sitterSchedules = new ArrayList<>();
 
     // ----------- 여기는 돌봄사 필드 -----------
 
@@ -184,9 +184,9 @@ public class Member {
     // 서비스 레벨에서는 데이터 조회 및 비즈니스 로직 처리 요청만을 하는 것이 좋다.
     public Object toResponse() {
         if (Role.CUSTOMER.equals(this.getRole())) {
-            return new CustomerResponse(this, this.pets);
+            return new MemberResponse.GetCustomer(this, this.pets);
         } else if (Role.PET_SITTER.equals(this.getRole())) {
-            return new PetSitterResponse(this, this.certifications);
+            return new MemberResponse.GetSitter(this, this.certifications);
         }
         throw new NoSuchElementException("존재하지 않는 회원입니다.");
     }
