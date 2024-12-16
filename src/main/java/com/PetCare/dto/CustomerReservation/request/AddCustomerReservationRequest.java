@@ -22,6 +22,9 @@ public class AddCustomerReservationRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationAt;
 
+    @NotNull(message = "돌봄 예약 비용은 필수 값입니다.")
+    private int price;
+
     @NotEmpty(message = "돌봄을 맡길 반려견 선택은 필수입니다.")
     private List<Long> petIds;
 }
