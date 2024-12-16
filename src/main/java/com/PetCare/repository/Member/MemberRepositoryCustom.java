@@ -16,5 +16,5 @@ public interface MemberRepositoryCustom {
     public List<CareAvailableDate> findCareAvailableDatesByMemberId(long memberId);
 
     // 돌봄사가 등록한 예약 가능 날짜 중 특정 날짜 조회
-    public Optional<CareAvailableDate> findCareAvailableDatesByMemberIdAndAvailableAt(long memberId, LocalDate availableDate);
+    public Optional<CareAvailableDate> findCareAvailableDateByMemberIdAndAvailableAt(long memberId, LocalDate availableDate);
 }
