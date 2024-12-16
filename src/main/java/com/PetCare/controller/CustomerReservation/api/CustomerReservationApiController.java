@@ -20,6 +20,7 @@ public class CustomerReservationApiController {
 
     private final CustomerReservationService customerReservationService;
 
+    @Operation(description = "회원 돌봄 예약 생성 API")
     @PostMapping("/reservation/new")
     public ResponseEntity<CustomerReservation> saveCustomerReservation(@RequestBody @Valid AddCustomerReservationRequest request) {
         CustomerReservation customerReservation = customerReservationService.save(request);
