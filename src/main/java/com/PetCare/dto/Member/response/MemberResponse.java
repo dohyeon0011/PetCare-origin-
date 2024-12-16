@@ -14,41 +14,73 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
-@Getter
-public class MemberResponse {
-    private long id;
-    private String name;
-    private String nickName;
-    private String email;
-    private String phoneNumber;
-    private String address1;
-    private String address2;
-    private Role role;
-    private SocialProvider socialProvider;
-    private String introduction;
-    private List<PetResponse> pets = new ArrayList<>();
-    private Integer careerYear;
-    private List<CertificationResponse> certifications;
 
-    // entity to DTO
-    public MemberResponse(Member member, List<Pet> pets, List<Certification> certifications) {
-        this.id = member.getId();
-        this.name = member.getName();
-        this.nickName = member.getNickName();
-        this.email = member.getEmail();
-        this.phoneNumber = member.getPhoneNumber();
-        this.address1 = member.getAddress1();
-        this.address2 = member.getAddress2();
-        this.role = member.getRole();
-        this.socialProvider = member.getSocialProvider();
-        this.introduction = member.getIntroduction();
-        this.pets = pets.stream()
-                .map(PetResponse::new)
-                .collect(Collectors.toList());
-        this.careerYear = member.getCareerYear();
-        this.certifications = certifications.stream()
-                .map(CertificationResponse::new)
-                .collect(Collectors.toList());
+public class MemberResponse {
+
+    @NoArgsConstructor
+    @Getter
+    public static class GetCustomer {
+        private long id;
+        private String name;
+        private String nickName;
+        private String email;
+        private String phoneNumber;
+        private String address1;
+        private String address2;
+        private Role role;
+        private SocialProvider socialProvider;
+        private String introduction;
+        private List<PetResponse> pets = new ArrayList<>();
+
+        public GetCustomer(Member member, List<Pet> pets) {
+            this.id = member.getId();
+            this.name = member.getName();
+            this.nickName = member.getNickName();
+            this.email = member.getEmail();
+            this.phoneNumber = member.getPhoneNumber();
+            this.address1 = member.getAddress1();
+            this.address2 = member.getAddress2();
+            this.role = member.getRole();
+            this.socialProvider = member.getSocialProvider();
+            this.introduction = member.getIntroduction();
+            this.pets = pets.stream()
+                    .map(PetResponse::new)
+                    .collect(Collectors.toList());
+        }
     }
+
+    @NoArgsConstructor
+    @Getter
+    public static class GetSitter {
+        private long id;
+        private String name;
+        private String nickName;
+        private String email;
+        private String phoneNumber;
+        private String address1;
+        private String address2;
+        private Role role;
+        private SocialProvider socialProvider;
+        private String introduction;
+        private Integer careerYear;
+        private List<CertificationResponse> certifications;
+
+        public GetSitter(Member member, List<Certification> certifications) {
+            this.id = member.getId();
+            this.name = member.getName();
+            this.nickName = member.getNickName();
+            this.email = member.getEmail();
+            this.phoneNumber = member.getPhoneNumber();
+            this.address1 = member.getAddress1();
+            this.address2 = member.getAddress2();
+            this.role = member.getRole();
+            this.socialProvider = member.getSocialProvider();
+            this.introduction = member.getIntroduction();
+            this.careerYear = member.getCareerYear();
+            this.certifications = certifications.stream()
+                    .map(CertificationResponse::new)
+                    .collect(Collectors.toList());
+        }
+    }
+
 }
