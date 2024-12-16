@@ -84,7 +84,8 @@ public class PetService {
         verifyingPermissions(member);
         authorizetionMember(member);
 
-        List<Pet> pets = petRepository.findByMemberId(member.getId());
+//        List<Pet> pets = petRepository.findByMemberId(member.getId());
+        List<Pet> pets = member.getPets();
 
         for (UpdatePetRequest request : requests) {
             Pet pet = pets.stream()
