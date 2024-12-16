@@ -40,11 +40,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     // 돌봄사가 등록한 예약 가능 날짜 중 특정 날짜 조회
-    public Optional<CareAvailableDate> findCareAvailableDatesByMemberIdAndAvailableAt(long memberId, LocalDate availableDate) {
-        return Optional.ofNullable(queryFactory
-                .selectFrom(careAvailableDate)
-                .where(careAvailableDate.member.id.eq(memberId)
-                        .and(careAvailableDate.availableAt.eq(availableDate)))
-                .fetchOne());
+    public Optional<CareAvailableDate> findCareAvailableDateByMemberIdAndAvailableAt(long memberId, LocalDate availableDate) {
+        return Optional.ofNullable(
+                queryFactory
+                        .selectFrom(careAvailableDate)
+                        .where(careAvailableDate.member.id.eq(memberId)
+                                .and(careAvailableDate.availableAt.eq(availableDate)))
+                        .fetchOne());
     }
 }
