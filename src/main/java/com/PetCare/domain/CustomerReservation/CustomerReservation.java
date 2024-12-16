@@ -2,6 +2,7 @@ package com.PetCare.domain.CustomerReservation;
 
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
+import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.dto.CustomerReservation.response.CustomerReservationResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,12 +38,19 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @JoinColumn(name = "sitter_id")
     private Member sitter;
 
-    @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.ALL)
+//    @Comment("돌봄에 맡기는 반려견 목록")
+//    @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.ALL)
+//    private List<CustomerPetReservation> customerPetReservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<PetReservation> petReservations = new ArrayList<>();
 
     @Comment("예약된 날짜")
     @Column(name = "reservation_at")
     private LocalDate reservationAt;
+
+    @Comment("돌봄 예약 비용")
+    private int price;
 
     @Comment("예약이 발생한 시간")
     @CreatedDate
@@ -53,8 +61,8 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public static CustomerReservation createCustomerReservation(Member customer, Member sitter, PetReservation... petReservations) {
-        authorization(customer);
+    public static CustomerReservation createCustomerReservation(Member customer, Member sitter, int price, PetReservation... petReservations) {
+        authorization(customer, sitter);
 
         CustomerReservation customerReservation = new CustomerReservation();
         customerReservation.addCustomer(customer);
@@ -63,6 +71,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
         for (PetReservation petReservation : petReservations) {
             customerReservation.addPetReservation(petReservation);
         }
+        customerReservation.price = price;
         customerReservation.status = ReservationStatus.RESERVATION;
 
         return customerReservation;
@@ -77,10 +86,14 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     // 예약(고객 시점) - 회원(돌봄사) 연관관계 편의 메서드
     public void addSitter(Member sitter) {
         this.sitter = sitter;
-        sitter.getSitterReservations().add(this);
     }
 
     // 예약(고객 시점) - 중간 매핑 테이블 연관관계 편의 메서드
+//    public void addPetReservation(CustomerPetReservation customerPetReservation) {
+//        this.customerPetReservations.add(customerPetReservation);
+//        customerPetReservation.addCustomerReservation(this);
+//    }
+
     public void addPetReservation(PetReservation petReservation) {
         this.petReservations.add(petReservation);
         petReservation.addCustomerReservation(this);
@@ -93,15 +106,18 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
 
     // 예약 취소
     public void cancel() {
-        if (!this.status.equals(ReservationStatus.CANCEL)) {
+        if (!this.status.equals(ReservationStatus.RESERVATION)) {
             throw new IllegalArgumentException("이미 취소된 예약입니다.");
         }
         this.status = ReservationStatus.CANCEL;
     }
 
-    private static void authorization(Member member) {
-        if (!member.getRole().equals(Role.CUSTOMER)) {
+    private static void authorization(Member customer, Member sitter) {
+        if (!customer.getRole().equals(Role.CUSTOMER)) {
             throw new IllegalArgumentException("예약은 고객만 가능합니다.");
+        }
+        if (!sitter.getRole().equals(Role.PET_SITTER)) {
+            throw new IllegalArgumentException("돌봄 예약 배정은 돌봄사만 가능합니다.");
         }
     }
 
