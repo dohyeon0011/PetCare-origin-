@@ -26,17 +26,17 @@ public class CertificationService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public List<Certification> save(Long memberId, List<AddCertificationRequest> requests) {
-        Member member = memberRepository.findById(memberId)
+    public List<Certification> save(Long sitterId, List<AddCertificationRequest> requests) {
+        Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("자격증 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
-        verifyingPermissions(member);
+        verifyingPermissions(sitter);
 
         List<Certification> certifications = new ArrayList<>();
 
         for (AddCertificationRequest request : requests) {
             Certification certification = request.toEntity();
-            certification.addPetSitter(member);
+            certification.addSitter(sitter);
             certifications.add(certification);
         }
 
@@ -45,8 +45,8 @@ public class CertificationService {
 
     @Comment("특정 회원의 보유중인 자격증 조회")
     @Transactional(readOnly = true)
-    public List<CertificationResponse> findById(long memberId) {
-        List<CertificationResponse> certifications = certificationRepository.findByMemberId(memberId)
+    public List<CertificationResponse> findById(long sitterId) {
+        List<CertificationResponse> certifications = certificationRepository.findBySitterId(sitterId)
                 .stream()
                 .map(CertificationResponse::new)
                 .collect(Collectors.toList());
@@ -56,14 +56,14 @@ public class CertificationService {
 
     @Comment("특정 회원의 보유중인 특정 자격증 삭제")
     @Transactional
-    public void delete(long memberId, long certificationId) {
-        Member member = memberRepository.findById(memberId)
+    public void delete(long sitterId, long certificationId) {
+        Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(sitter);
+        authorizetionMember(sitter);
 
-        Certification certification = certificationRepository.findByMemberIdAndId(member.getId(), certificationId)
+        Certification certification = certificationRepository.findBySitterIdAndId(sitter.getId(), certificationId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 자격증이 존재하지 않습니다."));
 
         certificationRepository.delete(certification);
@@ -71,14 +71,14 @@ public class CertificationService {
 
     @Comment("특정 회원의 보유중인 자격증 수정")
     @Transactional
-    public List<CertificationResponse> update(long memberId, List<UpdateCertificationRequest> requests) {
-        Member member = memberRepository.findById(memberId)
+    public List<CertificationResponse> update(long sitterId, List<UpdateCertificationRequest> requests) {
+        Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(sitter);
+        authorizetionMember(sitter);
 
-        List<Certification> certifications = certificationRepository.findByMemberId(memberId);
+        List<Certification> certifications = certificationRepository.findBySitterId(sitterId);
 
         for (UpdateCertificationRequest request : requests) {
             Certification certification = certifications.stream()
