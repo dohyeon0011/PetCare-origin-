@@ -5,6 +5,7 @@ import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.PetReservation;
+import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -134,6 +135,10 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
             throw new IllegalArgumentException("이미 취소된 예약입니다.");
         }
         this.status = ReservationStatus.CANCEL;
+    }
+
+    public SitterScheduleResponse.GetDetail toResponse() {
+        return new SitterScheduleResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
     }
 
 }
