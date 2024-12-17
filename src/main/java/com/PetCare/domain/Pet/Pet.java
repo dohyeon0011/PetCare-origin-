@@ -18,8 +18,8 @@ public class Pet {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "customer_id")
+    private Member customer;
 
     @Comment("반려견 이름")
     private String name;
@@ -39,9 +39,9 @@ public class Pet {
     private String profileImgUrl;
 
     // 고객-반려견 연관관계 편의 메서드
-    public void addMember(Member member) {
-        this.member = member;
-        member.getPets().add(this);
+    public void addCustomer(Member customer) {
+        this.customer = customer;
+        customer.getPets().add(this);
     }
 
     @Builder
