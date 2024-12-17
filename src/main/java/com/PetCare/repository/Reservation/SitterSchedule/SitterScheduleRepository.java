@@ -1,7 +1,7 @@
-package com.PetCare.repository.SitterSchedule;
+package com.PetCare.repository.Reservation.SitterSchedule;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.SitterSchedule.SitterSchedule;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
