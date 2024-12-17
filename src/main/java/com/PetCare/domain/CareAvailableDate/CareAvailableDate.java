@@ -21,8 +21,8 @@ public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "sitter_id")
+    private Member sitter;
 
     @Comment("예약 가능한 날짜")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd") // 이 어노테이션은 주로 컨트롤러에서 바인딩할 때 사용됨, 엔티티는 가급적이면 데이터베이스 매핑에만 집중을 권장
@@ -38,9 +38,9 @@ public class CareAvailableDate { // 예약 가능 날짜(돌봄사)
     private CareAvailableDateStatus status;
 
     // 돌봄사-예약 가능 날짜 연관관계 편의 메서드
-    public void addPetSitter(Member member) {
-        this.member = member;
-        member.getCareAvailabilities().add(this);
+    public void addPetSitter(Member sitter) {
+        this.sitter = sitter;
+        sitter.getCareAvailabilities().add(this);
     }
 
     @Builder
