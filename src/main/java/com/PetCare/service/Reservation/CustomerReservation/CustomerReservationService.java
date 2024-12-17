@@ -1,18 +1,18 @@
-package com.PetCare.service.CustomerReservation;
+package com.PetCare.service.Reservation.CustomerReservation;
 
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.domain.Pet.PetReservation;
-import com.PetCare.domain.SitterSchedule.SitterSchedule;
-import com.PetCare.dto.CustomerReservation.request.AddCustomerReservationRequest;
-import com.PetCare.dto.CustomerReservation.response.CustomerReservationResponse;
-import com.PetCare.repository.CustomerReservation.CustomerReservationRepository;
+import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
+import com.PetCare.dto.Reservation.request.AddCustomerReservationRequest;
+import com.PetCare.dto.Reservation.response.ReservationResponse;
+import com.PetCare.repository.Reservation.CustomerReservation.CustomerReservationRepository;
 import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.Pet.PetRepository;
-import com.PetCare.repository.SitterSchedule.SitterScheduleRepository;
+import com.PetCare.repository.Reservation.SitterSchedule.SitterScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Service;
@@ -71,13 +71,13 @@ public class CustomerReservationService {
 
     @Comment("특정 회원의 예약 내역 전체 조회")
     @Transactional(readOnly = true)
-    public List<CustomerReservationResponse.GetList> findAllById(long memberId) {
+    public List<ReservationResponse.GetList> findAllById(long memberId) {
         Member customer = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("예약 조회 오류 : 현재 회원은 존재하지 않는 회원입니다."));
 
-        List<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
+        List<ReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
                 .stream()
-                .map(CustomerReservationResponse.GetList::new) // Constructor Reference 사용
+                .map(ReservationResponse.GetList::new) // Constructor Reference 사용
                 .collect(Collectors.toList());
 
         return reservations;
@@ -85,7 +85,7 @@ public class CustomerReservationService {
 
     @Comment("특정 회원의 특정 예약 조회")
     @Transactional(readOnly = true)
-    public CustomerReservationResponse.GetDetail findById(long memberId, long customerReservationId) {
+    public ReservationResponse.GetDetail findById(long memberId, long customerReservationId) {
         CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(memberId, customerReservationId)
                 .orElseThrow(() -> new NoSuchElementException("해당 예약 정보가 존재하지 않습니다."));
 
