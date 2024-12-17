@@ -1,6 +1,6 @@
-package com.PetCare.repository.CustomerReservation;
+package com.PetCare.repository.Reservation.CustomerReservation;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
