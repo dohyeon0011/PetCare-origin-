@@ -1,9 +1,9 @@
-package com.PetCare.domain.CustomerReservation;
+package com.PetCare.domain.Reservation.CustomerReservation;
 
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.PetReservation;
-import com.PetCare.dto.CustomerReservation.response.CustomerReservationResponse;
+import com.PetCare.dto.Reservation.response.ReservationResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,7 +42,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
 //    @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.ALL)
 //    private List<CustomerPetReservation> customerPetReservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customerReservation", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "customerReservation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<PetReservation> petReservations = new ArrayList<>();
 
     @Comment("예약된 날짜")
@@ -122,8 +122,8 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     // 해당 예약 상세 조회
-    public CustomerReservationResponse.GetDetail toResponse() {
-        return new CustomerReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
+    public ReservationResponse.GetDetail toResponse() {
+        return new ReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
     }
 }
 
