@@ -20,8 +20,8 @@ public class Certification {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "sitter_id")
+    private Member sitter;
 
     @Comment("자격증 이름")
     private String name;
@@ -32,9 +32,9 @@ public class Certification {
     }
 
     // 돌봄사-자격증 연관관계 편의 메서드
-    public void addPetSitter(Member member) {
-        this.member = member;
-        member.getCertifications().add(this);
+    public void addSitter(Member sitter) {
+        this.sitter = sitter;
+        sitter.getCertifications().add(this);
     }
 
     public void update(String name) {
