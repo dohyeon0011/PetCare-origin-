@@ -1,7 +1,7 @@
 package com.PetCare.domain.Pet;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.SitterSchedule.SitterSchedule;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -31,7 +31,7 @@ public class PetReservation {
     private CustomerReservation customerReservation;
 
     @Comment("돌봄사 시점 예약")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "sitter_schedule_id")
     @JsonIgnore
     private SitterSchedule sitterSchedule;
