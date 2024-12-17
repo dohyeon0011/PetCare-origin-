@@ -1,7 +1,7 @@
-package com.PetCare.domain.SitterSchedule;
+package com.PetCare.domain.Reservation.SitterSchedule;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.CustomerReservation.ReservationStatus;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.PetReservation;
