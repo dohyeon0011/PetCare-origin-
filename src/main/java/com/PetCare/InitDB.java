@@ -69,8 +69,8 @@ public class InitDB {
                     .profileImgUrl("https://cdn.crowdpic.net/detail-thumb/thumb_d_C1A78936BB1B43554DE572091820B23F.jpg")
                     .build();
 
-            pet1.addMember(member);
-            pet2.addMember(member);
+            pet1.addCustomer(member);
+            pet2.addCustomer(member);
 
             em.persist(pet1);
             em.persist(pet2);
@@ -102,8 +102,8 @@ public class InitDB {
                     .name("돌봄2급")
                     .build();
 
-            certification1.addPetSitter(member);
-            certification2.addPetSitter(member);
+            certification1.addSitter(member);
+            certification2.addSitter(member);
 
             em.persist(certification1);
             em.persist(certification2);
