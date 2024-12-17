@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface MemberRepositoryCustom {
 
     // 고객이 보유한 반려견 목록 전체 조회
-    List<Pet> findPetsByMemberId(long memberId);
+    List<Pet> findPetsByCustomerId(long memberId);
 
     // 돌봄사가 등록한 예약 가능 날짜 전체 조회
-    public List<CareAvailableDate> findCareAvailableDatesByMemberId(long memberId);
+    public List<CareAvailableDate> findCareAvailableDatesByCustomerId(long customerId);
 
     // 돌봄사가 등록한 예약 가능 날짜 중 특정 날짜 조회
-    public Optional<CareAvailableDate> findCareAvailableDateByMemberIdAndAvailableAt(long memberId, LocalDate availableDate);
+    public Optional<CareAvailableDate> findCareAvailableDateByCustomerIdAndAvailableAt(long customer, LocalDate availableDate);
 }
