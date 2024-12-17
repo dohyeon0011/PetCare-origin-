@@ -1,4 +1,4 @@
-package com.PetCare.dto.Reservation.response;
+package com.PetCare.dto.Reservation.CustomerReservation.response;
 
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
@@ -14,16 +14,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class ReservationResponse {
+public class CustomerReservationResponse {
 
     @NoArgsConstructor
     @Getter
     public static class GetList {
+        private long id;
         private LocalDate reservationAt;
         private LocalDateTime createdAt;
         private ReservationStatus status;
 
         public GetList(CustomerReservation customerReservation) {
+            this.id = customerReservation.getId();
             this.reservationAt = customerReservation.getReservationAt();
             this.createdAt = customerReservation.getCreatedAt();
             this.status = customerReservation.getStatus();
