@@ -2,9 +2,9 @@ package com.PetCare.domain.Member;
 
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Pet.Pet;
-import com.PetCare.domain.SitterSchedule.SitterSchedule;
+import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.PetCare.dto.Member.response.MemberResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
