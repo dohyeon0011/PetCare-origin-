@@ -1,4 +1,4 @@
-package com.PetCare.dto.Reservation.request;
+package com.PetCare.dto.Reservation.CustomerReservation.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
