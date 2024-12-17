@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface CareAvailableDateRepository extends JpaRepository<CareAvailableDate, Long> {
 
     // 특정 회원의 돌봄 가능한 날짜 모두 조회
-    List<CareAvailableDate> findByMemberId(long memberId);
+    List<CareAvailableDate> findBySitterId(long sitterId);
 
     // 특정 회원의 특정 돌봄 가능한 날짜 조회
-    Optional<CareAvailableDate> findByMemberIdAndId(long memberId, long id);
+    Optional<CareAvailableDate> findBySitterIdAndId(long sitterId, long id);
 
     // 특정 회원의 특정 날짜 조회
-    Optional<CareAvailableDate> findByMemberIdAndAvailableAt(long memberId, LocalDate availableAt);
+    Optional<CareAvailableDate> findBySitterIdAndAvailableAt(long sitterId, LocalDate availableAt);
 }
