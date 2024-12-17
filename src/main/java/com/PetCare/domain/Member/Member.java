@@ -109,7 +109,7 @@ public class Member {
     // 1. Cascade되는 엔티티와 Cascade를 설정하는 엔티티의 라이프사이클이 동일하거나 비슷해야한다.
     // 2. Cascade되는 엔티티가 Cascade를 설정하는 엔티티에서만 사용되어야 한다.
     @Comment("고객이 보유한 반려견 목록")
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true)
     @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
@@ -124,12 +124,12 @@ public class Member {
     private Integer careerYear;
 
     @Comment("돌봄사가 보유한 자격증")
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "sitter", orphanRemoval = true)
     @JsonIgnore
     private List<Certification> certifications = new ArrayList<>();
 
     @Comment("돌봄사가 돌봄 가능한 시간")
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "sitter", orphanRemoval = true)
     @JsonIgnore
     private List<CareAvailableDate> careAvailabilities = new ArrayList<>();
 
