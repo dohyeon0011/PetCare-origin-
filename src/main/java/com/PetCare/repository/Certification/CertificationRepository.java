@@ -9,10 +9,10 @@ import java.util.Optional;
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 
     // 특정 회원의 자격증 목록 조회
-    List<Certification> findByMemberId(long memberId);
+    List<Certification> findBySitterId(long sitterId);
 
-    Optional<Certification> findByMemberIdAndId(long memberId, long id);
+    Optional<Certification> findBySitterIdAndId(long sitterId, long id);
 
     // 특정 회원의 특정 자격증 목록 조회
-    List<Certification> findByMemberIdAndIdIn(long memberId, List<Long> ids);
+    List<Certification> findBySitterIdAndIdIn(long sitterId, List<Long> ids);
 }
