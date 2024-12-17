@@ -25,14 +25,14 @@ public class CareAvailableDateService {
     private final CareAvailableDateRepository careAvailableDateRepository;
 
     @Transactional
-    public CareAvailableDate save(long memberId, AddCareAvailableDateRequest request) {
-        Member member = memberRepository.findById(memberId)
+    public CareAvailableDate save(long sitterId, AddCareAvailableDateRequest request) {
+        Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("돌봄 날짜 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
-        verifyingPermissions(member);
+        verifyingPermissions(sitter);
 
         CareAvailableDate careAvailableDate = request.toEntity();
-        careAvailableDate.addPetSitter(member);
+        careAvailableDate.addPetSitter(sitter);
 
         return careAvailableDateRepository.save(careAvailableDate);
     }
@@ -50,8 +50,8 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 조회")
     @Transactional(readOnly = true)
-    public List<CareAvailableDateResponse> findAllById(long memberId) {
-        List<CareAvailableDateResponse> careAvailableDateList = careAvailableDateRepository.findByMemberId(memberId)
+    public List<CareAvailableDateResponse> findAllById(long sitterId) {
+        List<CareAvailableDateResponse> careAvailableDateList = careAvailableDateRepository.findBySitterId(sitterId)
                 .stream()
                 .map(CareAvailableDateResponse::new)
                 .collect(Collectors.toList());
@@ -61,8 +61,8 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 단건 조회")
     @Transactional(readOnly = true)
-    public CareAvailableDateResponse findById(long memberId, long careAvailableDateId) {
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(memberId, careAvailableDateId)
+    public CareAvailableDateResponse findById(long sitterId, long careAvailableDateId) {
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitterId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
         return careAvailableDate.toResponse();
@@ -71,13 +71,13 @@ public class CareAvailableDateService {
     @Comment("등록한 돌봄 가능 날짜 삭제")
     @Transactional
     public void delete(long memberId, long careAvailableDateId) {
-        Member member = memberRepository.findById(memberId)
+        Member sitter = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(sitter);
+        authorizetionMember(sitter);
 
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(member.getId(), careAvailableDateId)
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitter.getId(), careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
         careAvailableDateRepository.delete(careAvailableDate);
@@ -85,14 +85,14 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 정보 수정")
     @Transactional
-    public CareAvailableDateResponse update(long memberId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
-        Member member = memberRepository.findById(memberId)
+    public CareAvailableDateResponse update(long sitterId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
+        Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(sitter);
+        authorizetionMember(sitter);
 
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findByMemberIdAndId(member.getId(), careAvailableDateId)
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitter.getId(), careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
         careAvailableDate.update(request.getAvailabilityAt(), request.getPrice());
