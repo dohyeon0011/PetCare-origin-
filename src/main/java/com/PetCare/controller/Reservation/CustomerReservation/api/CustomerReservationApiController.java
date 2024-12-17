@@ -1,9 +1,9 @@
-package com.PetCare.controller.CustomerReservation.api;
+package com.PetCare.controller.Reservation.CustomerReservation.api;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.dto.CustomerReservation.request.AddCustomerReservationRequest;
-import com.PetCare.dto.CustomerReservation.response.CustomerReservationResponse;
-import com.PetCare.service.CustomerReservation.CustomerReservationService;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.dto.Reservation.request.AddCustomerReservationRequest;
+import com.PetCare.dto.Reservation.response.ReservationResponse;
+import com.PetCare.service.Reservation.CustomerReservation.CustomerReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회 API")
     @GetMapping("/{memberId}/reservationList")
-    public ResponseEntity<List<CustomerReservationResponse.GetList>> findCustomerReservationList(@PathVariable("memberId") long id) {
-        List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
+    public ResponseEntity<List<ReservationResponse.GetList>> findCustomerReservationList(@PathVariable("memberId") long id) {
+        List<ReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
 
         return ResponseEntity.ok()
                 .body(customerReservationList);
@@ -40,9 +40,9 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원의 특정 돌봄 예약 상세 조회 API")
     @GetMapping("/{memberId}/reservation/{customerReservationId}")
-    public ResponseEntity<CustomerReservationResponse.GetDetail> findCustomerReservationOne(@PathVariable("memberId") long id,
-                                                                                            @PathVariable("customerReservationId") long customerReservationId) {
-        CustomerReservationResponse.GetDetail customerReservation = customerReservationService.findById(id, customerReservationId);
+    public ResponseEntity<ReservationResponse.GetDetail> findCustomerReservationOne(@PathVariable("memberId") long id,
+                                                                                    @PathVariable("customerReservationId") long customerReservationId) {
+        ReservationResponse.GetDetail customerReservation = customerReservationService.findById(id, customerReservationId);
 
         return ResponseEntity.ok()
                 .body(customerReservation);
