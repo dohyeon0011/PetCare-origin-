@@ -26,17 +26,17 @@ public class PetService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public List<Pet> save(long memberId, List<AddPetRequest> request) {
-        Member member = memberRepository.findById(memberId)
+    public List<Pet> save(long customerId, List<AddPetRequest> request) {
+        Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("반려견 등록 오류: 현재 회원은 존재하지 않는 회원입니다."));
 
-        verifyingPermissions(member);
+        verifyingPermissions(customer);
 
         List<Pet> pets = new ArrayList<>();
 
         for (AddPetRequest addPetRequest : request) { // 각 PetDTO별 Member와 연관관계 편의 메서드 설정
             Pet pet = addPetRequest.toEntity();
-            pet.addMember(member); // Member와 연관관계 설정
+            pet.addCustomer(customer); // Member와 연관관계 설정
             pets.add(pet);
         }
 
@@ -45,8 +45,8 @@ public class PetService {
 
     @Comment("특정 회원의 반려견 조회")
     @Transactional(readOnly = true)
-    public List<PetResponse> findById(long memberId){
-        List<PetResponse> pets = petRepository.findByMemberId(memberId)
+    public List<PetResponse> findById(long customerId) {
+        List<PetResponse> pets = petRepository.findByCustomerId(customerId)
                 .stream()
                 .map(PetResponse::new)
                 .collect(Collectors.toList());
@@ -56,14 +56,14 @@ public class PetService {
 
     @Comment("특정 회원의 특정 반려견 삭제")
     @Transactional
-    public void delete(long memberId, long petId) {
-        Member member = memberRepository.findById(memberId)
+    public void delete(long customerId, long petId) {
+        Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(customer);
+        authorizetionMember(customer);
 
-        Pet pet = petRepository.findByMemberIdAndId(member.getId(), petId)
+        Pet pet = petRepository.findByCustomerIdAndId(customer.getId(), petId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 반려견이 존재하지 않습니다."));
 
         // 여러 개의 엔티티를 한 번의 쿼리로 삭제하는 방식으로 성능을 개선
@@ -76,15 +76,15 @@ public class PetService {
 
     @Comment("특정 회원의 반려견 수정")
     @Transactional
-    public List<PetResponse> update(long memberId, List<UpdatePetRequest> requests) {
-        Member member = memberRepository.findById(memberId)
+    public List<PetResponse> update(long customerId, List<UpdatePetRequest> requests) {
+        Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
-        verifyingPermissions(member);
-        authorizetionMember(member);
+        verifyingPermissions(customer);
+        authorizetionMember(customer);
 
-//        List<Pet> pets = petRepository.findByMemberId(member.getId());
-        List<Pet> pets = member.getPets();
+//        List<Pet> pets = petRepository.findByMemberId(customer.getId());
+        List<Pet> pets = customer.getPets();
 
         for (UpdatePetRequest request : requests) {
             Pet pet = pets.stream()
