@@ -114,7 +114,7 @@ public class Member {
     private List<Pet> pets = new ArrayList<>();
 
     @Comment("고객이 예약한 예약 목록")
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true)
     @JsonIgnore
     private List<CustomerReservation> customerReservations = new ArrayList<>();
 
@@ -134,7 +134,7 @@ public class Member {
     private List<CareAvailableDate> careAvailabilities = new ArrayList<>();
 
     @Comment("돌봄사의 예약된 목록")
-    @OneToMany(mappedBy = "sitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sitter", orphanRemoval = true)
     @JsonIgnore
     private List<SitterSchedule> sitterSchedules = new ArrayList<>();
 
