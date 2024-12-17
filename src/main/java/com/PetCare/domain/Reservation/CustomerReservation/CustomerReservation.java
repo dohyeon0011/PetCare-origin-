@@ -3,7 +3,7 @@ package com.PetCare.domain.Reservation.CustomerReservation;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.PetReservation;
-import com.PetCare.dto.Reservation.response.ReservationResponse;
+import com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -122,8 +122,8 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     // 해당 예약 상세 조회
-    public ReservationResponse.GetDetail toResponse() {
-        return new ReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
+    public CustomerReservationResponse.GetDetail toResponse() {
+        return new CustomerReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
     }
 }
 
