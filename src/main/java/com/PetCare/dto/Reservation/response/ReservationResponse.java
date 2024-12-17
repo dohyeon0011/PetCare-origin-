@@ -1,7 +1,7 @@
-package com.PetCare.dto.CustomerReservation.response;
+package com.PetCare.dto.Reservation.response;
 
-import com.PetCare.domain.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.CustomerReservation.ReservationStatus;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.dto.Pet.response.PetReservationResponse;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class CustomerReservationResponse {
+public class ReservationResponse {
 
     @NoArgsConstructor
     @Getter
