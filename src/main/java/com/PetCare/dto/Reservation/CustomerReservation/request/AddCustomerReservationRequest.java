@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -19,8 +17,7 @@ public class AddCustomerReservationRequest {
     private long sitterId; // 돌봄사
 
     @NotNull(message = "날짜 선택은 필수입니다.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate reservationAt;
+    private long careAvailableId;
 
     @NotNull(message = "돌봄 예약 비용은 필수 값입니다.")
     private int price;
