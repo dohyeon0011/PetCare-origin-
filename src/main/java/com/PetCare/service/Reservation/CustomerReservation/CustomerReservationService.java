@@ -1,18 +1,20 @@
 package com.PetCare.service.Reservation.CustomerReservation;
 
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
 import com.PetCare.domain.Pet.PetReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.PetCare.dto.Reservation.CustomerReservation.request.AddCustomerReservationRequest;
 import com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse;
-import com.PetCare.repository.Reservation.CustomerReservation.CustomerReservationRepository;
+import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.Pet.PetRepository;
+import com.PetCare.repository.Reservation.CustomerReservation.CustomerReservationRepository;
 import com.PetCare.repository.Reservation.SitterSchedule.SitterScheduleRepository;
+import com.PetCare.service.Reservation.Reward.RewardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class CustomerReservationService {
     private final PetRepository petRepository;
     private final CustomerReservationRepository customerReservationRepository;
     private final SitterScheduleRepository sitterScheduleRepository;
+    private final CareAvailableDateRepository careAvailableDateRepository;
+    private final RewardServiceImpl rewardService;
 
     @Transactional
     public CustomerReservation save(AddCustomerReservationRequest request) {
@@ -45,8 +49,8 @@ public class CustomerReservationService {
         verifyingPermissionsSitter(sitter);
 
         // 예약으로 선택된 날짜 찾기
-        CareAvailableDate careAvailableDate = memberRepository.findCareAvailableDateByCustomerIdAndAvailableAt(sitter.getId(), request.getReservationAt())
-                .orElseThrow(() -> new NoSuchElementException("예약 오류: 돌봄사가 해당 날짜를 예약 가능 날짜로 등록하지 않았습니다."));
+        CareAvailableDate careAvailableDate = careAvailableDateRepository.findById(request.getCareAvailableId())
+                .orElseThrow(() -> new NoSuchElementException("예약 오류: 돌봄사가 해당 날짜를 돌봄 가능 날짜로 등록하지 않았습니다."));
 
         // 돌봄에 배정될 반려견 중간 매핑 엔티티
         List<PetReservation> petReservations = request.getPetIds().stream()
@@ -58,13 +62,14 @@ public class CustomerReservationService {
                 .toList();
 
         // 고객 시점 돌봄 예약 생성
-        CustomerReservation customerReservation = CustomerReservation.createCustomerReservation(customer, sitter, request.getPrice(), petReservations.toArray(new PetReservation[0]));
+        CustomerReservation customerReservation = CustomerReservation.createCustomerReservation(customer, sitter, careAvailableDate.getPrice(), petReservations.toArray(new PetReservation[0]));
 
         // 돌봄사 시점 돌봄 예약 생성
         SitterSchedule sitterReservation = SitterSchedule.createSitterReservation(customer, sitter, customerReservation, petReservations.toArray(new PetReservation[0]));
-        customerReservation.changeReservationAt(request.getReservationAt());
-        sitterReservation.changeReservationAt(request.getReservationAt());
+        customerReservation.changeReservationAt(careAvailableDate.getAvailableAt());
+        sitterReservation.changeReservationAt(careAvailableDate.getAvailableAt());
         careAvailableDate.reservation();
+        rewardService.addReward(customer.getId(), (double) careAvailableDate.getPrice());
 
         return customerReservationRepository.save(customerReservation);
     }
@@ -83,7 +88,7 @@ public class CustomerReservationService {
         return reservations;
     }
 
-    @Comment("특정 회원의 특정 돏봄 예약 조회")
+    @Comment("특정 회원의 특정 돌봄 예약 조회")
     @Transactional(readOnly = true)
     public CustomerReservationResponse.GetDetail findById(long customerId, long customerReservationId) {
         CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
@@ -99,16 +104,21 @@ public class CustomerReservationService {
                 .orElseThrow(() -> new NoSuchElementException("로그인한 회원 정보를 불러오는데 실패했습니다."));
 
         CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customer.getId(), customerReservationId)
-                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("회원에게 해당 돌봄 예약 내역이 존재하지 않습니다."));
 
         authorizationMember(customer);
         verifyingPermissionsCustomer(customer);
 
-        CareAvailableDate careAvailableDate = memberRepository.findCareAvailableDateByCustomerIdAndAvailableAt(customerReservation.getSitter().getId(), customerReservation.getReservationAt())
-                .orElseThrow(() -> new NoSuchElementException("예약 취소 오류: 해당 예약 날짜를 찾을 수 없습니다."));
+        Member sitter = memberRepository.findById(customerReservation.getSitter().getId())
+                .orElseThrow(() -> new NoSuchElementException("돌봄사의 정보를 조회하는데 실패했습니다."));
+
+        verifyingPermissionsSitter(sitter);
+
+        CareAvailableDate careAvailableDate = memberRepository.findCareAvailableDateBySitterIdAndAvailableAt(sitter.getId(), customerReservation.getReservationAt())
+                .orElseThrow(() -> new NoSuchElementException("예약 취소 오류: 돌봄사에게 해당 예약 날짜를 찾을 수 없습니다."));
 
         SitterSchedule sitterSchedule = sitterScheduleRepository.findByCustomerReservation(customerReservation)
-                .orElseThrow(() -> new NoSuchElementException("예약 취소 오류: 해당 돌봄사 예약이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("예약 취소 오류: 돌봄사에게 해당 예약이 존재하지 않습니다."));
 
         careAvailableDate.cancel();
         customerReservation.cancel();
@@ -133,7 +143,7 @@ public class CustomerReservationService {
 
     public static void verifyingPermissionsSitter(Member sitter) {
         if (!sitter.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄 예약 배정은 돌봄사만 가능합니다.");
+            throw new IllegalArgumentException("돌봄 예약 배정 및 수정,삭제는 돌봄사만 가능합니다.");
         }
     }
 
