@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/PetsCare/customer")
+@RequestMapping("/api/PetsCare")
 public class CustomerReservationApiController {
 
     private final CustomerReservationService customerReservationService;
@@ -30,7 +30,7 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회 API")
-    @GetMapping("/{customerId}/reservationList")
+    @GetMapping("/members/{customerId}/reservationList")
     public ResponseEntity<List<CustomerReservationResponse.GetList>> findCustomerReservationList(@PathVariable("customerId") long id) {
         List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
 
@@ -39,7 +39,7 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "회원의 특정 돌봄 예약 상세 조회 API")
-    @GetMapping("/{customerId}/reservation/{customerReservationId}")
+    @GetMapping("/members/{customerId}/reservation/{customerReservationId}")
     public ResponseEntity<CustomerReservationResponse.GetDetail> findCustomerReservation(@PathVariable("customerId") long id,
                                                                                             @PathVariable("customerReservationId") long customerReservationId) {
         CustomerReservationResponse.GetDetail customerReservation = customerReservationService.findById(id, customerReservationId);
@@ -49,7 +49,7 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "특정 회원의 특정 돌봄 예약 취소 API")
-    @DeleteMapping("/{customerId}/reservation/{customerReservationId}")
+    @DeleteMapping("/members/{customerId}/reservation/{customerReservationId}")
     public ResponseEntity<Void> deleteCustomerReservation(@PathVariable("customerId") long id,
                                                           @PathVariable("customerReservationId") long customerReservationId) {
         customerReservationService.delete(id, customerReservationId);
@@ -57,5 +57,4 @@ public class CustomerReservationApiController {
         return ResponseEntity.ok()
                 .build();
     }
-
 }
