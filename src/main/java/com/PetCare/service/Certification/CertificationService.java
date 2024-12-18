@@ -45,10 +45,10 @@ public class CertificationService {
 
     @Comment("특정 회원의 보유중인 자격증 조회")
     @Transactional(readOnly = true)
-    public List<CertificationResponse> findById(long sitterId) {
-        List<CertificationResponse> certifications = certificationRepository.findBySitterId(sitterId)
+    public List<CertificationResponse.GetList> findById(long sitterId) {
+        List<CertificationResponse.GetList> certifications = certificationRepository.findBySitterId(sitterId)
                 .stream()
-                .map(CertificationResponse::new)
+                .map(CertificationResponse.GetList::new)
                 .collect(Collectors.toList());
 
         return certifications;
@@ -71,7 +71,7 @@ public class CertificationService {
 
     @Comment("특정 회원의 보유중인 자격증 수정")
     @Transactional
-    public List<CertificationResponse> update(long sitterId, List<UpdateCertificationRequest> requests) {
+    public List<CertificationResponse.GetList> update(long sitterId, List<UpdateCertificationRequest> requests) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
@@ -90,8 +90,9 @@ public class CertificationService {
         }
 
         return certifications.stream()
-                .map(CertificationResponse::new)
-                .collect(Collectors.toList());
+                .map(CertificationResponse.GetList::new)
+                .toList();
+
     }
 
     private static void authorizetionMember(Member member) {
