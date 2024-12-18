@@ -39,10 +39,10 @@ public class CareAvailableDateService {
 
     @Comment("모든 회원의 돌봄 가능 날짜 조회")
     @Transactional(readOnly = true)
-    public List<CareAvailableDateResponse> findAll() {
-        List<CareAvailableDateResponse> careAvailableDateList = careAvailableDateRepository.findAll()
+    public List<CareAvailableDateResponse.GetList> findAll() {
+        List<CareAvailableDateResponse.GetList> careAvailableDateList = careAvailableDateRepository.findAll()
                 .stream()
-                .map(CareAvailableDateResponse::new)
+                .map(CareAvailableDateResponse.GetList::new)
                 .collect(Collectors.toList());
 
         return careAvailableDateList;
@@ -50,10 +50,10 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 조회")
     @Transactional(readOnly = true)
-    public List<CareAvailableDateResponse> findAllById(long sitterId) {
-        List<CareAvailableDateResponse> careAvailableDateList = careAvailableDateRepository.findBySitterId(sitterId)
+    public List<CareAvailableDateResponse.GetList> findAllById(long sitterId) {
+        List<CareAvailableDateResponse.GetList> careAvailableDateList = careAvailableDateRepository.findBySitterId(sitterId)
                 .stream()
-                .map(CareAvailableDateResponse::new)
+                .map(CareAvailableDateResponse.GetList::new)
                 .collect(Collectors.toList());
 
         return careAvailableDateList;
@@ -61,7 +61,7 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 단건 조회")
     @Transactional(readOnly = true)
-    public CareAvailableDateResponse findById(long sitterId, long careAvailableDateId) {
+    public CareAvailableDateResponse.GetList findById(long sitterId, long careAvailableDateId) {
         CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitterId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
@@ -85,7 +85,7 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 정보 수정")
     @Transactional
-    public CareAvailableDateResponse update(long sitterId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
+    public CareAvailableDateResponse.GetList update(long sitterId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
