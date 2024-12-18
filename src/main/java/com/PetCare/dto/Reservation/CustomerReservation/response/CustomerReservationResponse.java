@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class CustomerReservationResponse {
+public class CustomerReservationResponse { // 고객 시점 예약 조회
 
     @NoArgsConstructor
     @Getter
@@ -39,24 +39,24 @@ public class CustomerReservationResponse {
         private long customerId;
         private String customerNickName;
         private long sitterId;
-        private String sitterNickName;
+        private String sitterName;
         private int price;
         private LocalDate reservationAt;
         private LocalDateTime createdAt;
         private ReservationStatus status;
-        private List<PetReservationResponse> petReservations;
+        private List<PetReservationResponse> pets;
 
         public GetDetail(Member customer, Member sitter, CustomerReservation customerReservation, List<PetReservation> pets) {
             this.id = customerReservation.getId();
             this.customerId = customer.getId();
             this.customerNickName = customer.getNickName();
             this.sitterId = sitter.getId();
-            this.sitterNickName = sitter.getNickName();
+            this.sitterName = sitter.getName();
             this.price = customerReservation.getPrice();
             this.reservationAt = customerReservation.getReservationAt();
             this.createdAt = customerReservation.getCreatedAt();
             this.status = customerReservation.getStatus();
-            this.petReservations = pets
+            this.pets = pets
                     .stream()
                     .map(PetReservationResponse::new)
                     .collect(Collectors.toList());
