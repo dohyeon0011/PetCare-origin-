@@ -32,8 +32,8 @@ public class CertificationApiController {
 
     @Operation(description = "회원의 모든 자격증 조회 API")
     @GetMapping("/{sitterId}/certifications")
-    public ResponseEntity<List<CertificationResponse>> findCertifications(@PathVariable("sitterId") long id) {
-        List<CertificationResponse> certifications = certificationService.findById(id);
+    public ResponseEntity<List<CertificationResponse.GetList>> findCertifications(@PathVariable("sitterId") long id) {
+        List<CertificationResponse.GetList> certifications = certificationService.findById(id);
 
         return ResponseEntity.ok()
                 .body(certifications);
@@ -50,8 +50,8 @@ public class CertificationApiController {
 
     @Operation(description = "회원의 자격증 정보 수정 API")
     @PutMapping("/{sitterId}/certifications")
-    public ResponseEntity<List<CertificationResponse>> updateCertification(@PathVariable("sitterId") long id, @RequestBody @Valid List<UpdateCertificationRequest> requests) {
-        List<CertificationResponse> updateCertifications = certificationService.update(id, requests);
+    public ResponseEntity<List<CertificationResponse.GetList>> updateCertification(@PathVariable("sitterId") long id, @RequestBody @Valid List<UpdateCertificationRequest> requests) {
+        List<CertificationResponse.GetList> updateCertifications = certificationService.update(id, requests);
 
         return ResponseEntity.ok()
                 .body(updateCertifications);
