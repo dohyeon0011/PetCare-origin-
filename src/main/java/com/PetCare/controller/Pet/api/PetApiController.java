@@ -32,8 +32,8 @@ public class PetApiController {
 
     @Operation(description = "특정 회원의 모든 반려견 조회 API")
     @GetMapping("/{customerId}/pets")
-    public ResponseEntity<List<PetResponse>> findPets(@PathVariable("customerId") long id) {
-        List<PetResponse> pets = petService.findById(id);
+    public ResponseEntity<List<PetResponse.GetList>> findPets(@PathVariable("customerId") long id) {
+        List<PetResponse.GetList> pets = petService.findById(id);
 
         return ResponseEntity.ok()
                 .body(pets);
@@ -50,8 +50,8 @@ public class PetApiController {
 
     @Operation(description = "회원의 반려견 정보 수정 API")
     @PutMapping("{customerId}/pets")
-    public ResponseEntity<List<PetResponse>> updatePet(@PathVariable("customerId") long id, @RequestBody @Valid List<UpdatePetRequest> requests) {
-        List<PetResponse> updatePets = petService.update(id, requests);
+    public ResponseEntity<List<PetResponse.GetList>> updatePet(@PathVariable("customerId") long id, @RequestBody @Valid List<UpdatePetRequest> requests) {
+        List<PetResponse.GetList> updatePets = petService.update(id, requests);
 
         return ResponseEntity.ok()
                 .body(updatePets);
