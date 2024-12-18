@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SitterScheduleResponse {
+public class SitterScheduleResponse { // 돌봄사 시점 예약 조회
 
     @NoArgsConstructor
     @Getter
@@ -38,24 +38,24 @@ public class SitterScheduleResponse {
         private long customerId;
         private String customerNickName;
         private long sitterId;
-        private String sitterNickName;
+        private String sitterName;
         private int price;
         private LocalDate reservationAt;
         private LocalDateTime createdAt;
         private ReservationStatus status;
-        private List<PetReservationResponse> petReservations;
+        private List<PetReservationResponse> pets;
 
         public GetDetail(Member customer, Member sitter, SitterSchedule sitterSchedule, List<PetReservation> pets) {
             this.id = sitterSchedule.getId();
             this.customerId = customer.getId();
             this.customerNickName = customer.getNickName();
             this.sitterId = sitter.getId();
-            this.sitterNickName = sitter.getNickName();
+            this.sitterName = sitter.getName();
             this.price = sitterSchedule.getPrice();
             this.reservationAt = sitterSchedule.getReservationAt();
             this.createdAt = sitterSchedule.getCreatedAt();
             this.status = sitterSchedule.getStatus();
-            this.petReservations = pets
+            this.pets = pets
                     .stream()
                     .map(PetReservationResponse::new)
                     .collect(Collectors.toList());
