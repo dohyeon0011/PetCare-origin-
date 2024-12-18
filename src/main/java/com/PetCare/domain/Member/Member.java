@@ -102,6 +102,9 @@ public class Member {
     @Comment("사용자 프로필 소개")
     private String introduction;
 
+    @Comment("고객 포인트")
+    private double amount;
+
     // CascadeType.REMOVE만 하면 실 데이터는 삭제된 것처럼 숨어있고, orphanRemoval = true이면 연관관계와 실 데이터까지 모두 삭제 (논리적으로 참조를 변경시켜서 무결성 오류를 안 나게 할 뿐, 데이터는 남게 됨)
     // 지금과 같이 회원 - 반려견, 회원 - 자격증과 같이 부모 자식 관계가 뚜렷한 경우에만 cascade 옵션 쓰고,
     // 학생 - 수강 중인 수업과 같은 하나의 자식에 여러 부모가 있는 경우에는 사용 자제
@@ -177,6 +180,11 @@ public class Member {
         if (Role.PET_SITTER.equals(this.getRole())) {
             this.careerYear = careerYear;
         }
+    }
+
+    @Comment("적립금 추가")
+    public void addRewardPoints(double amount) {
+        this.amount += amount;
     }
 
     // 이러한 상황(Member의 Role)에 따른 로직은 도메인 내부에 있어야 변경사항이 있을 때 도메인만 수정하면 돼서 유지보수가 쉽다.
