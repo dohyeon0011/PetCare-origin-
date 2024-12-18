@@ -13,8 +13,8 @@ public interface MemberRepositoryCustom {
     List<Pet> findPetsByCustomerId(long memberId);
 
     // 돌봄사가 등록한 예약 가능 날짜 전체 조회
-    public List<CareAvailableDate> findCareAvailableDatesByCustomerId(long customerId);
+    public List<CareAvailableDate> findCareAvailableDatesBySitterId(long sitter);
 
     // 돌봄사가 등록한 예약 가능 날짜 중 특정 날짜 조회
-    public Optional<CareAvailableDate> findCareAvailableDateByCustomerIdAndAvailableAt(long customer, LocalDate availableDate);
+    public Optional<CareAvailableDate> findCareAvailableDateBySitterIdAndAvailableAt(long sitterId, LocalDate availableDate);
 }
