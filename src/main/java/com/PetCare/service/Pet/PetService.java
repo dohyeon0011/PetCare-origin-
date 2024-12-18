@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +44,11 @@ public class PetService {
 
     @Comment("특정 회원의 반려견 조회")
     @Transactional(readOnly = true)
-    public List<PetResponse> findById(long customerId) {
-        List<PetResponse> pets = petRepository.findByCustomerId(customerId)
+    public List<PetResponse.GetList> findById(long customerId) {
+        List<PetResponse.GetList> pets = petRepository.findByCustomerId(customerId)
                 .stream()
-                .map(PetResponse::new)
-                .collect(Collectors.toList());
+                .map(PetResponse.GetList::new)
+                .toList();
 
         return pets;
     }
@@ -76,7 +75,7 @@ public class PetService {
 
     @Comment("특정 회원의 반려견 수정")
     @Transactional
-    public List<PetResponse> update(long customerId, List<UpdatePetRequest> requests) {
+    public List<PetResponse.GetList> update(long customerId, List<UpdatePetRequest> requests) {
         Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
@@ -100,8 +99,8 @@ public class PetService {
         }
 
         return pets.stream()
-                .map(PetResponse::new)
-                .collect(Collectors.toList());
+                .map(PetResponse.GetList::new)
+                .toList();
     }
 
     private static void authorizetionMember(Member member) {
