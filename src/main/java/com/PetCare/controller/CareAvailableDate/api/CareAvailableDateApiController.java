@@ -33,8 +33,8 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "모든 회원의 등록한 모든 돌봄 일정 조회 API")
     @GetMapping("/careAvailableDateList")
-    public ResponseEntity<List<CareAvailableDateResponse>> findAllCareAvailableDate() {
-        List<CareAvailableDateResponse> careAvailableDateAll = careAvailableDateService.findAll();
+    public ResponseEntity<List<CareAvailableDateResponse.GetList>> findAllCareAvailableDate() {
+        List<CareAvailableDateResponse.GetList> careAvailableDateAll = careAvailableDateService.findAll();
 
         return ResponseEntity.ok()
                 .body(careAvailableDateAll);
@@ -42,8 +42,8 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "회원의 등록한 모든 돌봄 일정 조회 API")
     @GetMapping("/{sitterId}/careAvailableDateList")
-    public ResponseEntity<List<CareAvailableDateResponse>> findCareAvailableDateList(@PathVariable("sitterId") long id) {
-        List<CareAvailableDateResponse> sitterAvailableDateList = careAvailableDateService.findAllById(id);
+    public ResponseEntity<List<CareAvailableDateResponse.GetList>> findCareAvailableDateList(@PathVariable("sitterId") long id) {
+        List<CareAvailableDateResponse.GetList> sitterAvailableDateList = careAvailableDateService.findAllById(id);
 
         return ResponseEntity.ok()
                 .body(sitterAvailableDateList);
@@ -51,9 +51,9 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "회원의 등록한 돌봄 일정 상세 조회 API")
     @GetMapping("/{sitterId}/careAvailableDate/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse> findCareAvailableDateOne(@PathVariable("sitterId") long id,
+    public ResponseEntity<CareAvailableDateResponse.GetList> findCareAvailableDateOne(@PathVariable("sitterId") long id,
                                                                              @PathVariable("careAvailableDateId") long careAvailableDateId) {
-        CareAvailableDateResponse sitterAvailableDate = careAvailableDateService.findById(id, careAvailableDateId);
+        CareAvailableDateResponse.GetList sitterAvailableDate = careAvailableDateService.findById(id, careAvailableDateId);
 
         return ResponseEntity.ok()
                 .body(sitterAvailableDate);
@@ -71,10 +71,10 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "회원의 등록한 특정 돌봄 일정 수정 API")
     @PutMapping("/{memberId}/careAvailableDate/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse> updateCareAvailableDate(@PathVariable("memberId") long id,
+    public ResponseEntity<CareAvailableDateResponse.GetList> updateCareAvailableDate(@PathVariable("memberId") long id,
                                                                             @PathVariable("careAvailableDateId") long careAvailableDateId,
                                                                             @RequestBody @Valid UpdateCareAvailableDateRequest request) {
-        CareAvailableDateResponse updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
+        CareAvailableDateResponse.GetList updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
 
         return ResponseEntity.ok()
                 .body(updateSitterAvailableDate);
