@@ -1,25 +1,42 @@
 package com.PetCare.dto.CareAvailableDate.response;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDateStatus;
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
+import com.PetCare.domain.CareAvailableDate.CareAvailableDateStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@Getter
 public class CareAvailableDateResponse {
-    private long id;
-    private LocalDate availabilityAt;
-    private int price;
-    private CareAvailableDateStatus status;
 
-    public CareAvailableDateResponse(CareAvailableDate careAvailableDate) {
-        this.id = careAvailableDate.getId();
-        this.availabilityAt = careAvailableDate.getAvailableAt();
-        this.price = careAvailableDate.getPrice();
-        this.status = careAvailableDate.getStatus();
+    @NoArgsConstructor
+    @Getter
+    public static class GetList {
+        private long id;
+        private LocalDate availableAt;
+        private int price;
+        private CareAvailableDateStatus status;
+
+        public GetList(CareAvailableDate careAvailableDate) {
+            this.id = careAvailableDate.getId();
+            this.availableAt = careAvailableDate.getAvailableAt();
+            this.price = careAvailableDate.getPrice();
+            this.status = careAvailableDate.getStatus();
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
+    public static class GetReservation { // 고객이 예약 시 보여질 데이터
+        private long id;
+        private LocalDate availableAt;
+        private int price;
+
+        public GetReservation(CareAvailableDate careAvailableDate) {
+            this.id = careAvailableDate.getId();
+            this.availableAt = careAvailableDate.getAvailableAt();
+            this.price = careAvailableDate.getPrice();
+        }
     }
 
 }
