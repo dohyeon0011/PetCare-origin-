@@ -30,7 +30,7 @@ public class MemberResponse {
         private Role role;
         private SocialProvider socialProvider;
         private String introduction;
-        private List<PetResponse> pets = new ArrayList<>();
+        private List<PetResponse.GetList> pets = new ArrayList<>();
 
         public GetCustomer(Member member, List<Pet> pets) {
             this.id = member.getId();
@@ -44,7 +44,7 @@ public class MemberResponse {
             this.socialProvider = member.getSocialProvider();
             this.introduction = member.getIntroduction();
             this.pets = pets.stream()
-                    .map(PetResponse::new)
+                    .map(PetResponse.GetList::new)
                     .collect(Collectors.toList());
         }
     }
@@ -63,7 +63,7 @@ public class MemberResponse {
         private SocialProvider socialProvider;
         private String introduction;
         private Integer careerYear;
-        private List<CertificationResponse> certifications;
+        private List<CertificationResponse.GetList> certifications;
 
         public GetSitter(Member member, List<Certification> certifications) {
             this.id = member.getId();
@@ -78,7 +78,7 @@ public class MemberResponse {
             this.introduction = member.getIntroduction();
             this.careerYear = member.getCareerYear();
             this.certifications = certifications.stream()
-                    .map(CertificationResponse::new)
+                    .map(CertificationResponse.GetList::new)
                     .collect(Collectors.toList());
         }
     }
