@@ -41,10 +41,10 @@ public class AddMemberRequest {
 
     @NotEmpty(message = "우편번호는 필수입니다.")
     @Size(min = 5, max = 5)
-    private String address1;
+    private String zipcode;
 
     @NotEmpty(message = "상세주소는 필수입니다.")
-    private String address2;
+    private String address;
 
     @NotNull
     private String role; // DTO에서는 문자열로 Role 값 받고 난 뒤에 enum 타입으로 변환
@@ -67,8 +67,8 @@ public class AddMemberRequest {
                 .nickName(nickName)
                 .email(email)
                 .phoneNumber(phoneNumber)
-                .address1(address1)
-                .address2(address2)
+                .zipcode(zipcode)
+                .address(address)
                 .role(Role.valueOf(role))  // Role을 Enum으로 변환
                 .socialProvider(provider)  // SocialProvider 처리
                 .introduction(introduction)
