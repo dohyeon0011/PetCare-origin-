@@ -25,7 +25,7 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
 
     @NoArgsConstructor
     @Getter
-    public static class GetDetail { // 예약 가능 목록 중 특정 돌봄사의 자세한 정보 + 해당 돌봄사의 적힌 리뷰도 보여줄 것
+    public static class GetDetail { // 예약 가능 목록 중 특정 돌봄사의 자세한 정보와 해당 돌봄사의 적힌 리뷰도 보여줄 것
         private long sitterId;
         private String sitterName;
         private String introduction;
