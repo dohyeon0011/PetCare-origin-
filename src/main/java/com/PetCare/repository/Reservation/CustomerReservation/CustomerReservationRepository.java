@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CustomerReservationRepository extends JpaRepository<CustomerReservation, Long> {
 
-    // 특정 회원의 돌봄 예약 내역 전체 조회
+    // 특정 고객의 돌봄 예약 내역 전체 조회
     List<CustomerReservation> findByCustomerId(long customerId);
 
     // 고객의 번호로 특정 회원의 특정 돌봄 예약 내역 조회
