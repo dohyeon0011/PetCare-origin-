@@ -1,10 +1,10 @@
 package com.PetCare.domain.Reservation.SitterSchedule;
 
+import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
-import com.PetCare.domain.Member.Member;
-import com.PetCare.domain.Member.Role;
-import com.PetCare.domain.Pet.PetReservation;
+import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -53,6 +53,12 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     @Comment("돌봄 예약 비용")
     private int price;
 
+    @Comment("돌봄 장소 주소(우편번호)")
+    private String zipcode;
+
+    @Comment("돌봄 장소 주소(상세주소)")
+    private String address;
+
 //    @Comment("돌봄에 맡겨지는 반려견 목록")
 //    @OneToMany(mappedBy = "sitterSchedule", cascade = CascadeType.ALL, orphanRemoval = true)
 //    List<SitterPetReservation> sitterPetReservations = new ArrayList<>();
@@ -70,24 +76,21 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @Comment("해당 돌봄 예약에 회원이 남긴 평점")
-    private Integer rating;
+    @OneToMany
+    List<Review> reviews = new ArrayList<>();
 
-    @Comment("해당 돌봄 예약에 회원이 남긴 리뷰")
-    private String comment;
-
-    public static SitterSchedule createSitterReservation(Member customer, Member sitter, CustomerReservation customerReservation, PetReservation... petReservations) {
-        authorization(customer, sitter);
-
+    public static SitterSchedule createSitterReservation(CustomerReservation customerReservation) {
         SitterSchedule sitterSchedule = new SitterSchedule();
-        sitterSchedule.addCustomer(customer);
-        sitterSchedule.addSitter(sitter);
+        sitterSchedule.addCustomer(customerReservation.getCustomer());
+        sitterSchedule.addSitter(customerReservation.getSitter());
 
-        for (PetReservation petReservation : petReservations) {
+        for (PetReservation petReservation : customerReservation.getPetReservations()) {
             sitterSchedule.addPetReservation(petReservation);
         }
+
         sitterSchedule.addCustomerReservation(customerReservation);
         sitterSchedule.price = customerReservation.getPrice();
+        sitterSchedule.changeAddress(customerReservation.getZipcode(), customerReservation.getAddress());
         sitterSchedule.reservationAt = customerReservation.getReservationAt();
         sitterSchedule.status = ReservationStatus.RESERVATION;
 
@@ -117,13 +120,9 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
         petReservation.addSitterSchedule(this);
     }
 
-    private static void authorization(Member customer, Member sitter) {
-        if (!customer.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("예약은 고객만 가능합니다.");
-        }
-        if (!sitter.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄 예약 배정은 돌봄사만 가능합니다.");
-        }
+    public void changeAddress(String zipcode, String address) {
+        this.zipcode = zipcode;
+        this.address = address;
     }
 
     public void changeReservationAt(LocalDate reservationAt) {
@@ -140,5 +139,4 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     public SitterScheduleResponse.GetDetail toResponse() {
         return new SitterScheduleResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
     }
-
 }
