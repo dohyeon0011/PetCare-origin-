@@ -25,8 +25,8 @@ public class MemberResponse {
         private String nickName;
         private String email;
         private String phoneNumber;
-        private String address1;
-        private String address2;
+        private String zipcode;
+        private String address;
         private Role role;
         private SocialProvider socialProvider;
         private String introduction;
@@ -38,8 +38,8 @@ public class MemberResponse {
             this.nickName = member.getNickName();
             this.email = member.getEmail();
             this.phoneNumber = member.getPhoneNumber();
-            this.address1 = member.getAddress1();
-            this.address2 = member.getAddress2();
+            this.zipcode = member.getZipcode();
+            this.address = member.getAddress();
             this.role = member.getRole();
             this.socialProvider = member.getSocialProvider();
             this.introduction = member.getIntroduction();
@@ -57,8 +57,8 @@ public class MemberResponse {
         private String nickName;
         private String email;
         private String phoneNumber;
-        private String address1;
-        private String address2;
+        private String zipcode;
+        private String address;
         private Role role;
         private SocialProvider socialProvider;
         private String introduction;
@@ -71,8 +71,8 @@ public class MemberResponse {
             this.nickName = member.getNickName();
             this.email = member.getEmail();
             this.phoneNumber = member.getPhoneNumber();
-            this.address1 = member.getAddress1();
-            this.address2 = member.getAddress2();
+            this.zipcode = member.getZipcode();
+            this.address = member.getAddress();
             this.role = member.getRole();
             this.socialProvider = member.getSocialProvider();
             this.introduction = member.getIntroduction();
