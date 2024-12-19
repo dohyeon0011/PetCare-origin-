@@ -1,8 +1,8 @@
 package com.PetCare.domain.Reservation.CustomerReservation;
 
 import com.PetCare.domain.Member.Member;
-import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.PetReservation;
+import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -52,6 +52,12 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @Comment("돌봄 예약 비용")
     private int price;
 
+    @Comment("돌봄 장소 주소(우편번호)")
+    private String zipcode;
+
+    @Comment("돌봄 장소 주소(상세주소)")
+    private String address;
+
     @Comment("예약이 발생한 시간")
     @CreatedDate
     @Column(name = "create_at")
@@ -61,9 +67,10 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public static CustomerReservation createCustomerReservation(Member customer, Member sitter, int price, PetReservation... petReservations) {
-        authorization(customer, sitter);
+    @OneToOne(mappedBy = "customerReservation", orphanRemoval = true)
+    private Review review;
 
+    public static CustomerReservation createCustomerReservation(Member customer, Member sitter, int price, PetReservation... petReservations) {
         CustomerReservation customerReservation = new CustomerReservation();
         customerReservation.addCustomer(customer);
         customerReservation.addSitter(sitter);
@@ -72,6 +79,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
             customerReservation.addPetReservation(petReservation);
         }
         customerReservation.price = price;
+        customerReservation.changeAddress(sitter);
         customerReservation.status = ReservationStatus.RESERVATION;
 
         return customerReservation;
@@ -99,9 +107,19 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
         petReservation.addCustomerReservation(this);
     }
 
+    public void addReview(Review review) {
+        this.review = review;
+    }
+
     // 고객이 예약한 날짜 설정
     public void changeReservationAt(LocalDate reservationAt) {
         this.reservationAt = reservationAt;
+    }
+
+    // 돌봄 장소 설정
+    public void changeAddress(Member sitter) {
+        this.zipcode = sitter.getZipcode();
+        this.address = sitter.getAddress();
     }
 
     // 예약 취소
@@ -110,15 +128,6 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
             throw new IllegalArgumentException("이미 취소된 예약입니다.");
         }
         this.status = ReservationStatus.CANCEL;
-    }
-
-    private static void authorization(Member customer, Member sitter) {
-        if (!customer.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("예약은 고객만 가능합니다.");
-        }
-        if (!sitter.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄 예약 배정은 돌봄사만 가능합니다.");
-        }
     }
 
     // 해당 예약 상세 조회
