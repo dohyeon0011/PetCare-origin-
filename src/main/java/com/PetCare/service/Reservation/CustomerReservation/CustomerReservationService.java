@@ -63,13 +63,13 @@ public class CustomerReservationService {
 
         // 고객 시점 돌봄 예약 생성
         CustomerReservation customerReservation = CustomerReservation.createCustomerReservation(customer, sitter, careAvailableDate.getPrice(), petReservations.toArray(new PetReservation[0]));
+        customerReservation.changeReservationAt(careAvailableDate.getAvailableAt());
 
         // 돌봄사 시점 돌봄 예약 생성
-        SitterSchedule sitterReservation = SitterSchedule.createSitterReservation(customer, sitter, customerReservation, petReservations.toArray(new PetReservation[0]));
-        customerReservation.changeReservationAt(careAvailableDate.getAvailableAt());
+        SitterSchedule sitterReservation = SitterSchedule.createSitterReservation(customerReservation);
         sitterReservation.changeReservationAt(careAvailableDate.getAvailableAt());
         careAvailableDate.reservation();
-        rewardService.addReward(customer.getId(), (double) careAvailableDate.getPrice());
+        rewardService.addReward(customer.getId(), careAvailableDate.getPrice());
 
         return customerReservationRepository.save(customerReservation);
     }
@@ -92,7 +92,7 @@ public class CustomerReservationService {
     @Transactional(readOnly = true)
     public CustomerReservationResponse.GetDetail findById(long customerId, long customerReservationId) {
         CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
-                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약 내역이 존재하지 않습니다."));
 
         return customerReservation.toResponse();
     }
