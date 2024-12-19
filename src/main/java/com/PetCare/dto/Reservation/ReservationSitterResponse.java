@@ -25,12 +25,14 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
 
     @NoArgsConstructor
     @Getter
-    public static class GetDetail { // 예약 가능 목록 중 특정 돌봄사의 자세한 정보
+    public static class GetDetail { // 예약 가능 목록 중 특정 돌봄사의 자세한 정보 + 해당 돌봄사의 적힌 리뷰도 보여줄 것
         private long sitterId;
         private String sitterName;
         private String introduction;
         private Integer careerYear;
         private List<CertificationResponse.GetReservation> certifications;
+        private String zipcode;
+        private String address;
 
         public GetDetail(Member sitter) {
             this.sitterId = sitter.getId();
@@ -41,6 +43,8 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
                     .stream()
                     .map(CertificationResponse.GetReservation::new)
                     .toList();
+            this.zipcode = sitter.getZipcode();
+            this.address = sitter.getAddress();
         }
     }
 
