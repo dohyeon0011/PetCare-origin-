@@ -67,11 +67,11 @@ public class Member {
 
     @Comment("우편번호")
     @Column(length = 5, nullable = false)
-    private String address1;
+    private String zipcode;
 
     @Comment("상세주소")
     @Column(nullable = false)
-    private String address2;
+    private String address;
 
     @Comment("회원 역할(고객, 돌봄사, 관리자)")
     @Enumerated(EnumType.STRING)
@@ -103,7 +103,7 @@ public class Member {
     private String introduction;
 
     @Comment("고객 포인트")
-    private double amount;
+    private int amount;
 
     // CascadeType.REMOVE만 하면 실 데이터는 삭제된 것처럼 숨어있고, orphanRemoval = true이면 연관관계와 실 데이터까지 모두 삭제 (논리적으로 참조를 변경시켜서 무결성 오류를 안 나게 할 뿐, 데이터는 남게 됨)
     // 지금과 같이 회원 - 반려견, 회원 - 자격증과 같이 부모 자식 관계가 뚜렷한 경우에만 cascade 옵션 쓰고,
@@ -149,15 +149,15 @@ public class Member {
 //    private List<String> certifications;
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.zipcode = zipcode;
+        this.address = address;
         this.role = role;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
@@ -166,14 +166,14 @@ public class Member {
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String address1, String address2, String role, String introduction, Integer careerYear) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, String role, String introduction, Integer careerYear) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.zipcode = zipcode;
+        this.address = address;
         this.role = Role.valueOf(role);
         this.introduction = introduction;
 
@@ -183,7 +183,7 @@ public class Member {
     }
 
     @Comment("적립금 추가")
-    public void addRewardPoints(double amount) {
+    public void addRewardPoints(int amount) {
         this.amount += amount;
     }
 
