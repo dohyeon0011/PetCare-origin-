@@ -1,9 +1,9 @@
 package com.PetCare.dto.Reservation.CustomerReservation.response;
 
-import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
+import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.dto.Pet.response.PetReservationResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class CustomerReservationResponse { // 고객 시점 예약 조회
@@ -42,6 +41,8 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
         private String sitterName;
         private int price;
         private LocalDate reservationAt;
+        private String zipcode;
+        private String address;
         private LocalDateTime createdAt;
         private ReservationStatus status;
         private List<PetReservationResponse> pets;
@@ -54,12 +55,14 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
             this.sitterName = sitter.getName();
             this.price = customerReservation.getPrice();
             this.reservationAt = customerReservation.getReservationAt();
+            this.zipcode = sitter.getZipcode();
+            this.address = sitter.getAddress();
             this.createdAt = customerReservation.getCreatedAt();
             this.status = customerReservation.getStatus();
             this.pets = pets
                     .stream()
                     .map(PetReservationResponse::new)
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 
