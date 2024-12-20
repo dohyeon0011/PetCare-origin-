@@ -24,12 +24,12 @@ public class Review {
     @Column(name = "review_id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "customer_reservation_id")
     private CustomerReservation customerReservation;
 
     @Comment("해당 돌봄 예약에 회원이 남긴 평점")
-    private int rating;
+    private Double rating;
 
     @Comment("해당 돌봄 예약에 회원이 남긴 리뷰")
     private String comment;
@@ -40,14 +40,14 @@ public class Review {
     private LocalDateTime createdAt;
 
     @Builder
-    public Review(CustomerReservation customerReservation, int rating, String comment) {
+    public Review(CustomerReservation customerReservation, Double rating, String comment) {
         addCustomerReservation(customerReservation);
         this.rating = rating;
         this.comment = comment;
     }
 
     @Comment("리뷰 수정")
-    public void updateReview(int rating, String comment) {
+    public void updateReview(Double rating, String comment) {
         this.rating = rating;
         this.comment = comment;
     }
