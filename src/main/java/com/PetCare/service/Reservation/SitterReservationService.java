@@ -4,11 +4,13 @@ import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
 import com.PetCare.domain.Pet.Pet;
+import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Reservation.ReservationResponse;
 import com.PetCare.dto.Reservation.ReservationSitterResponse;
 import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.Pet.PetRepository;
+import com.PetCare.repository.Review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +28,21 @@ public class SitterReservationService {
     private final MemberRepository memberRepository;
     private final PetRepository petRepository;
     private final CareAvailableDateRepository careAvailableDateRepository;
+    private final ReviewRepository reviewRepository;
 
     @Comment("고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회")
     @Transactional(readOnly = true)
     public List<ReservationSitterResponse.GetList> findReservableSitters() {
         List<CareAvailableDate> careAvailableDates = careAvailableDateRepository.findAll();
 
-        List<ReservationSitterResponse.GetList> sitterInfo = careAvailableDates.stream()
-                .map(careAvailableDate -> {
-                    Member sitter = memberRepository.findById(careAvailableDate.getSitter().getId())
-                            .orElseThrow(() -> new NoSuchElementException("돌봄 예약 가능 날짜를 등록하지 않은 돌봄사가 조회되어 실패했습니다."));
-                    return new ReservationSitterResponse.GetList(sitter);
-                })
-                .toList();
+        Set<Member> sitters = careAvailableDates.stream()
+                .map(careAvailableDate -> memberRepository.findById(careAvailableDate.getSitter().getId())
+                        .orElseThrow(() -> new NoSuchElementException("돌봄 예약 가능 날짜를 등록하지 않은 돌봄사가 조회되어 실패했습니다.")))
+                .collect(Collectors.toSet());
 
-        return sitterInfo;
+        return sitters.stream()
+                .map(ReservationSitterResponse.GetList::new)
+                .toList();
     }
 
     @Comment("돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회")
@@ -51,7 +55,10 @@ public class SitterReservationService {
         if (careAvailableDates.isEmpty()) {
             throw new NoSuchElementException("해당 돌봄사는 돌봄 예약 가능한 날짜가 없습니다.");
         }
-        return new ReservationSitterResponse.GetDetail(sitter);
+
+        List<Review> reviews = reviewRepository.findByCustomerReservationSitterId(sitter.getId());
+
+        return new ReservationSitterResponse.GetDetail(sitter, reviews);
     }
 
     @Comment("고객이 예약할 때 보여줄 정보")
@@ -74,7 +81,7 @@ public class SitterReservationService {
         }
         List<Pet> pets = petRepository.findByCustomerId(customer.getId());
 
-        return new ReservationResponse(sitter, careAvailableDates, pets);
+        return new ReservationResponse(customer, sitter, careAvailableDates, pets);
     }
 
     public static void verifyingPermissionsCustomer(Member customer) {
