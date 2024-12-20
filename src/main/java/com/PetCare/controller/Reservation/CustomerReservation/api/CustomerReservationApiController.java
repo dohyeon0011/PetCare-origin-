@@ -21,7 +21,7 @@ public class CustomerReservationApiController {
     private final CustomerReservationService customerReservationService;
 
     @Operation(description = "회원 돌봄 예약 생성 API")
-    @PostMapping("/reservation/new")
+    @PostMapping("/reservations/new")
     public ResponseEntity<CustomerReservation> saveReservation(@RequestBody @Valid AddCustomerReservationRequest request) {
         CustomerReservation customerReservation = customerReservationService.save(request);
 
@@ -30,8 +30,8 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회 API")
-    @GetMapping("/members/{customerId}/reservationList")
-    public ResponseEntity<List<CustomerReservationResponse.GetList>> findCustomerReservationList(@PathVariable("customerId") long id) {
+    @GetMapping("/members/{customerId}/reservations")
+    public ResponseEntity<List<CustomerReservationResponse.GetList>> findAllCustomerReservation(@PathVariable("customerId") long id) {
         List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
 
         return ResponseEntity.ok()
@@ -39,7 +39,7 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "회원의 특정 돌봄 예약 상세 조회 API")
-    @GetMapping("/members/{customerId}/reservation/{customerReservationId}")
+    @GetMapping("/members/{customerId}/reservations/{customerReservationId}")
     public ResponseEntity<CustomerReservationResponse.GetDetail> findCustomerReservation(@PathVariable("customerId") long id,
                                                                                             @PathVariable("customerReservationId") long customerReservationId) {
         CustomerReservationResponse.GetDetail customerReservation = customerReservationService.findById(id, customerReservationId);
@@ -49,7 +49,7 @@ public class CustomerReservationApiController {
     }
 
     @Operation(description = "특정 회원의 특정 돌봄 예약 취소 API")
-    @DeleteMapping("/members/{customerId}/reservation/{customerReservationId}")
+    @DeleteMapping("/members/{customerId}/reservations/{customerReservationId}")
     public ResponseEntity<Void> deleteCustomerReservation(@PathVariable("customerId") long id,
                                                           @PathVariable("customerReservationId") long customerReservationId) {
         customerReservationService.delete(id, customerReservationId);
