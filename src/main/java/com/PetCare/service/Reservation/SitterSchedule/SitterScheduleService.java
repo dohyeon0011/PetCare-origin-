@@ -30,7 +30,9 @@ public class SitterScheduleService {
     @Transactional(readOnly = true)
     public List<SitterScheduleResponse.GetList> findAllById(long sitterId) {
         Member sitter = memberRepository.findById(sitterId)
-                .orElseThrow(() -> new NoSuchElementException("예약 조회 오류: 돌봄사 정보 조회에 실패했습니다."));
+                .orElseThrow(() -> new NoSuchElementException("돌봄 예약 조회 오류: 돌봄사 정보 조회에 실패했습니다."));
+
+        verifyingPermissionsSitter(sitter);
 
 //        List<SitterScheduleResponse.GetList> sitterSchedules = sitter.getSitterSchedules().stream()
 //                .map(SitterScheduleResponse.GetList::new)
@@ -50,6 +52,9 @@ public class SitterScheduleService {
         SitterSchedule sitterSchedule = sitterScheduleRepository.findBySitterIdAndId(sitterId, sitterScheduleId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약이 존재하지 않습니다."));
 
+        verifyingPermissionsSitter(memberRepository.findById(sitterId)
+                .orElseThrow(() -> new NoSuchElementException("회원의 정보 조회에 실패했습니다.")));
+
         return sitterSchedule.toResponse();
     }
 
@@ -57,7 +62,7 @@ public class SitterScheduleService {
     @Transactional
     public void delete(long sitterId, long sitterScheduleId) {
         Member sitter = memberRepository.findById(sitterId)
-                .orElseThrow(() -> new NoSuchElementException("로그인한 회원 정보를 불러오는데 실패했습니다."));
+                .orElseThrow(() -> new NoSuchElementException("회원의 정보를 조회에 실패했습니다."));
 
         authorizationMember(sitter);
         verifyingPermissionsSitter(sitter);
@@ -83,7 +88,7 @@ public class SitterScheduleService {
 
     public static void verifyingPermissionsSitter(Member sitter) {
         if (!sitter.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄 예약 배정은 돌봄사만 가능합니다.");
+            throw new IllegalArgumentException("돌봄 예약 배정 조회 및 취소는 돌봄사만 가능합니다.");
         }
     }
 
