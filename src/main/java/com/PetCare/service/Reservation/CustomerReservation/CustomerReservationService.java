@@ -80,6 +80,8 @@ public class CustomerReservationService {
         Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("예약 조회 오류 : 현재 회원은 존재하지 않는 회원입니다."));
 
+        authorizationMember(customer);
+
         List<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
                 .stream()
                 .map(CustomerReservationResponse.GetList::new) // Constructor Reference 사용
@@ -93,6 +95,8 @@ public class CustomerReservationService {
     public CustomerReservationResponse.GetDetail findById(long customerId, long customerReservationId) {
         CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약 내역이 존재하지 않습니다."));
+
+        authorizationMember(customerReservation.getCustomer());
 
         return customerReservation.toResponse();
     }
@@ -137,7 +141,7 @@ public class CustomerReservationService {
 
     public static void verifyingPermissionsCustomer(Member customer) {
         if (!customer.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("고객만 예약 등록 및 수정,삭제가 가능합니다.");
+            throw new IllegalArgumentException("고객만 예약 등록, 조회 및 수정,삭제가 가능합니다.");
         }
     }
 
