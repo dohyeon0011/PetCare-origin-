@@ -32,7 +32,7 @@ public class PetApiController {
 
     @Operation(description = "특정 회원의 모든 반려견 조회 API")
     @GetMapping("/{customerId}/pets")
-    public ResponseEntity<List<PetResponse.GetList>> findPets(@PathVariable("customerId") long id) {
+    public ResponseEntity<List<PetResponse.GetList>> findAllPet(@PathVariable("customerId") long id) {
         List<PetResponse.GetList> pets = petService.findById(id);
 
         return ResponseEntity.ok()
