@@ -1,7 +1,9 @@
 package com.PetCare.dto.Reservation;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Certification.response.CertificationResponse;
+import com.PetCare.dto.Review.response.ReviewResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +13,7 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
 
     @NoArgsConstructor
     @Getter
-    public static class GetList { // 예약 가능 목록에 있는 돌봄사들의 정보
+    public static class GetList { // 예약 가능 페이지에 있는 돌봄사들의 정보
         private long sitterId;
         private String sitterName;
         private String introduction;
@@ -25,7 +27,7 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
 
     @NoArgsConstructor
     @Getter
-    public static class GetDetail { // 예약 가능 목록 중 특정 돌봄사의 자세한 정보와 해당 돌봄사의 적힌 리뷰도 보여줄 것
+    public static class GetDetail { // 예약 가능 페이지 목록 중 특정 돌봄사의 자세한 정보 + 해당 돌봄사에 대한 리뷰도 보여줄 것
         private long sitterId;
         private String sitterName;
         private String introduction;
@@ -33,8 +35,9 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
         private List<CertificationResponse.GetReservation> certifications;
         private String zipcode;
         private String address;
+        private List<ReviewResponse.GetDetail> reviews;
 
-        public GetDetail(Member sitter) {
+        public GetDetail(Member sitter, List<Review> reviews) {
             this.sitterId = sitter.getId();
             this.sitterName = sitter.getName();
             this.introduction = sitter.getIntroduction();
@@ -45,6 +48,10 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
                     .toList();
             this.zipcode = sitter.getZipcode();
             this.address = sitter.getAddress();
+            this.reviews = reviews
+                    .stream()
+                    .map(ReviewResponse.GetDetail::new)
+                    .toList();
         }
     }
 
