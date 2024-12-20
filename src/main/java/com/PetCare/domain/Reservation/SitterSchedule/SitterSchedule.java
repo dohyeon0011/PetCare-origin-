@@ -4,7 +4,6 @@ import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
-import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -76,8 +75,8 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @OneToMany
-    List<Review> reviews = new ArrayList<>();
+//    @OneToMany
+//    List<Review> reviews = new ArrayList<>();
 
     public static SitterSchedule createSitterReservation(CustomerReservation customerReservation) {
         SitterSchedule sitterSchedule = new SitterSchedule();
