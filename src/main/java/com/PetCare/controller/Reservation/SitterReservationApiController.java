@@ -22,7 +22,7 @@ public class SitterReservationApiController {
 
     @Operation(description = "고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회 API")
     @GetMapping("/reservableList")
-    public ResponseEntity<List<ReservationSitterResponse.GetList>> findAvailableReservationList() {
+    public ResponseEntity<List<ReservationSitterResponse.GetList>> findAllAvailableReservation() {
         List<ReservationSitterResponse.GetList> reservableSitters = sitterReservationService.findReservableSitters();
 
         return ResponseEntity.ok()
@@ -30,7 +30,7 @@ public class SitterReservationApiController {
     }
 
     @Operation(description = "돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회 API")
-    @GetMapping("/reservableList/{sitterId}")
+    @GetMapping("/reservable/members/{sitterId}")
     public ResponseEntity<ReservationSitterResponse.GetDetail> findReservationSitter(@PathVariable("sitterId") long sitterId) {
         ReservationSitterResponse.GetDetail reservableSitter = sitterReservationService.findReservableSitter(sitterId);
 
@@ -39,8 +39,8 @@ public class SitterReservationApiController {
     }
 
     @Operation(description = "고객이 예약할 때 보여줄 정보 API")
-    @GetMapping("/reservation/members/{customerId}/sitter/{sitterId}")
-    public ResponseEntity<ReservationResponse> getReservationDetails(@PathVariable("customerId") long customerId,
+    @GetMapping("/reservable/members/{customerId}/sitter/{sitterId}")
+    public ResponseEntity<ReservationResponse> getReservationDetail(@PathVariable("customerId") long customerId,
                                                                      @PathVariable("sitterId") long sitterId) {
         ReservationResponse reservationDetails = sitterReservationService.getReservationDetails(customerId, sitterId);
 
