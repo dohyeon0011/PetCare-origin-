@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class ReservationResponse { // 고객이 예약할 때 보여줄 정보
+    private long customerId;
     private long sitterId;
     private String sitterName;
     private List<CareAvailableDateResponse.GetReservation> careAvailableDates;
@@ -20,7 +21,8 @@ public class ReservationResponse { // 고객이 예약할 때 보여줄 정보
     private String address;
     private List<PetResponse.GetReservation> pets;
 
-    public ReservationResponse(Member sitter, List<CareAvailableDate> careAvailableDates, List<Pet> pets) {
+    public ReservationResponse(Member customer, Member sitter, List<CareAvailableDate> careAvailableDates, List<Pet> pets) {
+        this.customerId = customer.getId();
         this.sitterId = sitter.getId();
         this.sitterName = sitter.getName();
         this.zipcode = sitter.getZipcode();
