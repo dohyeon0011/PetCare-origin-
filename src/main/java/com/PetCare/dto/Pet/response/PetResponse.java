@@ -23,7 +23,7 @@ public class PetResponse {
             this.age = pet.getAge();
             this.breed = pet.getBreed();
             this.medicalConditions = pet.getMedicalConditions();
-            this.profileImgUrl = pet.getProfileImgUrl();
+            this.profileImgUrl = pet.getProfileImgPath();
         }
     }
 
