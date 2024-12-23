@@ -37,7 +37,6 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
         private long id;
         private long customerId;
         private String customerNickName;
-        private long sitterId;
         private String sitterName;
         private int price;
         private LocalDate reservationAt;
@@ -51,7 +50,6 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
             this.id = customerReservation.getId();
             this.customerId = customer.getId();
             this.customerNickName = customer.getNickName();
-            this.sitterId = sitter.getId();
             this.sitterName = sitter.getName();
             this.price = customerReservation.getPrice();
             this.reservationAt = customerReservation.getReservationAt();
