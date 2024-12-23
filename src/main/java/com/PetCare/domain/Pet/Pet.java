@@ -36,7 +36,7 @@ public class Pet {
     private String medicalConditions;
 
     @Comment("반려견 프로필 사진")
-    private String profileImgUrl;
+    private String profileImgPath;
 
     // 고객-반려견 연관관계 편의 메서드
     public void addCustomer(Member customer) {
@@ -45,20 +45,20 @@ public class Pet {
     }
 
     @Builder
-    public Pet(String name, int age, String breed, String medicalConditions, String profileImgUrl) {
+    public Pet(String name, int age, String breed, String medicalConditions, String profileImgPath) {
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.medicalConditions = medicalConditions;
-        this.profileImgUrl = profileImgUrl;
+        this.profileImgPath = profileImgPath;
     }
 
-    public void update(String name, int age, String breed, String medicalConditions, String profileImgUrl) {
+    public void update(String name, int age, String breed, String medicalConditions, String profileImgPath) {
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.medicalConditions = medicalConditions;
-        this.profileImgUrl = profileImgUrl;
+        this.profileImgPath = profileImgPath;
     }
 
 }
