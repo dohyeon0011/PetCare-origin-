@@ -69,7 +69,7 @@ public class MemberService {
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
-                request.getRole(), request.getIntroduction(), request.getCareerYear()
+                request.getRole(), request.getProfileImgPath(), request.getIntroduction(), request.getCareerYear()
         );
 
         return member.toResponse();
