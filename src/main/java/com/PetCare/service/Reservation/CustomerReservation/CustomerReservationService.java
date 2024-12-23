@@ -141,13 +141,13 @@ public class CustomerReservationService {
 
     public static void verifyingPermissionsCustomer(Member customer) {
         if (!customer.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("고객만 예약 등록, 조회 및 수정,삭제가 가능합니다.");
+            throw new IllegalArgumentException("고객만 예약 등록,수정,조회 및 삭제가 가능합니다.");
         }
     }
 
     public static void verifyingPermissionsSitter(Member sitter) {
         if (!sitter.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄 예약 배정 및 수정,삭제는 돌봄사만 가능합니다.");
+            throw new IllegalArgumentException("돌봄 예약 배정,수정 및 삭제는 돌봄사만 가능합니다.");
         }
     }
 
