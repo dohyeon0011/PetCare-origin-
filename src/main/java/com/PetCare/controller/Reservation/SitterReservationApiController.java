@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/PetsCare")
+@RequestMapping("/api/pets-care")
 public class SitterReservationApiController {
 
     private final SitterReservationService sitterReservationService;
@@ -39,7 +39,7 @@ public class SitterReservationApiController {
     }
 
     @Operation(description = "고객이 예약할 때 보여줄 정보 API")
-    @GetMapping("/reservable/members/{customerId}/sitter/{sitterId}")
+    @GetMapping("/reservable/members/{customerId}/sitters/{sitterId}")
     public ResponseEntity<ReservationResponse> getReservationDetail(@PathVariable("customerId") long customerId,
                                                                      @PathVariable("sitterId") long sitterId) {
         ReservationResponse reservationDetails = sitterReservationService.getReservationDetails(customerId, sitterId);
