@@ -105,7 +105,7 @@ public class CertificationService {
 
     private static void verifyingPermissions(Member member) {
         if (!member.getRole().equals(Role.PET_SITTER)) {
-            throw new IllegalArgumentException("돌봄사만 자격증 등록 및 수정,삭제가 가능합니다.");
+            throw new IllegalArgumentException("돌봄사만 자격증 등록,수정 및 삭제가 가능합니다.");
         }
     }
 
