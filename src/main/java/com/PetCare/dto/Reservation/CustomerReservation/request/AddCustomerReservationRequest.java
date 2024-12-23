@@ -1,5 +1,6 @@
 package com.PetCare.dto.Reservation.CustomerReservation.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class AddCustomerReservationRequest {
-
     private long customerId; // 고객
+
+    @NotBlank(message = "돌봄을 맡길 돌봄사 선택은 필수입니다.")
     private long sitterId; // 돌봄사
 
     @NotNull(message = "날짜 선택은 필수입니다.")
