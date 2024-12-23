@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members")
+@RequestMapping("/api/pets-care/members")
 public class CertificationApiController {
 
     private final CertificationService certificationService;
