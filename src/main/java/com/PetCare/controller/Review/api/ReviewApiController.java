@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/PetsCare")
+@RequestMapping("/api/pets-care")
 public class ReviewApiController {
 
     private final ReviewService reviewService;
