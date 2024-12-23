@@ -111,7 +111,7 @@ public class ReviewService {
 
     public static void verifyingPermissionsCustomer(Member customer) {
         if (!customer.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("고객만 리뷰 작성 및 수정,삭제가 가능합니다.");
+            throw new IllegalArgumentException("고객만 리뷰 작성,수정 및 삭제가 가능합니다.");
         }
     }
 
