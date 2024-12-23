@@ -38,6 +38,8 @@ public class UpdateMemberRequest {
 
     private String role;
 
+    private String profileImgPath;
+
     private String introduction;
 
     private Integer careerYear;
