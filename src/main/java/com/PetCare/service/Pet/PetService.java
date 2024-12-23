@@ -113,7 +113,7 @@ public class PetService {
 
     private static void verifyingPermissions(Member member) {
         if (!member.getRole().equals(Role.CUSTOMER)) {
-            throw new IllegalArgumentException("고객만 반려견 등록 및 수정,삭제가 가능합니다.");
+            throw new IllegalArgumentException("고객만 반려견 등록,수정 및 삭제가 가능합니다.");
         }
     }
 
