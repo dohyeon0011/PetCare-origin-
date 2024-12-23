@@ -78,6 +78,9 @@ public class Member {
     @Column(nullable = false)
     private Role role;
 
+    @Comment("프로필 사진")
+    private String profileImgPath;
+
     // 사용자 가입 날짜 확인 : 사용자가 언제 가입했는지 추적할 수 있다
     // 리프레시 토큰 발급 시간 확인 : 리프레시 토큰이 언제 생성되었는지 확인하여 비정상적인 패턴(예: 짧은 시간 내 다중 발급)을 탐지할 수 있다
     // 이벤트 기반 처리 : 가입 후 X일 후 이메일 알림, 혜택 제공 등 타임라인 기반 기능에 사용된다
@@ -149,7 +152,7 @@ public class Member {
 //    private List<String> certifications;
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, Role role, String profileImgPath, SocialProvider socialProvider, String introduction, Integer careerYear) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -159,6 +162,7 @@ public class Member {
         this.zipcode = zipcode;
         this.address = address;
         this.role = role;
+        this.profileImgPath = profileImgPath;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
         this.careerYear = careerYear;
@@ -166,7 +170,7 @@ public class Member {
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, String role, String introduction, Integer careerYear) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, String role, String profileImgPath, String introduction, Integer careerYear) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -175,6 +179,7 @@ public class Member {
         this.zipcode = zipcode;
         this.address = address;
         this.role = Role.valueOf(role);
+        this.profileImgPath = profileImgPath;
         this.introduction = introduction;
 
         if (Role.PET_SITTER.equals(this.getRole())) {
