@@ -61,8 +61,8 @@ public class CareLog { // 돌봄 케어 로그
         this.imgPath = imgPath;
     }
 
-    public CareLogResponse toResponse() {
-        return new CareLogResponse(this);
+    public CareLogResponse.GetDetail toResponse() {
+        return new CareLogResponse.GetDetail(this);
     }
 
 }
