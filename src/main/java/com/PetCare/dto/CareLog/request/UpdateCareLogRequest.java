@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateCareLogRequest {
 
-    @NotBlank(message = "케어 로그를 작성할 돌봄을 선택해야 합니다.")
-    private long sitterScheduleId;
+//    @NotNull(message = "케어 로그를 작성할 돌봄을 선택해야 합니다.")
+//    private long sitterScheduleId;
 
     private String careType;
 
