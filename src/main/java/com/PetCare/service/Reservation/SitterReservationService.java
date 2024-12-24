@@ -35,9 +35,10 @@ public class SitterReservationService {
     public List<ReservationSitterResponse.GetList> findReservableSitters() {
         List<CareAvailableDate> careAvailableDates = careAvailableDateRepository.findAll();
 
+//        Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
+
         Set<Member> sitters = careAvailableDates.stream()
-                .map(careAvailableDate -> memberRepository.findById(careAvailableDate.getSitter().getId())
-                        .orElseThrow(() -> new NoSuchElementException("돌봄 예약 가능 날짜를 등록하지 않은 돌봄사가 조회되어 실패했습니다.")))
+                .map(CareAvailableDate::getSitter)
                 .collect(Collectors.toSet());
 
         return sitters.stream()
