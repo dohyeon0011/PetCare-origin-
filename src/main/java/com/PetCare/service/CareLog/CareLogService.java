@@ -28,7 +28,7 @@ public class CareLogService {
     private final CareLogRepository careLogRepository;
 
     @Comment("케어 로그 작성")
-    public CareLogResponse save(long sitterId, long sitterScheduleId, AddCareLogRequest request) {
+    public CareLogResponse.GetDetail save(long sitterId, long sitterScheduleId, AddCareLogRequest request) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("로그인한 회원을 찾을 수 없습니다."));
 
@@ -44,26 +44,76 @@ public class CareLogService {
         return careLog.toResponse();
     }
 
-    @Comment("특정 회원이 작성한 돌봄 케어 로그 전체 조회")
+    @Comment("돌봄사가 작성한 모든 돌봄 케어 로그 조회")
     @Transactional(readOnly = true)
-    public List<CareLogResponse> findAllById(long sitterId) {
+    public List<CareLogResponse.GetList> findAll(long sitterId) {
+        List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterId(sitterId);
 
+        return careLogList.stream()
+                .map(CareLogResponse.GetList::new)
+                .toList();
     }
 
-    @Comment("특정 회원이 특정 돌봄에 대해 작성한 돌봄 케어 로그 조회")
+    @Comment("돌봄사가 특정 돌봄에 대해 작성한 돌봄 케어 로그 전체 조회")
     @Transactional(readOnly = true)
-    public CareLogResponse findById(long sitterId) {
+    public List<CareLogResponse.GetDetail> findAllById(long sitterId, long sitterScheduleId) {
+        List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterIdAndSitterScheduleId(sitterId, sitterScheduleId);
 
+        if (careLogList.isEmpty()) {
+            throw new NoSuchElementException("해당 돌봄에 대해 작성된 케어 로그가 존재하지 않습니다.");
+        }
+
+        return careLogList
+                .stream()
+                .map(CareLogResponse.GetDetail::new)
+                .toList();
     }
 
-    @Comment("특정 회원의 특정 돌봄 케어 로그 삭제")
+    @Comment("돌봄사가 특정 돌봄에 대해 작성한 특정 돌봄 케어 로그 단건 조회")
+    @Transactional(readOnly = true)
+    public CareLogResponse.GetDetail findById(long sitterId, long careLogId) {
+        CareLog careLog = careLogRepository.findBySitterScheduleSitterIdAndId(sitterId, careLogId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그 조회에 실패했습니다."));
+
+        return careLog.toResponse();
+    }
+
+    @Comment("돌봄사의 특정 돌봄 케어 로그 삭제")
     public void delete(long sitterId, long careLogId) {
+        Member sitter = memberRepository.findById(sitterId)
+                .orElseThrow(() -> new NoSuchElementException("로그인한 회원을 찾을 수 없습니다."));
 
+        verifyingPermissionsCustomer(sitter);
+        authorizationMember(sitter);
+
+        CareLog careLog = careLogRepository.findBySitterScheduleSitterIdAndId(sitter.getId(), careLogId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그가 존재하지 않습니다."));
+
+        careLogRepository.delete(careLog);
     }
 
-    @Comment("특정 회원의 특정 돌봄 케어 로그 수정")
-    public CareLogResponse update(long sitterId, long careLogId, UpdateCareLogRequest request) {
+    @Comment("돌봄사의 특정 돌봄 케어 로그 수정")
+    public CareLogResponse.GetDetail update(long sitterId, long careLogId, UpdateCareLogRequest request) {
+        Member sitter = memberRepository.findById(sitterId)
+                .orElseThrow(() -> new NoSuchElementException("로그인한 회원을 찾을 수 없습니다."));
 
+        verifyingPermissionsCustomer(sitter);
+        authorizationMember(sitter);
+
+        CareLog careLog = careLogRepository.findBySitterScheduleSitterIdAndId(sitter.getId(), careLogId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그가 존재하지 않습니다."));
+
+        careLog.updateCareLog(request.getCareType(), request.getDescription(), request.getImgPath());
+
+        return careLog.toResponse();
+    }
+
+    @Comment("돌봄 케어 로그 작성할 때 보여줄 정보")
+    public CareLogResponse.GetReservation getReservation(long sitterId, long sitterScheduleId) {
+        SitterSchedule sitterSchedule = sitterScheduleRepository.findById(sitterScheduleId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약을 조회하는데 실패했습니다."));
+
+        return new CareLogResponse.GetReservation(sitterSchedule);
     }
 
     private static void authorizationMember(Member member) {
