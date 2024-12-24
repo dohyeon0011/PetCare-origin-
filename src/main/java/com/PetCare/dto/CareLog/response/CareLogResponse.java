@@ -1,6 +1,7 @@
 package com.PetCare.dto.CareLog.response;
 
 import com.PetCare.domain.CareLog.CareLog;
+import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +44,19 @@ public class CareLogResponse {
             this.description = careLog.getDescription();
             this.imgPath = careLog.getImgPath();
             this.createdAt = careLog.getCreatedAt();
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
+    public static class GetReservation {
+        private String customerNickName;
+        private String careType;
+        private String description;
+        private String imgPath;
+
+        public GetReservation(SitterSchedule sitterSchedule) {
+            this.customerNickName = sitterSchedule.getCustomer().getNickName();
         }
     }
 }
