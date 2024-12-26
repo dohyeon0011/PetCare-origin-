@@ -37,8 +37,8 @@ class MemberRepositoryTest {
                 .nickName("창모")
                 .email("email@naver.com")
                 .phoneNumber("010-1234-5678")
-                .address1("12345")
-                .address2("경기도")
+                .zipcode("12345")
+                .address("경기도")
                 .role("CUSTOMER")
                 .socialProvider(null)
                 .introduction("하이요")
@@ -53,8 +53,8 @@ class MemberRepositoryTest {
                 .nickName("애쉬아일랜드")
                 .email("email@naver.com")
                 .phoneNumber("010-1234-5678")
-                .address1("22222")
-                .address2("서울")
+                .zipcode("22222")
+                .address("서울")
                 .role("PET_SITTER")
                 .socialProvider("KAKAO")
                 .introduction("하이요")
@@ -69,7 +69,7 @@ class MemberRepositoryTest {
     @Test
     public void member_join() {
         //given
-        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, "하이요", null);
+        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, SocialProvider.NONE, null, null);
         memberRepository.save(member);
 
         //when
@@ -161,13 +161,13 @@ class MemberRepositoryTest {
     public void member_update() {
         //given
         Member member = memberRepository.findById(1L).get();
-        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER", 3);
+        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest("psss1", "구창모", "changmo", "changmo@gmail.com", "010-1111-1111", "10222", "서울특별시 용산구 한남동", "언더그라운드락스타", "PET_SITTER",null, 3);
 
         //when
         member.update(
                 updateMemberRequest.getPassword(), updateMemberRequest.getName(), updateMemberRequest.getNickName(), updateMemberRequest.getEmail(),
-                updateMemberRequest.getPhoneNumber(), updateMemberRequest.getAddress1(), updateMemberRequest.getAddress2(),
-                updateMemberRequest.getIntroduction(), updateMemberRequest.getRole(), updateMemberRequest.getCareerYear()
+                updateMemberRequest.getPhoneNumber(), updateMemberRequest.getZipcode(), updateMemberRequest.getAddress(),
+                updateMemberRequest.getRole(), updateMemberRequest.getProfileImgPath(), updateMemberRequest.getIntroduction(), updateMemberRequest.getCareerYear()
         );
 
         //then
