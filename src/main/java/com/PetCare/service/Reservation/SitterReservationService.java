@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,13 +32,7 @@ public class SitterReservationService {
     @Comment("고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회")
     @Transactional(readOnly = true)
     public List<ReservationSitterResponse.GetList> findReservableSitters() {
-        List<CareAvailableDate> careAvailableDates = careAvailableDateRepository.findAll();
-
-//        Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
-
-        Set<Member> sitters = careAvailableDates.stream()
-                .map(CareAvailableDate::getSitter)
-                .collect(Collectors.toSet());
+        Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
 
         return sitters.stream()
                 .map(ReservationSitterResponse.GetList::new)
@@ -75,7 +68,7 @@ public class SitterReservationService {
 
         verifyingPermissionsSitter(sitter);
 
-        List<CareAvailableDate> careAvailableDates = careAvailableDateRepository.findBySitterId(sitter.getId());
+        List<CareAvailableDate> careAvailableDates = careAvailableDateRepository.findBySitterIdAndPossibility(sitter.getId());
 
         if (careAvailableDates.isEmpty()) {
             throw new NoSuchElementException("해당 돌봄사는 돌봄 예약 가능한 날짜가 없습니다.");
