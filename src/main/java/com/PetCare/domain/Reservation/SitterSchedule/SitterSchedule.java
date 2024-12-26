@@ -1,5 +1,6 @@
 package com.PetCare.domain.Reservation.SitterSchedule;
 
+import com.PetCare.domain.CareLog.CareLog;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
@@ -30,18 +31,18 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     private long id;
 
     @Comment("돌봄 예약(고객 시점)")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_reservation_id")
     @JsonIgnore
     private CustomerReservation customerReservation;
 
     @Comment("예약한 회원(고객) 번호")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Member customer;
 
     @Comment("예약된 회원(돌봄사) 번호")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sitter_id")
     private Member sitter;
 
@@ -74,6 +75,10 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
     @Comment("예약 상태")
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    @Comment("돌봄사가 작성한 케어 로그")
+    @OneToMany(mappedBy = "sitterSchedule")
+    List<CareLog> careLogList = new ArrayList<>();
 
 //    @OneToMany
 //    List<Review> reviews = new ArrayList<>();
@@ -126,6 +131,10 @@ public class SitterSchedule { // 돌봄 예약(돌봄사 시점)
 
     public void changeReservationAt(LocalDate reservationAt) {
         this.reservationAt = reservationAt;
+    }
+
+    public void addCareLog(CareLog careLog) {
+        this.careLogList.add(careLog);
     }
 
     public void cancel() {
