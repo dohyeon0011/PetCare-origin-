@@ -98,7 +98,10 @@ public class CustomerReservationService {
 
         authorizationMember(customerReservation.getCustomer());
 
-        return customerReservation.toResponse();
+        SitterSchedule sitterSchedule = sitterScheduleRepository.findByCustomerReservation(customerReservation)
+                .orElseThrow(() -> new NoSuchElementException("돌봄사에게 해당 예약이 존재하지 않습니다."));
+
+        return customerReservation.toResponse(sitterSchedule.getCareLogList());
     }
 
     @Comment("특정 회원의 특정 돌봄 예약 취소")
