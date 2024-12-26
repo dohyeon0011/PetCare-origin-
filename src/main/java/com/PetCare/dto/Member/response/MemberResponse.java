@@ -30,6 +30,7 @@ public class MemberResponse {
         private Role role;
         private SocialProvider socialProvider;
         private String introduction;
+        private int amount;
         private List<PetResponse.GetList> pets = new ArrayList<>();
 
         public GetCustomer(Member member, List<Pet> pets) {
@@ -43,6 +44,7 @@ public class MemberResponse {
             this.role = member.getRole();
             this.socialProvider = member.getSocialProvider();
             this.introduction = member.getIntroduction();
+            this.amount = member.getAmount();
             this.pets = pets.stream()
                     .map(PetResponse.GetList::new)
                     .collect(Collectors.toList());
