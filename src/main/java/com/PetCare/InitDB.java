@@ -102,11 +102,27 @@ public class InitDB {
                     .name("돌봄2급")
                     .build();
 
+            CareAvailableDate careAvailableDate1 = CareAvailableDate.builder()
+                    .availabilityAt(LocalDate.parse("1999-01-31"))
+                    .price(70000)
+                    .build();
+
+            CareAvailableDate careAvailableDate2 = CareAvailableDate.builder()
+                    .availabilityAt(LocalDate.parse("1980-05-12"))
+                    .price(50000)
+                    .build();
+
             certification1.addSitter(member);
             certification2.addSitter(member);
 
+            careAvailableDate1.addPetSitter(member);
+            careAvailableDate2.addPetSitter(member);
+
             em.persist(certification1);
             em.persist(certification2);
+
+            em.persist(careAvailableDate1);
+            em.persist(careAvailableDate2);
         }
 
         public void dbInit3() {
@@ -146,6 +162,14 @@ public class InitDB {
 
             em.persist(member);
 
+            Certification certification1 = Certification.builder()
+                    .name("돌봄1급")
+                    .build();
+
+            Certification certification2 = Certification.builder()
+                    .name("돌봄2급")
+                    .build();
+
             CareAvailableDate careAvailableDate1 = CareAvailableDate.builder()
                     .availabilityAt(LocalDate.parse("2024-12-31"))
                     .price(30000)
@@ -166,11 +190,17 @@ public class InitDB {
                     .price(50000)
                     .build();
 
+            certification1.addSitter(member);
+            certification2.addSitter(member);
+
             careAvailableDate1.addPetSitter(member);
             careAvailableDate2.addPetSitter(member);
             careAvailableDate3.addPetSitter(member);
             careAvailableDate4.addPetSitter(member);
             careAvailableDate2.reservation();
+
+            em.persist(certification1);
+            em.persist(certification2);
 
             em.persist(careAvailableDate1);
             em.persist(careAvailableDate2);
