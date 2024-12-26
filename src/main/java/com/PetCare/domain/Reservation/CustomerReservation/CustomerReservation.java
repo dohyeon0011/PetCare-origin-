@@ -1,5 +1,6 @@
 package com.PetCare.domain.Reservation.CustomerReservation;
 
+import com.PetCare.domain.CareLog.CareLog;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.domain.Review.Review;
@@ -67,7 +68,7 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @OneToOne(mappedBy = "customerReservation", orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "customerReservation", orphanRemoval = true)
     private Review review;
 
     public static CustomerReservation createCustomerReservation(Member customer, Member sitter, int price, PetReservation... petReservations) {
@@ -131,8 +132,8 @@ public class CustomerReservation { // 돌봄 예약(고객 시점)
     }
 
     // 해당 예약 상세 조회
-    public CustomerReservationResponse.GetDetail toResponse() {
-        return new CustomerReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations);
+    public CustomerReservationResponse.GetDetail toResponse(List<CareLog> careLogList) {
+        return new CustomerReservationResponse.GetDetail(this.customer, this.sitter, this, this.petReservations, careLogList);
     }
 }
 
