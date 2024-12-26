@@ -68,7 +68,7 @@ public class MemberService {
 
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
-                request.getPhoneNumber(), request.getAddress1(), request.getAddress2(),
+                request.getPhoneNumber(), request.getZipcode(), request.getAddress(),
                 request.getRole(), request.getProfileImgPath(), request.getIntroduction(), request.getCareerYear()
         );
 
