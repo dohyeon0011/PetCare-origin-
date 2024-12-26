@@ -23,7 +23,7 @@ public class CareLog { // 돌봄 케어 로그
     @Column(name = "care_log_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sitter_schedule_id")
     private SitterSchedule sitterSchedule;
 
@@ -52,6 +52,7 @@ public class CareLog { // 돌봄 케어 로그
     // 돌봄사 시점 돌봄 배정 - 돌봄 케어 로그 연관관계 편의 메서드
     public void addSitterSchedule(SitterSchedule sitterSchedule) {
         this.sitterSchedule = sitterSchedule;
+        sitterSchedule.addCareLog(this);
     }
 
     @Comment("케어 로그 내용 수정")
