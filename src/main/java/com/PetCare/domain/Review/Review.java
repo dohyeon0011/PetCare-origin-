@@ -24,7 +24,7 @@ public class Review {
     @Column(name = "review_id")
     private long id;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "customer_reservation_id")
     private CustomerReservation customerReservation;
 
