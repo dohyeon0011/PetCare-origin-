@@ -1,9 +1,11 @@
 package com.PetCare.dto.Reservation.CustomerReservation.response;
 
+import com.PetCare.domain.CareLog.CareLog;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Pet.PetReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
+import com.PetCare.dto.CareLog.response.CareLogResponse;
 import com.PetCare.dto.Pet.response.PetReservationResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,8 +47,9 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
         private LocalDateTime createdAt;
         private ReservationStatus status;
         private List<PetReservationResponse> pets;
+        private List<CareLogResponse.GetDetail> careLogList;
 
-        public GetDetail(Member customer, Member sitter, CustomerReservation customerReservation, List<PetReservation> pets) {
+        public GetDetail(Member customer, Member sitter, CustomerReservation customerReservation, List<PetReservation> pets, List<CareLog> careLogList) {
             this.id = customerReservation.getId();
             this.customerId = customer.getId();
             this.customerNickName = customer.getNickName();
@@ -60,6 +63,10 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
             this.pets = pets
                     .stream()
                     .map(PetReservationResponse::new)
+                    .toList();
+            this.careLogList = careLogList
+                    .stream()
+                    .map(CareLogResponse.GetDetail::new)
                     .toList();
         }
     }
