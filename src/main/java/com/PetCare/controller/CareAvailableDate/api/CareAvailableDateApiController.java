@@ -71,10 +71,10 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "회원의 등록한 특정 돌봄 일정 수정 API")
     @PutMapping("/{memberId}/care-available-dates/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse.GetList> updateCareAvailableDate(@PathVariable("memberId") long id,
+    public ResponseEntity<CareAvailableDateResponse.GetDetail> updateCareAvailableDate(@PathVariable("memberId") long id,
                                                                             @PathVariable("careAvailableDateId") long careAvailableDateId,
                                                                             @RequestBody @Valid UpdateCareAvailableDateRequest request) {
-        CareAvailableDateResponse.GetList updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
+        CareAvailableDateResponse.GetDetail updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
 
         return ResponseEntity.ok()
                 .body(updateSitterAvailableDate);
