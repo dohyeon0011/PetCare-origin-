@@ -61,11 +61,11 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 단건 조회")
     @Transactional(readOnly = true)
-    public CareAvailableDateResponse.GetList findById(long sitterId, long careAvailableDateId) {
+    public CareAvailableDateResponse.GetDetail findById(long sitterId, long careAvailableDateId) {
         CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitterId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
-        return careAvailableDate.toResponse();
+        return new CareAvailableDateResponse.GetDetail(careAvailableDate);
     }
 
     @Comment("등록한 돌봄 가능 날짜 삭제")
