@@ -21,6 +21,7 @@ public class MemberResponse {
     @Getter
     public static class GetCustomer {
         private long id;
+        private String password;
         private String name;
         private String nickName;
         private String email;
@@ -35,6 +36,7 @@ public class MemberResponse {
 
         public GetCustomer(Member member, List<Pet> pets) {
             this.id = member.getId();
+            this.password = member.getPassword();
             this.name = member.getName();
             this.nickName = member.getNickName();
             this.email = member.getEmail();
@@ -55,6 +57,7 @@ public class MemberResponse {
     @Getter
     public static class GetSitter {
         private long id;
+        private String password;
         private String name;
         private String nickName;
         private String email;
@@ -69,6 +72,7 @@ public class MemberResponse {
 
         public GetSitter(Member member, List<Certification> certifications) {
             this.id = member.getId();
+            this.password = member.getPassword();
             this.name = member.getName();
             this.nickName = member.getNickName();
             this.email = member.getEmail();
