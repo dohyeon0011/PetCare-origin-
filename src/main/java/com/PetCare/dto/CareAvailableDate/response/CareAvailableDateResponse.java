@@ -27,6 +27,26 @@ public class CareAvailableDateResponse {
 
     @NoArgsConstructor
     @Getter
+    public static class GetDetail {
+        private long id;
+        private LocalDate availableAt;
+        private int price;
+        private String zipcode;
+        private String address;
+        private CareAvailableDateStatus status;
+
+        public GetDetail(CareAvailableDate careAvailableDate) {
+            this.id = careAvailableDate.getId();
+            this.availableAt = careAvailableDate.getAvailableAt();
+            this.price = careAvailableDate.getPrice();
+            this.zipcode = careAvailableDate.getSitter().getZipcode();
+            this.address = careAvailableDate.getSitter().getAddress();
+            this.status = careAvailableDate.getStatus();
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
     public static class GetReservation { // 고객이 예약 시 보여질 데이터
         private long id;
         private LocalDate availableAt;
