@@ -85,7 +85,7 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 정보 수정")
     @Transactional
-    public CareAvailableDateResponse.GetList update(long sitterId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
+    public CareAvailableDateResponse.GetDetail update(long sitterId, long careAvailableDateId, UpdateCareAvailableDateRequest request) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("회원 정보를 불러오는데 실패했습니다."));
 
@@ -97,7 +97,7 @@ public class CareAvailableDateService {
 
         careAvailableDate.update(request.getAvailabilityAt(), request.getPrice());
 
-        return careAvailableDate.toResponse();
+        return new CareAvailableDateResponse.GetDetail(careAvailableDate);
     }
 
     private static void authorizetionMember(Member member) {
