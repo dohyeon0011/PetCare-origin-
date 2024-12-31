@@ -1,5 +1,6 @@
 package com.PetCare.dto.Review.response;
 
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,24 @@ public class ReviewResponse {
             this.sitterName = review.getCustomerReservation().getSitter().getName();
             this.rating = review.getRating();
             this.comment = review.getComment();
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
+    public static class GetNewReview { // 리뷰 작성 시 보여질 폼 데이터
+        private long customerReservationId;
+        private String customerNickName;
+        private String sitterName;
+        private Double rating;
+        private String comment;
+
+        public GetNewReview(CustomerReservation customerReservation) {
+            this.customerReservationId = customerReservation.getId();
+            this.customerNickName = customerReservation.getCustomer().getNickName();
+            this.sitterName = customerReservation.getSitter().getName();
+            this.rating = customerReservation.getReview().getRating();
+            this.comment = customerReservation.getReview().getComment();
         }
     }
 
