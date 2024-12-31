@@ -56,8 +56,6 @@ public class ReviewResponse {
             this.customerReservationId = customerReservation.getId();
             this.customerNickName = customerReservation.getCustomer().getNickName();
             this.sitterName = customerReservation.getSitter().getName();
-            this.rating = customerReservation.getReview().getRating();
-            this.comment = customerReservation.getReview().getComment();
         }
     }
 
