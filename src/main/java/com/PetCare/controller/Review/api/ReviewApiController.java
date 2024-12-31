@@ -69,4 +69,14 @@ public class ReviewApiController {
                 .body(updateReview);
     }
 
+    @Operation(description = "리뷰 작성 시 보여질 폼 데이터")
+    @GetMapping("/members/{customerId}/reservations/{customerReservationId}/reviews/new")
+    public ResponseEntity<ReviewResponse.GetNewReview> getReview(@PathVariable("customerId") long customerId,
+                                                                 @PathVariable("customerReservationId") long customerReservationId) {
+        ReviewResponse.GetNewReview newReview = reviewService.getNewReview(customerId, customerReservationId);
+
+        return ResponseEntity.ok()
+                .body(newReview);
+    }
+
 }
