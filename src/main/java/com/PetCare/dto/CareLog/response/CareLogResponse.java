@@ -49,10 +49,15 @@ public class CareLogResponse {
 
     @NoArgsConstructor
     @Getter
-    public static class GetReservation {
+    public static class GetNewCareLog {
+        private String sitterName;
         private String customerNickName;
+        private String careType;
+        private String description;
+        private String imgPath;
 
-        public GetReservation(SitterSchedule sitterSchedule) {
+        public GetNewCareLog(SitterSchedule sitterSchedule) {
+            this.sitterName = sitterSchedule.getSitter().getName();
             this.customerNickName = sitterSchedule.getCustomer().getNickName();
         }
     }
