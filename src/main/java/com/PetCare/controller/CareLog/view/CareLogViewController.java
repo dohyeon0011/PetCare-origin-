@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,15 +19,11 @@ public class CareLogViewController {
 
     private final CareLogService careLogService;
 
-    @Operation(description = "돌봄 케어 로그 작성 || 수정")
-    @GetMapping("/members/{sitterId}/care-logs/new")
-    public String newCareLog(@PathVariable("sitterId") long sitterId, @RequestParam(name = "careLogId", required = false) Long careLogId, Model model) {
-        if (careLogId == null) {
-            model.addAttribute("careLog", new CareLogResponse.GetDetail());
-        } else {
-            CareLogResponse.GetDetail careLog = careLogService.findById(sitterId, careLogId);
-            model.addAttribute("careLog", careLog);
-        }
+    @Operation(description = "돌봄 케어 로그 작성")
+    @GetMapping("/schedules/{sitterScheduleId}/care-logs/new")
+    public String newCareLog(@PathVariable("sitterScheduleId") long sitterScheduleId, Model model) {
+        CareLogResponse.GetNewCareLog careLog = careLogService.getReservation(sitterScheduleId);
+        model.addAttribute("careLog", careLog);
 
         return "careLog/newCareLog";
     }
@@ -61,4 +56,12 @@ public class CareLogViewController {
         return "careLog/careLogDetail";
     }
 
+    @Operation(description = "돌봄사의 특정 돌봄 케어 로그 수정")
+    @GetMapping("/members/{sitterId}/care-logs/{careLogId}")
+    public String editCareLog(@PathVariable("sitterId") long sitterId, @PathVariable("careLogId") long careLogId, Model model) {
+        CareLogResponse.GetDetail careLog = careLogService.findById(sitterId, careLogId);
+        model.addAttribute("careLog", careLog);
+
+        return "careLog/editCareLog";
+    }
 }
