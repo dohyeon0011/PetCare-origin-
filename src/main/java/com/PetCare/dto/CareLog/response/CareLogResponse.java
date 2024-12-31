@@ -51,9 +51,6 @@ public class CareLogResponse {
     @Getter
     public static class GetReservation {
         private String customerNickName;
-        private String careType;
-        private String description;
-        private String imgPath;
 
         public GetReservation(SitterSchedule sitterSchedule) {
             this.customerNickName = sitterSchedule.getCustomer().getNickName();
