@@ -1,6 +1,5 @@
 package com.PetCare.controller.Reservation;
 
-import com.PetCare.dto.Reservation.ReservationResponse;
 import com.PetCare.dto.Reservation.ReservationSitterResponse;
 import com.PetCare.service.Reservation.SitterReservationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,13 +37,4 @@ public class SitterReservationApiController {
                 .body(reservableSitter);
     }
 
-    @Operation(description = "고객이 예약할 때 보여줄 정보 API")
-    @GetMapping("/reservable/members/{customerId}/sitters/{sitterId}")
-    public ResponseEntity<ReservationResponse> getReservationDetail(@PathVariable("customerId") long customerId,
-                                                                     @PathVariable("sitterId") long sitterId) {
-        ReservationResponse reservationDetails = sitterReservationService.getReservationDetails(customerId, sitterId);
-
-        return ResponseEntity.ok()
-                .body(reservationDetails);
-    }
 }
