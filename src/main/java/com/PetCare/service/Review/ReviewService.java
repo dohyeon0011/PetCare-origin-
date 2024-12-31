@@ -101,6 +101,15 @@ public class ReviewService {
         return review.toResponse();
     }
 
+    @Comment("리뷰 작성시 보여질 폼 데이터")
+    @Transactional(readOnly = true)
+    public ReviewResponse.GetNewReview getNewReview(long customerId, long customerReservationId) {
+        CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
+                .orElseThrow(() -> new NoSuchElementException("회원의 해당 예약 정보 조회에 실패했습니다."));
+
+        return new ReviewResponse.GetNewReview(customerReservation);
+    }
+
     private static void authorizationMember(Member member) {
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이디 값 반환
 //
