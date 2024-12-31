@@ -109,7 +109,8 @@ public class CareLogService {
     }
 
     @Comment("돌봄 케어 로그 작성할 때 보여줄 정보")
-    public CareLogResponse.GetReservation getReservation(long sitterId, long sitterScheduleId) {
+    @Transactional(readOnly = true)
+    public CareLogResponse.GetReservation getReservation(long sitterScheduleId) {
         SitterSchedule sitterSchedule = sitterScheduleRepository.findById(sitterScheduleId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약을 조회하는데 실패했습니다."));
 
