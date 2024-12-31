@@ -50,7 +50,7 @@ public class CareLogApiController {
                 .body(careLogList);
     }
 
-    @Operation(description = "돌봄사가 특정 돌봄에 대해 작성한 특정 돌봄 케어 로그 단건 조회 API")
+    @Operation(description = "돌봄사가 특정 돌봄에 대해 작성한 특정 돌봄 케어 로그 상세 조회 API")
     @GetMapping("/members/{sitterId}/care-logs/{careLogId}")
     public ResponseEntity<CareLogResponse.GetDetail> findCareLog(@PathVariable("sitterId") long sitterId, @PathVariable("careLogId") long careLogId) {
         CareLogResponse.GetDetail careLog = careLogService.findById(sitterId, careLogId);
@@ -79,12 +79,4 @@ public class CareLogApiController {
                 .body(careLog);
     }
 
-    @Operation(description = "돌봄 케어 로그 작성할 때 보여줄 정보 API")
-    @GetMapping("/members/{sitterId}/schedules/{sitterScheduleId}/care-logs/new")
-    public ResponseEntity<CareLogResponse.GetReservation> getCareLog(@PathVariable("sitterId") long sitterId, @PathVariable("sitterScheduleId") long sitterScheduleId) {
-        CareLogResponse.GetReservation response = careLogService.getReservation(sitterId, sitterScheduleId);
-
-        return ResponseEntity.ok()
-                .body(response);
-    }
 }
