@@ -19,6 +19,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     // 고객이 보유한 반려견 목록 전체 조회
+    @Override
     public List<Pet> findPetsByCustomerId(long customerId) {
         return queryFactory
                 .selectFrom(pet)
@@ -28,6 +29,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     // 돌봄사가 등록한 예약 가능 날짜 전체 조회
+    @Override
     public List<CareAvailableDate> findCareAvailableDatesBySitterId(long sitterId) {
         LocalDateTime now = LocalDateTime.now();
 
@@ -39,6 +41,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     // 돌봄사가 등록한 예약 가능 날짜 중 특정 날짜 조회
+    @Override
     public Optional<CareAvailableDate> findCareAvailableDateBySitterIdAndAvailableAt(long sitterId, LocalDate availableDate) {
         return Optional.ofNullable(
                 queryFactory
