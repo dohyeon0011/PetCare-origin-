@@ -10,6 +10,8 @@ import com.PetCare.repository.Member.MemberRepository;
 import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,13 +52,17 @@ public class CareAvailableDateService {
 
     @Comment("등록한 돌봄 가능 날짜 조회")
     @Transactional(readOnly = true)
-    public List<CareAvailableDateResponse.GetList> findAllById(long sitterId) {
-        List<CareAvailableDateResponse.GetList> careAvailableDateList = careAvailableDateRepository.findBySitterId(sitterId)
-                .stream()
-                .map(CareAvailableDateResponse.GetList::new)
-                .collect(Collectors.toList());
+    public Page<CareAvailableDateResponse.GetList> findAllById(long sitterId, Pageable pageable) {
+//        List<CareAvailableDateResponse.GetList> careAvailableDateList = careAvailableDateRepository.findBySitterId(sitterId)
+//                .stream()
+//                .map(CareAvailableDateResponse.GetList::new)
+//                .collect(Collectors.toList());
 
-        return careAvailableDateList;
+//        return careAvailableDateList;
+
+        Page<CareAvailableDateResponse.GetList> careAvailableDates = careAvailableDateRepository.findBySitterId(sitterId, pageable);
+
+        return careAvailableDates;
     }
 
     @Comment("등록한 돌봄 가능 날짜 단건 조회")
