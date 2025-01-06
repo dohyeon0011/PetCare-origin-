@@ -8,6 +8,8 @@ import com.PetCare.service.CareAvailableDate.CareAvailableDateService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +44,8 @@ public class CareAvailableDateApiController {
 
     @Operation(description = "회원의 등록한 모든 돌봄 일정 조회 API")
     @GetMapping("/{sitterId}/care-available-dates")
-    public ResponseEntity<List<CareAvailableDateResponse.GetList>> findCareAvailableDateList(@PathVariable("sitterId") long id) {
-        List<CareAvailableDateResponse.GetList> sitterAvailableDateList = careAvailableDateService.findAllById(id);
+    public ResponseEntity<Page<CareAvailableDateResponse.GetList>> findCareAvailableDateList(@PathVariable("sitterId") long id, Pageable pageable) {
+        Page<CareAvailableDateResponse.GetList> sitterAvailableDateList = careAvailableDateService.findAllById(id, pageable);
 
         return ResponseEntity.ok()
                 .body(sitterAvailableDateList);
