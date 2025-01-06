@@ -7,11 +7,11 @@ import com.PetCare.service.Review.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +33,9 @@ public class ReviewApiController {
 
     @Operation(description = "특정 회원의 모든 리뷰 조회 API")
     @GetMapping("/members/{customerId}/reviews")
-    public ResponseEntity<List<ReviewResponse.GetList>> findAllReview(@PathVariable("customerId") long customerId) {
-        List<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId);
+    public ResponseEntity<Page<ReviewResponse.GetList>> findAllReview(@PathVariable("customerId") long customerId, Pageable pageable) {
+//        List<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId);
+        Page<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId, pageable);
 
         return ResponseEntity.ok()
                 .body(reviews);
