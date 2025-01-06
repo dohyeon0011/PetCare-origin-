@@ -4,13 +4,13 @@ import com.PetCare.dto.Review.response.ReviewResponse;
 import com.PetCare.service.Review.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,8 +31,9 @@ public class ReviewViewController {
 
     @Operation(description = "특정 회원의 모든 리뷰 조회")
     @GetMapping("/members/{customerId}/reviews")
-    public String getAllReview(@PathVariable("customerId") long customerId, Model model) {
-        List<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId);
+    public String getAllReview(@PathVariable("customerId") long customerId, Pageable pageable, Model model) {
+//        List<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId);
+        Page<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId, pageable);
         model.addAttribute("reviews", reviews);
 
         return "review/reviewList";
