@@ -7,11 +7,11 @@ import com.PetCare.service.Reservation.CustomerReservation.CustomerReservationSe
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +31,9 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회 API")
     @GetMapping("/members/{customerId}/reservations")
-    public ResponseEntity<List<CustomerReservationResponse.GetList>> findAllCustomerReservation(@PathVariable("customerId") long id) {
-        List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id);
+    public ResponseEntity<Page<CustomerReservationResponse.GetList>> findAllCustomerReservation(@PathVariable("customerId") long id, Pageable pageable) {
+//        List<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id, pageable);
+        Page<CustomerReservationResponse.GetList> customerReservationList = customerReservationService.findAllById(id, pageable);
 
         return ResponseEntity.ok()
                 .body(customerReservationList);
