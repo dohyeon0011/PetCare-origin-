@@ -17,12 +17,13 @@ import com.PetCare.repository.Reservation.SitterSchedule.SitterScheduleRepositor
 import com.PetCare.service.Reservation.Reward.RewardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,16 +77,18 @@ public class CustomerReservationService {
 
     @Comment("특정 회원의 돌봄 예약 내역 전체 조회")
     @Transactional(readOnly = true)
-    public List<CustomerReservationResponse.GetList> findAllById(long customerId) {
+    public Page<CustomerReservationResponse.GetList> findAllById(long customerId, Pageable pageable) {
         Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("예약 조회 오류 : 현재 회원은 존재하지 않는 회원입니다."));
 
         authorizationMember(customer);
 
-        List<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
-                .stream()
-                .map(CustomerReservationResponse.GetList::new) // Constructor Reference 사용
-                .collect(Collectors.toList());
+//        List<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customer.getId())
+//                .stream()
+//                .map(CustomerReservationResponse.GetList::new) // Constructor Reference 사용
+//                .collect(Collectors.toList());
+
+        Page<CustomerReservationResponse.GetList> reservations = customerReservationRepository.findByCustomerId(customerId, pageable);
 
         return reservations;
     }
