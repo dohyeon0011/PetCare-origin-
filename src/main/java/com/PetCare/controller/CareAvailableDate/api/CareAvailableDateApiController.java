@@ -72,8 +72,8 @@ public class CareAvailableDateApiController {
     }
 
     @Operation(description = "회원의 등록한 특정 돌봄 일정 수정 API")
-    @PutMapping("/{memberId}/care-available-dates/{careAvailableDateId}")
-    public ResponseEntity<CareAvailableDateResponse.GetDetail> updateCareAvailableDate(@PathVariable("memberId") long id,
+    @PutMapping("/{sitterId}/care-available-dates/{careAvailableDateId}")
+    public ResponseEntity<CareAvailableDateResponse.GetDetail> updateCareAvailableDate(@PathVariable("sitterId") long id,
                                                                             @PathVariable("careAvailableDateId") long careAvailableDateId,
                                                                             @RequestBody @Valid UpdateCareAvailableDateRequest request) {
         CareAvailableDateResponse.GetDetail updateSitterAvailableDate = careAvailableDateService.update(id, careAvailableDateId, request);
