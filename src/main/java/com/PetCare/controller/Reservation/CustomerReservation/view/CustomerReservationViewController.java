@@ -6,13 +6,13 @@ import com.PetCare.service.Reservation.CustomerReservation.CustomerReservationSe
 import com.PetCare.service.Reservation.SitterReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,8 +33,9 @@ public class CustomerReservationViewController {
 
     @Operation(description = "회원의 모든 돌봄 예약 내역 조회")
     @GetMapping("/members/{customerId}/reservations")
-    public String getAllReservation(@PathVariable("customerId") long customerId, Model model) {
-        List<CustomerReservationResponse.GetList> reservations = customerReservationService.findAllById(customerId);
+    public String getAllReservation(@PathVariable("customerId") long customerId, Pageable pageable, Model model) {
+//        List<CustomerReservationResponse.GetList> reservations = customerReservationService.findAllById(customerId);
+        Page<CustomerReservationResponse.GetList> reservations = customerReservationService.findAllById(customerId, pageable);
         model.addAttribute("reservations", reservations);
 
         return "reservation/reservationList";
