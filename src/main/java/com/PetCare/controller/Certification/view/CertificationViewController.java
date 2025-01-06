@@ -2,8 +2,8 @@ package com.PetCare.controller.Certification.view;
 
 import com.PetCare.dto.Certification.response.CertificationResponse;
 import com.PetCare.service.Certification.CertificationService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class CertificationViewController {
 
     private final CertificationService certificationService;
 
-    @Operation(description = "회원의 자격증 추가 || 수정")
+    @Comment("회원의 자격증 추가")
     @GetMapping("/members/{sitterId}/certifications/new")
     public String newCertification(@PathVariable("sitterId") long sitterId, Model model) {
         List<CertificationResponse.GetList> certifications = certificationService.findById(sitterId);
@@ -33,7 +33,7 @@ public class CertificationViewController {
         return "certification/newCertification";
     }
 
-    @Operation(description = "회원의 모든 자격증 조회")
+    @Comment("회원의 모든 자격증 조회")
     @GetMapping("/members/{sitterId}/certifications")
     public String getAllCertification(@PathVariable("sitterId") long sitterId, Model model) {
         List<CertificationResponse.GetList> certifications = certificationService.findById(sitterId);
