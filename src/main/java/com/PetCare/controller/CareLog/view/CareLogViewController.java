@@ -57,7 +57,7 @@ public class CareLogViewController {
     }
 
     @Operation(description = "돌봄사의 특정 돌봄 케어 로그 수정")
-    @GetMapping("/members/{sitterId}/care-logs/{careLogId}")
+    @GetMapping("/members/{sitterId}/care-logs/{careLogId}/edit")
     public String editCareLog(@PathVariable("sitterId") long sitterId, @PathVariable("careLogId") long careLogId, Model model) {
         CareLogResponse.GetDetail careLog = careLogService.findById(sitterId, careLogId);
         model.addAttribute("careLog", careLog);
