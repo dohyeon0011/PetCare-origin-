@@ -2,8 +2,8 @@ package com.PetCare.controller.Pet.view;
 
 import com.PetCare.dto.Pet.response.PetResponse;
 import com.PetCare.service.Pet.PetService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class PetViewController {
 
     private final PetService petService;
 
-    @Operation(description = "반려견 등록 || 수정")
+    @Comment("반려견 등록 || 수정")
     @GetMapping("/members/{customerId}/pets/new")
     public String newPet(@PathVariable("customerId") long customerId, Model model) {
         List<PetResponse.GetList> pets = petService.findById(customerId);
@@ -33,7 +33,7 @@ public class PetViewController {
         return "pet/newPet";
     }
 
-    @Operation(description = "특정 회원의 모든 반려견 조회")
+    @Comment("특정 회원의 모든 반려견 조회")
     @GetMapping("/members/{customerId}/pets")
     public String getAllPet(@PathVariable("customerId") long customerId, Model model) {
         List<PetResponse.GetList> pets = petService.findById(customerId);
