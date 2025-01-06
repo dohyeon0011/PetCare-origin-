@@ -12,10 +12,11 @@ import com.PetCare.repository.Reservation.CustomerReservation.CustomerReservatio
 import com.PetCare.repository.Review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -50,15 +51,19 @@ public class ReviewService {
 
     @Comment("특정 회원의 작성한 리뷰 전체 조회")
     @Transactional(readOnly = true)
-    public List<ReviewResponse.GetList> findAllById(long customerId) {
+    public Page<ReviewResponse.GetList> findAllById(long customerId, Pageable pageable) {
         Member customer = memberRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException("로그인한 회원을 찾을 수 없습니다."));
 
-        List<Review> reviews = reviewRepository.findByCustomerReservationCustomerId(customer.getId());
+        Page<ReviewResponse.GetList> reviews = reviewRepository.findByCustomerReservationCustomerId(customerId, pageable);
 
-        return reviews.stream()
-                .map(ReviewResponse.GetList::new)
-                .toList();
+        return reviews;
+
+//        List<Review> reviews = reviewRepository.findByCustomerReservationCustomerId(customer.getId());
+
+//        return reviews.stream()
+//                .map(ReviewResponse.GetList::new)
+//                .toList();
     }
 
     @Comment("특정 리뷰 조회")
