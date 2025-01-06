@@ -23,6 +23,13 @@ public class CareAvailableDateResponse {
             this.price = careAvailableDate.getPrice();
             this.status = careAvailableDate.getStatus();
         }
+
+        public GetList(Long id, LocalDate availableAt, int price, CareAvailableDateStatus status) {
+            this.id = id;
+            this.availableAt = availableAt;
+            this.price = price;
+            this.status = status;
+        }
     }
 
     @NoArgsConstructor
