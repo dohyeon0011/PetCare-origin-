@@ -18,6 +18,7 @@ public class CareAvailableDateRepositoryImpl implements CareAvailableDateReposit
     private final JPAQueryFactory queryFactory;
 
     // 돌봄 예약 가능 날짜를 등록한 회원 중 현재 예약이 가능한 회원만 조회
+    @Override
     public Set<Member> findDistinctSitters() {
         return queryFactory
                 .select(careAvailableDate.sitter).distinct()
@@ -28,6 +29,7 @@ public class CareAvailableDateRepositoryImpl implements CareAvailableDateReposit
     }
 
     // 특정 돌봄사의 돌봄 예약 가능한 날짜만을 조회
+    @Override
     public List<CareAvailableDate> findBySitterIdAndPossibility(long sitterId) {
         return queryFactory
                 .selectFrom(careAvailableDate)
