@@ -32,10 +32,10 @@ public class ReviewApiController {
     }
 
     @Operation(description = "특정 회원의 모든 리뷰 조회 API")
-    @GetMapping("/members/{customerId}/reviews")
-    public ResponseEntity<Page<ReviewResponse.GetList>> findAllReview(@PathVariable("customerId") long customerId, Pageable pageable) {
-//        List<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId);
-        Page<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId, pageable);
+    @GetMapping("/members/{memberId}/reviews")
+    public ResponseEntity<Page<ReviewResponse.GetList>> findAllReview(@PathVariable("memberId") long memberId, Pageable pageable) {
+//        List<ReviewResponse.GetList> reviews = reviewService.findAllById(memberId);
+        Page<ReviewResponse.GetList> reviews = reviewService.findAllById(memberId, pageable);
 
         return ResponseEntity.ok()
                 .body(reviews);
