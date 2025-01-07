@@ -6,6 +6,7 @@ import com.PetCare.domain.Reservation.CustomerReservation.ReservationStatus;
 import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.PetCare.dto.Pet.response.PetReservationResponse;
 import com.PetCare.dto.Review.response.ReviewResponse;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,11 +25,12 @@ public class SitterScheduleResponse { // 돌봄사 시점 예약 조회
         private LocalDateTime createdAt;
         private ReservationStatus status;
 
-        public GetList(SitterSchedule sitterSchedule) {
-            this.id = sitterSchedule.getId();
-            this.reservationAt = sitterSchedule.getReservationAt();
-            this.createdAt = sitterSchedule.getCreatedAt();
-            this.status = sitterSchedule.getStatus();
+        @QueryProjection
+        public GetList(long id, LocalDate reservationAt, LocalDateTime createdAt, ReservationStatus status) {
+            this.id = id;
+            this.reservationAt = reservationAt;
+            this.createdAt = createdAt;
+            this.status = status;
         }
     }
 
