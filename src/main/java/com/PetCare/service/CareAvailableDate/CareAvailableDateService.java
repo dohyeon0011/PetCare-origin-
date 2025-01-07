@@ -68,10 +68,15 @@ public class CareAvailableDateService {
     @Comment("등록한 돌봄 가능 날짜 단건 조회")
     @Transactional(readOnly = true)
     public CareAvailableDateResponse.GetDetail findById(long sitterId, long careAvailableDateId) {
-        CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitterId, careAvailableDateId)
+        /*CareAvailableDate careAvailableDate = careAvailableDateRepository.findBySitterIdAndId(sitterId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
-        return new CareAvailableDateResponse.GetDetail(careAvailableDate);
+        return new CareAvailableDateResponse.GetDetail(careAvailableDate);*/
+
+        CareAvailableDateResponse.GetDetail careAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetails(sitterId, careAvailableDateId)
+                .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
+
+        return careAvailableDate;
     }
 
     @Comment("등록한 돌봄 가능 날짜 삭제")
@@ -103,7 +108,25 @@ public class CareAvailableDateService {
 
         careAvailableDate.update(request.getAvailabilityAt(), request.getPrice());
 
-        return new CareAvailableDateResponse.GetDetail(careAvailableDate);
+//        return new CareAvailableDateResponse.GetDetail(careAvailableDate);
+
+        // 추가적인 DB 쿼리가 발생하지 않는 대신에(영속성 컨텍스트에 이미 올라가져 있으니) 불필요한 데이터가 조회되고, 영속성 컨텍스트에 의존해서 트랜잭션 내에서만 유효하게 됨.
+        // 성능적인 측면으로 봤을 때는 이 방법이 좋긴 함.
+        /*return new CareAvailableDateResponse.GetDetail(
+                careAvailableDate.getId(),
+                careAvailableDate.getAvailableAt(),
+                careAvailableDate.getPrice(),
+                careAvailableDate.getSitter().getZipcode(),
+                careAvailableDate.getSitter().getAddress(),
+                careAvailableDate.getStatus()
+        );*/
+
+        // 수정된 데이터 다시 조회
+        // 새로운 DB 쿼리가 발생하지만 엔티티를 수정한 후, 최신 상태를 DB에서 직접 조회하기 때문에 데이터의 정확성 보장 가능.
+        CareAvailableDateResponse.GetDetail updateCareAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetails(sitter.getId(), careAvailableDateId)
+                .orElseThrow(() -> new NoSuchElementException("등록된 돌봄 날짜가 존재하지 않습니다."));
+
+        return updateCareAvailableDate;
     }
 
     private static void authorizetionMember(Member member) {
