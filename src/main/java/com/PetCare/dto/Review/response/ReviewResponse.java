@@ -2,7 +2,6 @@ package com.PetCare.dto.Review.response;
 
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Review.Review;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ public class ReviewResponse {
         private String sitterName;
         private Double rating;
 
-        @QueryProjection
         public GetList(long reviewId, String nickName, String name, Double rating) {
             this.id = reviewId;
             this.customerNickName = nickName;
