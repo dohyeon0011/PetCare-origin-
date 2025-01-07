@@ -42,13 +42,13 @@ public class CareAvailableDateResponse {
         private String address;
         private CareAvailableDateStatus status;
 
-        public GetDetail(CareAvailableDate careAvailableDate) {
-            this.id = careAvailableDate.getId();
-            this.availableAt = careAvailableDate.getAvailableAt();
-            this.price = careAvailableDate.getPrice();
-            this.zipcode = careAvailableDate.getSitter().getZipcode();
-            this.address = careAvailableDate.getSitter().getAddress();
-            this.status = careAvailableDate.getStatus();
+        public GetDetail(long id, LocalDate availableAt, int price, String zipcode, String address, CareAvailableDateStatus status) {
+            this.id = id;
+            this.availableAt = availableAt;
+            this.price = price;
+            this.zipcode = zipcode;
+            this.address = address;
+            this.status = status;
         }
     }
 
