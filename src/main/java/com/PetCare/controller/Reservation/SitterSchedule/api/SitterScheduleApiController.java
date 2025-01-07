@@ -4,10 +4,10 @@ import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleRespons
 import com.PetCare.service.Reservation.SitterSchedule.SitterScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +18,9 @@ public class SitterScheduleApiController {
 
     @Operation(description = "돌봄사의 전체 돌봄 예약 목록 조회 API")
     @GetMapping("/members/{sitterId}/schedules")
-    public ResponseEntity<List<SitterScheduleResponse.GetList>> findAllSitterSchedule(@PathVariable("sitterId") long id) {
-        List<SitterScheduleResponse.GetList> sitterScheduleList = sitterScheduleService.findAllById(id);
+    public ResponseEntity<Page<SitterScheduleResponse.GetList>> findAllSitterSchedule(@PathVariable("sitterId") long id, Pageable pageable) {
+//        List<SitterScheduleResponse.GetList> sitterScheduleList = sitterScheduleService.findAllById(id);
+        Page<SitterScheduleResponse.GetList> sitterScheduleList = sitterScheduleService.findAllById(id, pageable);
 
         return ResponseEntity.ok()
                 .body(sitterScheduleList);
