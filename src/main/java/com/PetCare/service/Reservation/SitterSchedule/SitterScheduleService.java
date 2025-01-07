@@ -7,14 +7,14 @@ import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleResponse;
 import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
 import com.PetCare.repository.Member.MemberRepository;
-import com.PetCare.repository.Reservation.CustomerReservation.CustomerReservationRepository;
 import com.PetCare.repository.Reservation.SitterSchedule.SitterScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,13 +22,12 @@ import java.util.NoSuchElementException;
 public class SitterScheduleService {
 
     private final MemberRepository memberRepository;
-    private final CustomerReservationRepository customerReservationRepository;
     private final SitterScheduleRepository sitterScheduleRepository;
     private final CareAvailableDateRepository careAvailableDateRepository;
 
     @Comment("특정 돌봄사의 전체 돌봄 예약 목록 조회")
     @Transactional(readOnly = true)
-    public List<SitterScheduleResponse.GetList> findAllById(long sitterId) {
+    public Page<SitterScheduleResponse.GetList> findAllById(long sitterId, Pageable pageable) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("돌봄 예약 조회 오류: 돌봄사 정보 조회에 실패했습니다."));
 
@@ -38,10 +37,12 @@ public class SitterScheduleService {
 //                .map(SitterScheduleResponse.GetList::new)
 //                .toList();
 
-        List<SitterScheduleResponse.GetList> sitterSchedules = sitterScheduleRepository.findBySitterId(sitter.getId())
-                .stream()
-                .map(SitterScheduleResponse.GetList::new)
-                .toList();
+//        List<SitterScheduleResponse.GetList> sitterSchedules = sitterScheduleRepository.findBySitterId(sitter.getId())
+//                .stream()
+//                .map(SitterScheduleResponse.GetList::new)
+//                .toList();
+
+        Page<SitterScheduleResponse.GetList> sitterSchedules = sitterScheduleRepository.findBySitterId(sitterId, pageable);
 
         return sitterSchedules;
     }
