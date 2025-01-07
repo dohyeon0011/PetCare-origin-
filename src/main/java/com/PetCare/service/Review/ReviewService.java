@@ -51,15 +51,23 @@ public class ReviewService {
 
     @Comment("특정 회원의 작성한 리뷰 전체 조회")
     @Transactional(readOnly = true)
-    public Page<ReviewResponse.GetList> findAllById(long customerId, Pageable pageable) {
-        Member customer = memberRepository.findById(customerId)
+    public Page<ReviewResponse.GetList> findAllById(long memberId, Pageable pageable) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("로그인한 회원을 찾을 수 없습니다."));
 
-        Page<ReviewResponse.GetList> reviews = reviewRepository.findByCustomerReservationCustomerId(customerId, pageable);
+        Page<ReviewResponse.GetList> reviews;
+
+        if (member.getRole().equals(Role.CUSTOMER)) {
+             reviews = reviewRepository.findByCustomerReservationCustomerId(member.getId(), pageable);
+        } else if (member.getRole().equals(Role.PET_SITTER)) {
+            reviews = reviewRepository.findByCustomerReservationSitterId(member.getId(), pageable);
+        } else {
+            throw new IllegalArgumentException("알 수 없는 회원 역할입니다.");
+        }
 
         return reviews;
 
-//        List<Review> reviews = reviewRepository.findByCustomerReservationCustomerId(customer.getId());
+//        List<Review> reviews = reviewRepository.findByCustomerReservationCustomerId(member.getId());
 
 //        return reviews.stream()
 //                .map(ReviewResponse.GetList::new)
