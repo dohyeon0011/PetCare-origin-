@@ -2,6 +2,7 @@ package com.PetCare.dto.Review.response;
 
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Review.Review;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +16,12 @@ public class ReviewResponse {
         private String sitterName;
         private Double rating;
 
-        public GetList(Review review) {
-            this.id = review.getId();
-            this.customerNickName = review.getCustomerReservation().getCustomer().getNickName();
-            this.sitterName = review.getCustomerReservation().getSitter().getName();
-            this.rating = review.getRating();
+        @QueryProjection
+        public GetList(long reviewId, String nickName, String name, Double rating) {
+            this.id = reviewId;
+            this.customerNickName = nickName;
+            this.sitterName = name;
+            this.rating = rating;
         }
     }
 
