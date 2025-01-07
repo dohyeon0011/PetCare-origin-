@@ -3,11 +3,12 @@ package com.PetCare.repository.Reservation.SitterSchedule;
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface SitterScheduleRepository extends JpaRepository<SitterSchedule, Long> {
+public interface SitterScheduleRepository extends JpaRepository<SitterSchedule, Long>, SitterScheduleRepositoryCustom, QuerydslPredicateExecutor<SitterSchedule> {
 
     // 돌봄사에게 배정됐던 모든 예약 조회
     List<SitterSchedule> findBySitterId(long sitterId);
