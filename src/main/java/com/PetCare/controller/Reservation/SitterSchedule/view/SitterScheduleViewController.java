@@ -4,13 +4,13 @@ import com.PetCare.dto.Reservation.SitterSchedule.response.SitterScheduleRespons
 import com.PetCare.service.Reservation.SitterSchedule.SitterScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,8 +21,9 @@ public class SitterScheduleViewController {
 
     @Operation(description = "돌봄사의 전체 돌봄 예약 목록 조회")
     @GetMapping("/members/{sitterId}/schedules")
-    public String getAllSitterSchedule(@PathVariable("sitterId") long sitterId, Model model) {
-        List<SitterScheduleResponse.GetList> schedules = sitterScheduleService.findAllById(sitterId);
+    public String getAllSitterSchedule(@PathVariable("sitterId") long sitterId, Pageable pageable, Model model) {
+//        List<SitterScheduleResponse.GetList> schedules = sitterScheduleService.findAllById(sitterId);
+        Page<SitterScheduleResponse.GetList> schedules = sitterScheduleService.findAllById(sitterId, pageable);
         model.addAttribute("schedules", schedules);
 
         return "schedule/scheduleList";
