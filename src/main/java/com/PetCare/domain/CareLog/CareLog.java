@@ -1,7 +1,6 @@
 package com.PetCare.domain.CareLog;
 
 import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
-import com.PetCare.dto.CareLog.response.CareLogResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -62,8 +61,8 @@ public class CareLog { // 돌봄 케어 로그
         this.imgPath = imgPath;
     }
 
-    public CareLogResponse.GetDetail toResponse() {
+    /*public CareLogResponse.GetDetail toResponse() {
         return new CareLogResponse.GetDetail(this);
-    }
+    }*/
 
 }
