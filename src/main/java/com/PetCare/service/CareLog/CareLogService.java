@@ -41,23 +41,32 @@ public class CareLogService {
         CareLog careLog = request.toEntity(sitterSchedule);
         careLogRepository.save(careLog);
 
-        return careLog.toResponse();
+//        return careLog.toResponse();
+
+        CareLogResponse.GetDetail careLogResponse = careLogRepository.findCareLogDetail(careLog.getId(), sitterId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그를 불러오는데 실패했습니다."));
+
+        return careLogResponse;
     }
 
     @Comment("돌봄사가 작성한 모든 돌봄 케어 로그 조회")
     @Transactional(readOnly = true)
     public List<CareLogResponse.GetList> findAll(long sitterId) {
-        List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterId(sitterId);
+        /*List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterId(sitterId);
 
         return careLogList.stream()
                 .map(CareLogResponse.GetList::new)
-                .toList();
+                .toList();*/
+
+        List<CareLogResponse.GetList> careLogList = careLogRepository.findAllBySitterId(sitterId);
+
+        return careLogList;
     }
 
     @Comment("돌봄사가 특정 돌봄에 대해 작성한 돌봄 케어 로그 전체 조회")
     @Transactional(readOnly = true)
     public List<CareLogResponse.GetDetail> findAllById(long sitterId, long sitterScheduleId) {
-        List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterIdAndSitterScheduleId(sitterId, sitterScheduleId);
+        /*List<CareLog> careLogList = careLogRepository.findAllBySitterScheduleSitterIdAndSitterScheduleId(sitterId, sitterScheduleId);
 
         if (careLogList.isEmpty()) {
             throw new NoSuchElementException("해당 돌봄에 대해 작성된 케어 로그가 존재하지 않습니다.");
@@ -66,16 +75,28 @@ public class CareLogService {
         return careLogList
                 .stream()
                 .map(CareLogResponse.GetDetail::new)
-                .toList();
+                .toList();*/
+
+        List<CareLogResponse.GetDetail> careLogList = careLogRepository.findAllCareLogDetail(sitterId, sitterScheduleId);
+
+        if (careLogList.isEmpty()) {
+            throw new NoSuchElementException("해당 돌봄에 대해 작성된 케어 로그가 존재하지 않습니다.");
+        }
+        return careLogList;
     }
 
     @Comment("돌봄사가 특정 돌봄에 대해 작성한 특정 돌봄 케어 로그 단건 조회")
     @Transactional(readOnly = true)
     public CareLogResponse.GetDetail findById(long sitterId, long careLogId) {
-        CareLog careLog = careLogRepository.findBySitterScheduleSitterIdAndId(sitterId, careLogId)
+        /*CareLog careLog = careLogRepository.findBySitterScheduleSitterIdAndId(sitterId, careLogId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그 조회에 실패했습니다."));
 
-        return careLog.toResponse();
+        return careLog.toResponse();*/
+
+        CareLogResponse.GetDetail careLog = careLogRepository.findCareLogDetail(careLogId, sitterId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그 조회에 실패했습니다."));
+
+        return careLog;
     }
 
     @Comment("돌봄사의 특정 돌봄 케어 로그 삭제")
@@ -105,16 +126,26 @@ public class CareLogService {
 
         careLog.updateCareLog(request.getCareType(), request.getDescription(), request.getImgPath());
 
-        return careLog.toResponse();
+//        return careLog.toResponse();
+
+        CareLogResponse.GetDetail updateCareLog = careLogRepository.findCareLogDetail(careLog.getId(), sitterId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 케어 로그가 존재하지 않습니다."));
+
+        return updateCareLog;
     }
 
     @Comment("돌봄 케어 로그 작성할 때 보여줄 정보")
     @Transactional(readOnly = true)
     public CareLogResponse.GetNewCareLog getReservation(long sitterScheduleId) {
-        SitterSchedule sitterSchedule = sitterScheduleRepository.findById(sitterScheduleId)
+        /*SitterSchedule sitterSchedule = sitterScheduleRepository.findById(sitterScheduleId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약을 조회하는데 실패했습니다."));
 
-        return new CareLogResponse.GetNewCareLog(sitterSchedule);
+        return new CareLogResponse.GetNewCareLog(sitterSchedule);*/
+
+        CareLogResponse.GetNewCareLog response = sitterScheduleRepository.findBySitterScheduleId(sitterScheduleId)
+                .orElseThrow(() -> new NoSuchElementException("해당 돌봄 예약을 조회하는데 실패했습니다."));
+
+        return response;
     }
 
     private static void authorizationMember(Member member) {
