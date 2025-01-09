@@ -24,6 +24,8 @@ public interface CustomerReservationRepository extends JpaRepository<CustomerRes
             "FROM CustomerReservation c WHERE c.customer.id = :customerId")
     Page<CustomerReservationResponse.GetList> findByCustomerId(@Param("customerId") long customerId, Pageable pageable);
 
+
+
     // 돌봄사의 예약 번호로 특정 회원의 특정 돌봄 예약 내역 조회
 //    Optional<CustomerReservation> findBySitterScheduleId(long sitterScheduleId);
 }
