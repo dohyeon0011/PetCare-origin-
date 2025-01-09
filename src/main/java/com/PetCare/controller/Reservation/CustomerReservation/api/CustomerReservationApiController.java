@@ -1,6 +1,5 @@
 package com.PetCare.controller.Reservation.CustomerReservation.api;
 
-import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.dto.Reservation.CustomerReservation.request.AddCustomerReservationRequest;
 import com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse;
 import com.PetCare.service.Reservation.CustomerReservation.CustomerReservationService;
@@ -22,8 +21,8 @@ public class CustomerReservationApiController {
 
     @Operation(description = "회원 돌봄 예약 생성 API")
     @PostMapping("/reservations/new")
-    public ResponseEntity<CustomerReservation> saveReservation(@RequestBody @Valid AddCustomerReservationRequest request) {
-        CustomerReservation customerReservation = customerReservationService.save(request);
+    public ResponseEntity<CustomerReservationResponse.GetDetail> saveReservation(@RequestBody @Valid AddCustomerReservationRequest request) {
+        CustomerReservationResponse.GetDetail customerReservation = customerReservationService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(customerReservation);
