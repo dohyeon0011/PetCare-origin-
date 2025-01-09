@@ -64,9 +64,20 @@ public class CustomerReservationResponse { // 고객 시점 예약 조회
                     .stream()
                     .map(PetReservationResponse::new)
                     .toList();
-            this.careLogList = careLogList
+            /*this.careLogList = careLogList
                     .stream()
                     .map(CareLogResponse.GetDetail::new)
+                    .toList();*/
+            this.careLogList = careLogList
+                    .stream()
+                    .map(careLog -> new CareLogResponse.GetDetail(
+                            careLog.getId(),
+                            careLog.getSitterSchedule().getSitter().getName(),
+                            careLog.getCareType(),
+                            careLog.getDescription(),
+                            careLog.getImgPath(),
+                            careLog.getCreatedAt()
+                    ))
                     .toList();
         }
     }
