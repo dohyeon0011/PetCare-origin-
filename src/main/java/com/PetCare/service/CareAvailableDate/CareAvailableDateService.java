@@ -73,7 +73,7 @@ public class CareAvailableDateService {
 
         return new CareAvailableDateResponse.GetDetail(careAvailableDate);*/
 
-        CareAvailableDateResponse.GetDetail careAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetails(sitterId, careAvailableDateId)
+        CareAvailableDateResponse.GetDetail careAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetail(sitterId, careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록한 돌봄 날짜가 존재하지 않습니다."));
 
         return careAvailableDate;
@@ -123,7 +123,7 @@ public class CareAvailableDateService {
 
         // 수정된 데이터 다시 조회
         // 새로운 DB 쿼리가 발생하지만 엔티티를 수정한 후, 최신 상태를 DB에서 직접 조회하기 때문에 데이터의 정확성 보장 가능.
-        CareAvailableDateResponse.GetDetail updateCareAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetails(sitter.getId(), careAvailableDateId)
+        CareAvailableDateResponse.GetDetail updateCareAvailableDate = careAvailableDateRepository.findBySitterIdAndIdDetail(sitter.getId(), careAvailableDateId)
                 .orElseThrow(() -> new NoSuchElementException("등록된 돌봄 날짜가 존재하지 않습니다."));
 
         return updateCareAvailableDate;
