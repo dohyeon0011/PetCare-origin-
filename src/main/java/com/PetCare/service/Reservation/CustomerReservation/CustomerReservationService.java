@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,7 +38,7 @@ public class CustomerReservationService {
     private final RewardServiceImpl rewardService;
 
     @Transactional
-    public CustomerReservation save(AddCustomerReservationRequest request) {
+    public CustomerReservationResponse.GetDetail save(AddCustomerReservationRequest request) {
         Member customer = memberRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new NoSuchElementException("예약 오류: 고객 정보 조회에 실패했습니다."));
 
@@ -72,7 +73,9 @@ public class CustomerReservationService {
         careAvailableDate.reservation();
         rewardService.addReward(customer.getId(), careAvailableDate.getPrice());
 
-        return customerReservationRepository.save(customerReservation);
+        customerReservationRepository.save(customerReservation);
+
+        return customerReservation.toResponse(new ArrayList<>());
     }
 
     @Comment("특정 회원의 돌봄 예약 내역 전체 조회")
