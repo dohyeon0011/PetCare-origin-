@@ -1,7 +1,6 @@
 package com.PetCare.dto.Review.response;
 
 import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
-import com.PetCare.domain.Review.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,13 +32,22 @@ public class ReviewResponse {
         private Double rating;
         private String comment;
 
-        public GetDetail(Review review) {
+        /*public GetDetail(Review review) {
             this.id = review.getId();
             this.customerReservationId = review.getCustomerReservation().getId();
             this.customerNickName = review.getCustomerReservation().getCustomer().getNickName();
             this.sitterName = review.getCustomerReservation().getSitter().getName();
             this.rating = review.getRating();
             this.comment = review.getComment();
+        }*/
+
+        public GetDetail(long id, long customerReservationId, String customerNickName, String sitterName, Double rating, String comment) {
+            this.id = id;
+            this.customerReservationId = customerReservationId;
+            this.customerNickName = customerNickName;
+            this.sitterName = sitterName;
+            this.rating = rating;
+            this.comment = comment;
         }
     }
 
