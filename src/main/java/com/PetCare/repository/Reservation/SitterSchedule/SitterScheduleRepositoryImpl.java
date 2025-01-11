@@ -40,4 +40,25 @@ public class SitterScheduleRepositoryImpl implements SitterScheduleRepositoryCus
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
+
+    // 특정 돌봄사의 특정 돌봄 예약 정보 조회(+DTO로 직접 조회)
+    /*@Override
+    public SitterScheduleResponse.GetDetail findSitterScheduleDetail(long sitterId, long sitterScheduleId) {
+        return queryFactory
+                .select(new QSitterScheduleResponse_GetDetail(
+                        sitterSchedule.id, sitterSchedule.customer.id, sitterSchedule.customer.nickName, sitterSchedule.sitter.id, sitterSchedule.sitter.name, sitterSchedule.price, sitterSchedule.reservationAt,
+                        sitterSchedule.sitter.zipcode, sitterSchedule.sitter.address, sitterSchedule.createdAt, sitterSchedule.status, sitterSchedule.petReservations,
+                        sitterSchedule.customerReservation.review.id, sitterSchedule.customerReservation.id, sitterSchedule.customerReservation.review.rating, sitterSchedule.customerReservation.review.comment
+                )).distinct()
+                .from(sitterSchedule)
+                .join(sitterSchedule.customerReservation)
+                .leftJoin(sitterSchedule.customerReservation.review)
+                .join(sitterSchedule.customer)
+                .join(sitterSchedule.sitter)
+                .join(sitterSchedule.petReservations)
+                .where(sitterSchedule.id.eq(sitterScheduleId)
+                        .and(sitterSchedule.sitter.id.eq(sitterId)))
+                .fetchFirst();
+    }*/
+
 }
