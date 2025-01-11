@@ -58,8 +58,8 @@ public class Review {
         customerReservation.addReview(this);
     }
 
-    public ReviewResponse.GetDetail toResponse() {
+    /*public ReviewResponse.GetDetail toResponse() {
         return new ReviewResponse.GetDetail(this);
-    }
+    }*/
 
 }
