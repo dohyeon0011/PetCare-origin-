@@ -69,9 +69,53 @@ public class SitterScheduleResponse { // 돌봄사 시점 예약 조회
                     .toList();
 
             this.review = Optional.ofNullable(sitterSchedule.getCustomerReservation().getReview())
-                    .map(ReviewResponse.GetDetail::new)
+                    .map(r -> {
+                        return new ReviewResponse.GetDetail(r.getId(), r.getCustomerReservation().getId(), r.getCustomerReservation().getCustomer().getNickName(),
+                                r.getCustomerReservation().getSitter().getName(), r.getRating(), r.getComment());
+                    })
                     .orElse(new ReviewResponse.GetDetail());
         }
+
+        /*public GetDetail(long id, long customerId, String customerNickName, long sitterId, String sitterName, int price, LocalDate reservationAt, String zipcode, String address, LocalDateTime createdAt, ReservationStatus status, List<PetReservation> pets, long reviewId, long customerReservationId, Double rating, String comment) {
+            this.id = id;
+            this.customerId = customerId;
+            this.customerNickName = customerNickName;
+            this.sitterId = sitterId;
+            this.sitterName = sitterName;
+            this.price = price;
+            this.reservationAt = reservationAt;
+            this.zipcode = zipcode;
+            this.address = address;
+            this.createdAt = createdAt;
+            this.status = status;
+            this.pets = pets
+                    .stream()
+                    .map(PetReservationResponse::new)
+                    .toList();
+            this.review = Optional.ofNullable(new ReviewResponse.GetDetail(reviewId, customerReservationId, customerNickName, sitterName, rating, comment))
+                    .orElse(new ReviewResponse.GetDetail());
+        }*/
+
+        /*@QueryProjection
+        public GetDetail(long id, long customerId, String customerNickName, long sitterId, String sitterName, int price, LocalDate reservationAt, String zipcode, String address, LocalDateTime createdAt, ReservationStatus status, List<PetReservation> pets, long reviewId, long customerReservationId, Double rating, String comment) {
+            this.id = id;
+            this.customerId = customerId;
+            this.customerNickName = customerNickName;
+            this.sitterId = sitterId;
+            this.sitterName = sitterName;
+            this.price = price;
+            this.reservationAt = reservationAt;
+            this.zipcode = zipcode;
+            this.address = address;
+            this.createdAt = createdAt;
+            this.status = status;
+            this.pets = pets
+                    .stream()
+                    .map(PetReservationResponse::new)
+                    .toList();
+            this.review = Optional.ofNullable(new ReviewResponse.GetDetail(reviewId, customerReservationId, customerNickName, sitterName, rating, comment))
+                    .orElse(new ReviewResponse.GetDetail());
+        }*/
     }
 
 }
