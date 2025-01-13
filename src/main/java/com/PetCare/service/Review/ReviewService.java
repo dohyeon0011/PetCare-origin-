@@ -46,7 +46,12 @@ public class ReviewService {
         Review review = request.toEntity(customerReservation);
         reviewRepository.save(review);
 
-        return review.toResponse();
+//        return review.toResponse();
+
+        ReviewResponse.GetDetail response = reviewRepository.findReviewDetail(review.getId())
+                .orElseThrow(() -> new NoSuchElementException("해당 예약에 대한 리뷰를 조회하는데 실패했습니다."));
+
+        return response;
     }
 
     @Comment("특정 회원의 작성한 리뷰 전체 조회")
@@ -77,9 +82,12 @@ public class ReviewService {
     @Comment("특정 리뷰 조회")
     @Transactional(readOnly = true)
     public ReviewResponse.GetDetail findById(long reviewId) {
-        return reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NoSuchElementException("해당 예약 건에 대한 리뷰를 찾을 수 없습니다."))
-                .toResponse();
+        /*return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NoSuchElementException("해당 리뷰를 찾을 수 없습니다."))
+                .toResponse();*/
+
+        return reviewRepository.findReviewDetail(reviewId)
+                .orElseThrow(() -> new NoSuchElementException("해당 리뷰를 찾을 수 없습니다."));
     }
 
     @Comment("특정 회원의 특정 리뷰 삭제")
@@ -111,16 +119,23 @@ public class ReviewService {
 
         review.updateReview(request.getRating(), request.getComment());
 
-        return review.toResponse();
+//        return review.toResponse();
+        return reviewRepository.findReviewDetail(review.getId())
+                .orElseThrow(() -> new NoSuchElementException("해당 리뷰를 찾을 수 없습니다."));
     }
 
     @Comment("리뷰 작성시 보여질 폼 데이터")
     @Transactional(readOnly = true)
     public ReviewResponse.GetNewReview getNewReview(long customerId, long customerReservationId) {
-        CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
+        /*CustomerReservation customerReservation = customerReservationRepository.findByCustomerIdAndId(customerId, customerReservationId)
                 .orElseThrow(() -> new NoSuchElementException("회원의 해당 예약 정보 조회에 실패했습니다."));
 
-        return new ReviewResponse.GetNewReview(customerReservation);
+        return new ReviewResponse.GetNewReview(customerReservation);*/
+
+        ReviewResponse.GetNewReview response = customerReservationRepository.findReviewResponseDetail(customerId, customerReservationId)
+                .orElseThrow(() -> new NoSuchElementException("회원의 해당 예약 정보 조회에 실패했습니다."));
+
+        return response;
     }
 
     private static void authorizationMember(Member member) {
