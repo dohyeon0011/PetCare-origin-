@@ -1,6 +1,5 @@
 package com.PetCare.dto.Review.response;
 
-import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,10 +59,16 @@ public class ReviewResponse {
         private Double rating;
         private String comment;
 
-        public GetNewReview(CustomerReservation customerReservation) {
+        /*public GetNewReview(CustomerReservation customerReservation) {
             this.customerReservationId = customerReservation.getId();
             this.customerNickName = customerReservation.getCustomer().getNickName();
             this.sitterName = customerReservation.getSitter().getName();
+        }*/
+
+        public GetNewReview(long customerReservationId, String customerNickName, String sitterName) {
+            this.customerReservationId = customerReservationId;
+            this.customerNickName = customerNickName;
+            this.sitterName = sitterName;
         }
     }
 
