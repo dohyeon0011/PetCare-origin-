@@ -37,6 +37,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "WHERE s.id = :sitterId")
     Page<ReviewResponse.GetList> findByCustomerReservationSitterId(@Param("sitterId") long sitterId, Pageable pageable);
 
+    @Query("SELECT new com.PetCare.dto.Review.response.ReviewResponse$GetDetail(" +
+            "r.id, cr.id, c.nickName, s.name, r.rating, r.comment) " +
+            "FROM Review r " +
+            "JOIN r.customerReservation cr " +
+            "JOIN cr.customer c " +
+            "JOIN cr.sitter s " +
+            "WHERE r.id = :id")
+    Optional<ReviewResponse.GetDetail> findReviewDetail(@Param("id") long id);
+
     // 고객 시점 예약 엔티티의 sitterId를 기준으로 모든 리뷰 조회
     List<Review> findByCustomerReservationSitterId(long sitterId);
 
