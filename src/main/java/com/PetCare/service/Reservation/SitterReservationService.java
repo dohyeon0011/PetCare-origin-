@@ -32,11 +32,15 @@ public class SitterReservationService {
     @Comment("고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회")
     @Transactional(readOnly = true)
     public List<ReservationSitterResponse.GetList> findReservableSitters() {
-        Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
+        /*Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
 
         return sitters.stream()
                 .map(ReservationSitterResponse.GetList::new)
-                .toList();
+                .toList();*/
+
+        Set<ReservationSitterResponse.GetList> sitters = careAvailableDateRepository.findDistinctSitterDetail();
+
+        return sitters.stream().toList();
     }
 
     @Comment("돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회")
