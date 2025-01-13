@@ -4,6 +4,7 @@ import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Review.Review;
 import com.PetCare.dto.Certification.response.CertificationResponse;
 import com.PetCare.dto.Review.response.ReviewResponse;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +19,17 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
         private String sitterName;
         private String introduction;
 
-        public GetList(Member sitter) {
+        /*public GetList(Member sitter) {
             this.sitterId = sitter.getId();
             this.sitterName = sitter.getName();
             this.introduction = sitter.getIntroduction();
+        }*/
+
+        @QueryProjection
+        public GetList(long sitterId, String sitterName, String introduction) {
+            this.sitterId = sitterId;
+            this.sitterName = sitterName;
+            this.introduction = introduction;
         }
     }
 
@@ -48,9 +56,16 @@ public class ReservationSitterResponse { // 고객이 예약하기 전 보여줄
                     .toList();
             this.zipcode = sitter.getZipcode();
             this.address = sitter.getAddress();
-            this.reviews = reviews
+            /*this.reviews = reviews
                     .stream()
                     .map(ReviewResponse.GetDetail::new)
+                    .toList();*/
+            this.reviews = reviews
+                    .stream()
+                    .map(review -> {
+                        return new ReviewResponse.GetDetail(review.getId(), review.getCustomerReservation().getId(), review.getCustomerReservation().getCustomer().getNickName(),
+                                review.getCustomerReservation().getSitter().getName(), review.getRating(), review.getComment());
+                    })
                     .toList();
         }
     }
