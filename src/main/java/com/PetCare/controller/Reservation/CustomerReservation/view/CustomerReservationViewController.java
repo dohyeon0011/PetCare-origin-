@@ -23,7 +23,7 @@ public class CustomerReservationViewController {
     private final SitterReservationService sitterReservationService;
 
     @Operation(description = "회원 돌봄 예약 생성")
-    @GetMapping("/customers/{memberId}/sitters/{sitterId}/reservations/new")
+    @GetMapping("/members/{customerId}/sitters/{sitterId}/reservations/new")
     public String newReservation(@PathVariable("customerId") long customerId, @PathVariable("sitterId") long sitterId, Model model) {
         ReservationResponse reservationResponse = sitterReservationService.getReservationDetails(customerId, sitterId);
         model.addAttribute("reservationResponse", reservationResponse);
