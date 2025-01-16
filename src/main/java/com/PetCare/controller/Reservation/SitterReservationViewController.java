@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class SitterReservationViewController {
 
     @Operation(description = "돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회")
     @GetMapping("/reservable/members/{sitterId}")
-    public String getReservableSitter(@PathVariable("sitterId") long sitterId, Model model) {
-        ReservationSitterResponse.GetDetail reservableSitter = sitterReservationService.findReservableSitter(sitterId);
+    public String getReservableSitter(@PathVariable("sitterId") long sitterId, @RequestParam int page, Model model) {
+        ReservationSitterResponse.GetDetail reservableSitter = sitterReservationService.findReservableSitter(sitterId, page);
         model.addAttribute("reservableSitter", reservableSitter);
 
         return "reservable/reservableDetail";
