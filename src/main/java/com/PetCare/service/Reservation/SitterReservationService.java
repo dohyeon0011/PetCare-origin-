@@ -45,7 +45,7 @@ public class SitterReservationService {
 
     @Comment("돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회")
     @Transactional(readOnly = true)
-    public ReservationSitterResponse.GetDetail findReservableSitter(long sitterId) {
+    public ReservationSitterResponse.GetDetail findReservableSitter(long sitterId, int page) {
         Member sitter = memberRepository.findById(sitterId)
                 .orElseThrow(() -> new NoSuchElementException("해당 돌봄사 정보가 존재하지 않습니다."));
 
@@ -54,7 +54,8 @@ public class SitterReservationService {
             throw new NoSuchElementException("해당 돌봄사는 돌봄 예약 가능한 날짜가 없습니다.");
         }
 
-        List<Review> reviews = reviewRepository.findByCustomerReservationSitterId(sitter.getId());
+//        List<Review> reviews = reviewRepository.findByCustomerReservationSitterId(sitter.getId());
+        List<Review> reviews = reviewRepository.findBySitterId(sitterId, page, 5); // 한 페이지에 항목 수 5개 고정.
 
         return new ReservationSitterResponse.GetDetail(sitter, reviews);
     }
