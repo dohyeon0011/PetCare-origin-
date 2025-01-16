@@ -21,17 +21,17 @@ public interface CustomerReservationRepository extends JpaRepository<CustomerRes
     Optional<CustomerReservation> findByCustomerIdAndId(long customerId, long id);
 
     // 고객의 번호로 특정 회원의 특정 돌봄 예약 내역 조회(+DTO로 직접 조회)
-    @Query("SELECT new com.PetCare.dto.Review.response.ReviewResponse$GetNewReview(" +
+    @Query("select new com.PetCare.dto.Review.response.ReviewResponse$GetNewReview(" +
             "cr.id, c.nickName, s.name) " +
-            "FROM CustomerReservation cr " +
-            "JOIN cr.customer c " +
-            "JOIN cr.sitter s " +
-            "WHERE cr.id = :id AND c.id = :customerId")
+            "from CustomerReservation cr " +
+            "join cr.customer c " +
+            "join cr.sitter s " +
+            "where cr.id = :id and c.id = :customerId")
     Optional<ReviewResponse.GetNewReview> findReviewResponseDetail(@Param("customerId") long customerId, @Param("id") long id);
 
     // 특정 고객의 돌봄 예약 내역 전체 조회(+페이징)
-    @Query("SELECT new com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse$GetList(c) " +
-            "FROM CustomerReservation c WHERE c.customer.id = :customerId")
+    @Query("select new com.PetCare.dto.Reservation.CustomerReservation.response.CustomerReservationResponse$GetList(c) " +
+            "from CustomerReservation c where c.customer.id = :customerId")
     Page<CustomerReservationResponse.GetList> findByCustomerId(@Param("customerId") long customerId, Pageable pageable);
 
     // 돌봄사의 예약 번호로 특정 회원의 특정 돌봄 예약 내역 조회
