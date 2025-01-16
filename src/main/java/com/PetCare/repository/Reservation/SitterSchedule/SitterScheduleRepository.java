@@ -23,10 +23,10 @@ public interface SitterScheduleRepository extends JpaRepository<SitterSchedule, 
     Optional<SitterSchedule> findByCustomerReservation(CustomerReservation customerReservation);
 
     // 돌봄 케어 로그 작성할 때 보여주기 위한 정보
-    @Query("SELECT new com.PetCare.dto.CareLog.response.CareLogResponse$GetNewCareLog(s.name, c.nickName) " +
-            "FROM SitterSchedule ss " +
-            "JOIN ss.sitter s " +
-            "JOIN ss.customer c " +
-            "WHERE ss.id = :sitterScheduleId")
+    @Query("select new com.PetCare.dto.CareLog.response.CareLogResponse$GetNewCareLog(s.name, c.nickName) " +
+            "from SitterSchedule ss " +
+            "join ss.sitter s " +
+            "join ss.customer c " +
+            "where ss.id = :sitterScheduleId")
     Optional<CareLogResponse.GetNewCareLog> findBySitterScheduleId(@Param("sitterScheduleId") long sitterScheduleId);
 }
