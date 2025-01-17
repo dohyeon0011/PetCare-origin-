@@ -5,10 +5,10 @@ import com.PetCare.dto.Reservation.ReservationSitterResponse;
 import com.PetCare.service.Reservation.SitterReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +19,9 @@ public class SitterReservationApiController {
 
     @Operation(description = "고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회 API")
     @GetMapping("/reservableList")
-    public ResponseEntity<List<ReservationSitterResponse.GetList>> findAllAvailableReservation() {
-        List<ReservationSitterResponse.GetList> reservableSitters = sitterReservationService.findReservableSitters();
+    public ResponseEntity<Page<ReservationSitterResponse.GetList>> findAllAvailableReservation(Pageable pageable) {
+//        List<ReservationSitterResponse.GetList> reservableSitters = sitterReservationService.findReservableSitters();
+        Page<ReservationSitterResponse.GetList> reservableSitters = sitterReservationService.findReservableSitters(pageable);
 
         return ResponseEntity.ok()
                 .body(reservableSitters);
