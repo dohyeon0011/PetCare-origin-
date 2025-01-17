@@ -13,12 +13,13 @@ import com.PetCare.repository.Pet.PetRepository;
 import com.PetCare.repository.Review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,16 +32,18 @@ public class SitterReservationService {
 
     @Comment("고객에게 돌봄 예약 가능한 돌봄사들의 정보 조회")
     @Transactional(readOnly = true)
-    public List<ReservationSitterResponse.GetList> findReservableSitters() {
+    public Page<ReservationSitterResponse.GetList> findReservableSitters(Pageable pageable) {
         /*Set<Member> sitters = careAvailableDateRepository.findDistinctSitters();
 
         return sitters.stream()
                 .map(ReservationSitterResponse.GetList::new)
                 .toList();*/
 
-        Set<ReservationSitterResponse.GetList> sitters = careAvailableDateRepository.findDistinctSitterDetail();
+        /*Set<ReservationSitterResponse.GetList> sitters = careAvailableDateRepository.findDistinctSitterDetail();
 
-        return sitters.stream().toList();
+        return sitters.stream().toList();*/
+
+        return careAvailableDateRepository.findDistinctSitterDetail(pageable);
     }
 
     @Comment("돌봄 예약 가능 목록 중 선택한 돌봄사의 자세한 정보 조회")
