@@ -3,6 +3,8 @@ package com.PetCare.repository.CareAvailableDate;
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Member.Member;
 import com.PetCare.dto.Reservation.ReservationSitterResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +15,10 @@ public interface CareAvailableDateRepositoryCustom {
     Set<Member> findDistinctSitters();
 
     // 돌봄 예약 가능 날짜를 등록한 회원 중 현재 예약이 가능한 회원만 조회(+DTO로 직접 조회)
-    Set<ReservationSitterResponse.GetList> findDistinctSitterDetail();
+//    Set<ReservationSitterResponse.GetList> findDistinctSitterDetail();
+
+    // 돌봄 예약 가능 날짜를 등록한 회원 중 현재 예약이 가능한 회원만 조회(+DTO로 직접 조회, 페이징)
+    Page<ReservationSitterResponse.GetList> findDistinctSitterDetail(Pageable pageable);
 
     // 특정 돌봄사의 돌봄 예약 가능한 날짜만을 조회
     List<CareAvailableDate> findBySitterIdAndPossibility(long sitterId);
