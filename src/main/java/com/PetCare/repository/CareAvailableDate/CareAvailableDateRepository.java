@@ -33,13 +33,11 @@ public interface CareAvailableDateRepository extends JpaRepository<CareAvailable
     Optional<CareAvailableDate> findBySitterIdAndAvailableAt(long sitterId, LocalDate availableAt);
 
     // 자신이 등록한 돌봄 가능 날짜 조회 페이징
-//    @Query("select new com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse$GetList(c) " +
-//        "from CareAvailableDate c where c.sitter.id = :sitterId")
     @Query("select new com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse$GetList(c.id, c.availableAt, c.price, c.status) " +
             "from CareAvailableDate c where c.sitter.id = :sitterId")
     Page<CareAvailableDateResponse.GetList> findBySitterId(@Param("sitterId") long sitterId, Pageable pageable);
 
-    // 돌봄 예약 가능 날짜를 등록한 회원 목록 조회
-//    @Query("select distinct c.sitter from CareAvailableDate c")
-//    Set<Member> findDistinctSitters();
+    // 검색 조건 내에 속한 기간의 돌봄 일정 조회
+
+
 }
