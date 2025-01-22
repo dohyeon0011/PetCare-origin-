@@ -1,6 +1,7 @@
 package com.PetCare.repository.Review;
 
 import com.PetCare.domain.Review.Review;
+import com.PetCare.dto.Review.response.ReviewResponse;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,21 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .setParameter("sitterId", sitterId)
                 .setFirstResult(page)
                 .setMaxResults(size)
+                .getResultList();
+    }
+
+    // 모든 리뷰 조회(+최신 6개만)
+    @Override
+    public List<ReviewResponse.GetDetail> findAllReview() {
+        return em.createQuery(
+                        "select new com.PetCare.dto.Review.response.ReviewResponse$GetDetail(" +
+                                "r.id, cr.id, c.nickName, s.name, r.rating, r.comment) " +
+                                "from Review r " +
+                                "join r.customerReservation cr " +
+                                "join cr.customer c " +
+                                "join cr.sitter s " +
+                                "order by r.createdAt desc", ReviewResponse.GetDetail.class)
+                .setMaxResults(6)
                 .getResultList();
     }
 }
