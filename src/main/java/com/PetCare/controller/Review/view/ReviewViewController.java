@@ -36,7 +36,7 @@ public class ReviewViewController {
         Page<ReviewResponse.GetList> reviews = reviewService.findAllById(customerId, pageable);
         model.addAttribute("reviews", reviews);
 
-        return "review/reviewList";
+        return "review/review";
     }
 
     @Operation(description = "특정 리뷰 조회")
