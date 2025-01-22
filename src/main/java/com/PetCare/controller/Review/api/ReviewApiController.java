@@ -41,7 +41,7 @@ public class ReviewApiController {
                 .body(reviews);
     }
 
-    @Operation(description = "특정 리뷰 조회")
+    @Operation(description = "특정 리뷰 조회 API")
     @GetMapping("/reviews/{reviewId}")
     public ResponseEntity<ReviewResponse.GetDetail> findReview(@PathVariable("reviewId") long reviewId) {
         ReviewResponse.GetDetail review = reviewService.findById(reviewId);
@@ -50,7 +50,7 @@ public class ReviewApiController {
                 .body(review);
     }
 
-    @Operation(description = "특정 리뷰 삭제")
+    @Operation(description = "특정 리뷰 삭제 API")
     @DeleteMapping("/members/{customerId}/reviews/{reviewId}")
     public ResponseEntity<Void> deleteReview(@PathVariable("customerId") long customerId, @PathVariable("reviewId") long reviewId) {
         reviewService.delete(customerId, reviewId);
@@ -59,7 +59,7 @@ public class ReviewApiController {
                 .build();
     }
 
-    @Operation(description = "특정 리뷰 수정")
+    @Operation(description = "특정 리뷰 수정 API")
     @PutMapping("/members/{customerId}/reviews/{reviewId}")
     public ResponseEntity<ReviewResponse.GetDetail> updateReview(@PathVariable("customerId") long customerId,
                                                                  @PathVariable("reviewId") long reviewId,
