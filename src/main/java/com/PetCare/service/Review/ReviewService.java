@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -136,6 +137,12 @@ public class ReviewService {
                 .orElseThrow(() -> new NoSuchElementException("회원의 해당 예약 정보 조회에 실패했습니다."));
 
         return response;
+    }
+
+    @Comment("모든 리뷰 조회")
+    @Transactional(readOnly = true)
+    public List<ReviewResponse.GetDetail> getAllReview() {
+        return reviewRepository.findAllReview();
     }
 
     private static void authorizationMember(Member member) {
