@@ -152,7 +152,7 @@ public class Member {
 //    private List<String> certifications;
 
     @Builder
-    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, Role role, String profileImgPath, SocialProvider socialProvider, String introduction, Integer careerYear) {
+    public Member(String loginId, String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, Role role, SocialProvider socialProvider, String introduction, Integer careerYear) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -162,7 +162,7 @@ public class Member {
         this.zipcode = zipcode;
         this.address = address;
         this.role = role;
-        this.profileImgPath = profileImgPath;
+//        this.profileImgPath = profileImgPath;
         this.socialProvider = socialProvider;
         this.introduction = introduction;
         this.careerYear = careerYear;
