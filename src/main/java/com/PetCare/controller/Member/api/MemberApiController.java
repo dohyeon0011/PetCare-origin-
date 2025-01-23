@@ -7,12 +7,18 @@ import com.PetCare.service.Member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/pets-care/members")
@@ -22,7 +28,24 @@ public class MemberApiController {
 
     @Operation(description = "회원가입 API")
     @PostMapping("/new")
-    public ResponseEntity<Member> saveMember(@RequestBody @Valid AddMemberRequest request) {
+    public ResponseEntity<?> saveMember(@RequestBody @Valid AddMemberRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // 오류 메시지를 담아 반환
+            Map<String, String> errorMessages = new HashMap<>();
+
+            bindingResult.getAllErrors().forEach(error -> {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errorMessages.put(fieldName, errorMessage);
+
+                // 오류를 서버 로그에 기록
+                log.error("Field: {}, Error: {}", fieldName, errorMessage);
+            });
+
+            return ResponseEntity.badRequest()
+                    .body(errorMessages);
+        }
+
         Member member = memberService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -44,6 +67,12 @@ public class MemberApiController {
         return ResponseEntity.ok()
                 .body(member);
     }
+
+    /*@Operation(description = "돌봄사만 전체 조회 API")
+    @GetMapping("/sitters")
+    public ResponseEntity<List<MemberResponse.GetSitter>> findAllSitter() {
+        memberService.
+    }*/
 
     @Operation(description = "회원 탈퇴 API")
     @DeleteMapping("/{memberId}")
