@@ -9,22 +9,28 @@
 <body>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">반려견 돌봄</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/pets-care/pet-sitter/information}">펫시터 서비스</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/pets-care/reservableList}">훈련사 프로필</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/pets-care/reviews}">이용 후기</a>
-            </li>
-        </ul>
+    <div class="container">
+        <a class="navbar-brand" href="#">반려견 돌봄</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/pets-care/pet-sitter/information}">펫시터 서비스</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/pets-care/reservableList}">훈련사 프로필</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/pets-care/reviews}">이용 후기</a>
+                </li>
+            </ul>
+            <div class="navbar-buttons">
+                <a th:href="@{/pets-care/login}" class="btn btn-outline-primary mr-2">로그인</a>
+                <a th:href="@{/pets-care/signup}" class="btn btn-primary">회원가입</a>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -87,8 +93,8 @@
 </div>
 
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
 </body>
 </html>
