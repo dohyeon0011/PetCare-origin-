@@ -1,7 +1,9 @@
 package com.PetCare.controller.Member.view;
 
 import com.PetCare.dto.Member.response.MemberResponse;
+import com.PetCare.dto.Review.response.ReviewResponse;
 import com.PetCare.service.Member.MemberService;
+import com.PetCare.service.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Controller;
@@ -18,15 +20,21 @@ import java.util.List;
 public class MemberViewController {
 
     private final MemberService memberService;
+    private final ReviewService reviewService;
 
     @Comment("회원가입")
-    @GetMapping("/members/new")
+    @GetMapping("/signup")
     public String newMember(Model model) {
         model.addAttribute("member", new MemberResponse());
 
-        return "member/newMember";
+        return "member/signup";
     }
 
+    @Comment("로그인")
+    @GetMapping("/login")
+    public String login(Model model) {
+        return "member/login";
+    }
 
     @Comment("전체 회원 조회")
     @GetMapping("/members")
@@ -53,6 +61,15 @@ public class MemberViewController {
         model.addAttribute("member", member);
 
         return "member/editMember";
+    }
+
+    @GetMapping("/main")
+    public String home(Model model) {
+
+        List<ReviewResponse.GetDetail> reviews = reviewService.getAllReview();
+
+        model.addAttribute("reviews", reviews);
+        return "main";
     }
 }
 
