@@ -11,6 +11,25 @@ spring:
   thymeleaf:
     prefix: "file:src/main/resources/templates/"
 
+  profiles:
+    active: dev
+
+  logging:
+    level:
+      com:
+        PetCare: DEBUG  # 해당 패키지 내에서 모든 로그가 DEBUG 레벨로 출력됩니다.
+      org:
+        springframework:
+          web: DEBUG  # Spring 웹 관련 로그도 DEBUG 레벨로 출력됩니다.
+    pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"  # 로그 출력 형식 설정
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
+
   jpa:
     hibernate:
       ddl-auto: create
