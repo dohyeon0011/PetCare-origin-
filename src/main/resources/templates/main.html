@@ -11,7 +11,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="#">반려견 돌봄</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,8 +28,14 @@
                 </li>
             </ul>
             <div class="navbar-buttons">
-                <a th:href="@{/pets-care/login}" class="btn btn-outline-primary mr-2">로그인</a>
-                <a th:href="@{/pets-care/signup}" class="btn btn-primary">회원가입</a>
+                <span th:if="${session.member != null}">
+                    <span>안녕하세요, <b th:text="${session.member.name}"></b>님!</span>
+                    <a th:href="@{/pets-care/logout}" class="btn btn-outline-secondary ml-2">로그아웃</a>
+                </span>
+                <span th:if="${session.member == null}">
+                    <a th:href="@{/pets-care/login}" class="btn btn-outline-primary mr-2">로그인</a>
+                    <a th:href="@{/pets-care/signup}" class="btn btn-primary">회원가입</a>
+                </span>
             </div>
         </div>
     </div>
