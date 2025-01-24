@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,11 @@ public class MemberService {
         return member.toResponse();
     }
 
+    /*@Transactional(readOnly = true)
+    public List<MemberResponse.GetSitter> getSitters() {
+        memberRepository.findAllSitter();
+    }*/
+
     private static void authorizetionMember(Member member) {
 //        String userName = SecurityContextHolder.getContext().getAuthentication().getName(); // 로그인에 사용된 아이디 값 반환
 //
@@ -84,9 +90,9 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(AddMemberRequest request) {
-        List<Member> members = memberRepository.findByLoginId(request.getLoginId());
+        Optional<Member> member = memberRepository.findByLoginId(request.getLoginId());
 
-        if (!members.isEmpty()) {
+        if (!member.isEmpty()) {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
     }
