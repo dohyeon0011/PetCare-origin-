@@ -60,7 +60,7 @@ public class MemberApiController {
     }
 
     @Operation(description = "특정 회원 조회 API")
-    @GetMapping("/{memberId}")
+    @GetMapping("/{memberId}/myPage")
     public ResponseEntity<?> findMember(@PathVariable("memberId") long id) {
         Object member = memberService.findById(id);
 
