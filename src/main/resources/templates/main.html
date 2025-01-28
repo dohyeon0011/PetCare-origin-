@@ -28,9 +28,44 @@
                 </li>
             </ul>
             <div class="navbar-buttons">
-                <span th:if="${session.member != null}">
-                    <span>안녕하세요, <b th:text="${session.member.name}"></b>님!</span>
-                    <a th:href="@{/pets-care/logout}" class="btn btn-outline-secondary ml-2">로그아웃</a>
+                <span th:if="${session.member != null}" class="dropdown">
+                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="userDropdown"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        안녕하세요, <b th:text="${session.member.name}"></b>님!
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" th:href="@{/pets-care/members/{memberId}/myPage(memberId=${session.member.id})}">마이페이지</a>
+
+                        <!-- PET_SITTER인 경우 -->
+                        <div th:if="${session.member.role.name() == 'PET_SITTER'}">
+                            <a class="dropdown-item"
+                               th:href="|/pets-care/members/${session.member.id}/care-available-dates|">
+                                등록한 돌봄 가능 일정
+                            </a>
+
+                            <a class="dropdown-item"
+                               th:href="|/pets-care/members/${session.member.id}/schedules|">
+                                나의 돌봄 일정
+                            </a>
+                        </div>
+
+                        <!-- CUSTOMER인 경우 -->
+                        <a class="dropdown-item" th:if="${session.member.role.name() == 'CUSTOMER'}"
+                           th:href="@{/pets-care/members/{customerId}/reservations(customerId=${session.member.id})}">
+                            나의 예약 현황
+                        </a>
+
+                        <!-- ADMIN(관리자)인 경우 -->
+                        <div th:if="${session.member.role.name() == 'ADMIN'}">
+                            <div class="dropdown-divider"></div>
+                            <h6 class="dropdown-header">관리자 메뉴</h6>
+                            <a class="dropdown-item" th:href="@{/admin/members}">회원 관리</a>
+                            <a class="dropdown-item" th:href="@{/admin/reservations}">예약 관리</a>
+                            <a class="dropdown-item" th:href="@{/admin/schedules}">돌봄 가능 날짜 관리</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" th:href="@{/pets-care/logout}">로그아웃</a>
+                    </div>
                 </span>
                 <span th:if="${session.member == null}">
                     <a th:href="@{/pets-care/login}" class="btn btn-outline-primary mr-2">로그인</a>
@@ -84,7 +119,6 @@
     <section class="latest-reviews text-center mt-5">
         <h2>실시간 돌봄 후기</h2>
         <div class="row">
-            <!-- Iterating over latest reviews -->
             <div class="col-md-4" th:each="review : ${reviews}">
                 <div class="card mb-4">
                     <div class="card-body">
@@ -100,8 +134,8 @@
 </div>
 
 <!-- Bootstrap JS and dependencies -->
-<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
