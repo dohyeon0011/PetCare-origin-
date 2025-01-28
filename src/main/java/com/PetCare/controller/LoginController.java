@@ -1,6 +1,7 @@
 package com.PetCare.controller;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.dto.LoginRequest;
 import com.PetCare.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,37 @@ public class LoginController {
         }
     }*/
 
-    @PostMapping("/login")
+    /**
+     * 장점: 코드가 간단함.
+     * 단점: 키 값을 문자열로 가져와야 해서 타입 안정성이 부족함.
+     */
+    /*@PostMapping("/login")
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody Map<String, String> request, HttpSession session) {
         String loginId = request.get("loginId");
         String password = request.get("password");
+
+        Member member = userService.authenticate(loginId, password);
+
+        if (member != null) {
+            session.setAttribute("member", member);
+
+            return ResponseEntity.ok(Map.of("name", member.getName())); // 로그인 성공
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "아이디 또는 비밀번호가 잘못되었습니다.")); // 로그인 실패
+        }
+    }*/
+
+    /**
+     * 장점: 코드 가독성이 좋고 타입 안정성이 높음
+     * 단점: DTO 클래스를 따로 만들어야 함
+     */
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+        String loginId = request.getLoginId();
+        String password = request.getPassword();
 
         Member member = userService.authenticate(loginId, password);
 
