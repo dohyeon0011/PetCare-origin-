@@ -46,13 +46,15 @@ public class MemberViewController {
     }
 
     @Comment("특정 회원 조회")
-    @GetMapping("/members/{memberId}")
+    @GetMapping("/members/{memberId}/myPage")
     public String getMember(@PathVariable("memberId") Long id, Model model) {
         Object member = memberService.findById(id);
         model.addAttribute("member", member);
 
-        return "member/memberDetail";
+        return "member/myPage";
     }
+
+    @Comment("돌봄사 전체 조회")
 
     @Comment("회원 정보 수정")
     @GetMapping("/members/{memberId}/edit")
