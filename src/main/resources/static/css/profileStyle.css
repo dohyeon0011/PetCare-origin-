@@ -1,0 +1,39 @@
+/* Profile Page Styling */
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.profile-card {
+    margin-bottom: 30px;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-body {
+    background-color: #f9f9f9;
+}
+
+.btn-custom {
+    background-color: #5bc0de;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: white;
+}
+
+.card-text strong {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    margin-bottom: 5px;
+}
