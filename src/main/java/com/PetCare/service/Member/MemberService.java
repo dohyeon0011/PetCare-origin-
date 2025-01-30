@@ -1,8 +1,10 @@
 package com.PetCare.service.Member;
 
 import com.PetCare.domain.Member.Member;
+import com.PetCare.domain.Member.Role;
 import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
+import com.PetCare.dto.Member.response.MemberResponse;
 import com.PetCare.repository.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,10 +38,22 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Object findById(long id) {
-        Member member = memberRepository.findById(id)
+        /*Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
-        return member.toResponse();
+        return member.toResponse();*/
+
+        Role role = memberRepository.findRoleById(id)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+
+        if (role.equals(Role.CUSTOMER)) {
+            Member member = memberRepository.findByCustomerId(id, role)
+                    .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+
+            return new MemberResponse.GetCustomer(member, member.getPets());
+        }
+
+        throw new NoSuchElementException("존재하지 않는 회원입니다.");
     }
 
     // 회원 + 보유중인 반려견 목록 조회
