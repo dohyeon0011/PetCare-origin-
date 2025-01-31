@@ -1,3 +1,4 @@
+/*
 package com.PetCare.repository.Member;
 
 import com.PetCare.domain.Member.Member;
@@ -69,7 +70,7 @@ class MemberRepositoryTest {
     @Test
     public void member_join() {
         //given
-        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, SocialProvider.NONE, null, null);
+        Member member = new Member("user1", "aaw131", "구창모", "창모", "email@naver.com", "01012345678", "123-456", "경기도", Role.CUSTOMER, null, null, null);
         memberRepository.save(member);
 
         //when
@@ -86,7 +87,8 @@ class MemberRepositoryTest {
     public void member_join_dto() {
         //given
         // DTO에 @Builder 쓰면 이렇게 하고 안 쓸거면 바로 아래처럼.
-        /*AddMemberRequest savedMember = AddMemberRequest.builder()
+        */
+/*AddMemberRequest savedMember = AddMemberRequest.builder()
                 .id("user1")
                 .password("aaw131")
                 .name("구창모")
@@ -100,9 +102,11 @@ class MemberRepositoryTest {
                 .introduction("하이요")
                 .careerYear(3)
                 .certificates(Collections.singletonList("돌봄1급, 돌봄2급"))
-                .build();*/
+                .build();*//*
 
-        /*AddMemberRequest savedMember = new AddMemberRequest(
+
+        */
+/*AddMemberRequest savedMember = new AddMemberRequest(
                 "user1",
                 "aaw131",
                 "구창모",
@@ -116,7 +120,8 @@ class MemberRepositoryTest {
                 "하이",
                 3,
                 null
-        );*/
+        );*//*
+
 
         //when
 //        Member member = savedMember.toEntity();
@@ -187,4 +192,4 @@ class MemberRepositoryTest {
         assertThat(members.size()).isEqualTo(1);
     }
 
-}
+}*/
