@@ -2,12 +2,14 @@ package com.PetCare.repository.Member;
 
 import com.PetCare.domain.Member.Member;
 import com.PetCare.domain.Member.Role;
+import com.PetCare.domain.Pet.Pet;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom, QuerydslPredicateExecutor<Member> {
@@ -29,4 +31,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     @Query("select m.role from Member m where m.id = :id")
     Optional<Role> findRoleById(@Param("id") long id);
+
+    @Query("select p from Pet p where p.customer.id = :customerId")
+    List<Pet> findPetsByCustomerId(@Param("customerId") long customerId);
 }
