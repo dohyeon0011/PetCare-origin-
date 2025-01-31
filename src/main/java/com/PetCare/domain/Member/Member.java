@@ -2,11 +2,10 @@ package com.PetCare.domain.Member;
 
 import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
 import com.PetCare.domain.Certification.Certification;
-import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Pet.Pet;
+import com.PetCare.domain.Reservation.CustomerReservation.CustomerReservation;
 import com.PetCare.domain.Reservation.SitterSchedule.SitterSchedule;
 import com.PetCare.dto.Member.response.MemberResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
@@ -116,12 +115,12 @@ public class Member {
     // 2. Cascade되는 엔티티가 Cascade를 설정하는 엔티티에서만 사용되어야 한다.
     @Comment("고객이 보유한 반려견 목록")
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
-    @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
+//    @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
     @Comment("고객이 예약한 예약 목록")
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private List<CustomerReservation> customerReservations = new ArrayList<>();
 
     // ----------- 여기까지 고객 필드 -----------
@@ -131,17 +130,17 @@ public class Member {
 
     @Comment("돌봄사가 보유한 자격증")
     @OneToMany(mappedBy = "sitter", orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private List<Certification> certifications = new ArrayList<>();
 
     @Comment("돌봄사가 돌봄 가능한 시간")
     @OneToMany(mappedBy = "sitter", orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private List<CareAvailableDate> careAvailabilities = new ArrayList<>();
 
     @Comment("돌봄사의 예약된 목록")
     @OneToMany(mappedBy = "sitter", orphanRemoval = true)
-    @JsonIgnore
+//    @JsonIgnore
     private List<SitterSchedule> sitterSchedules = new ArrayList<>();
 
     // ----------- 여기는 돌봄사 필드 -----------
