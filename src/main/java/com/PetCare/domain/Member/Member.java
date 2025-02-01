@@ -114,7 +114,7 @@ public class Member {
     // 1. Cascade되는 엔티티와 Cascade를 설정하는 엔티티의 라이프사이클이 동일하거나 비슷해야한다.
     // 2. Cascade되는 엔티티가 Cascade를 설정하는 엔티티에서만 사용되어야 한다.
     @Comment("고객이 보유한 반려견 목록")
-    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true, fetch = FetchType.EAGER)
 //    @JsonIgnore // api 조회시 반려견 목록은 빠지고 조회됨
     private List<Pet> pets = new ArrayList<>();
 
@@ -129,7 +129,7 @@ public class Member {
     private Integer careerYear;
 
     @Comment("돌봄사가 보유한 자격증")
-    @OneToMany(mappedBy = "sitter", orphanRemoval = true)
+    @OneToMany(mappedBy = "sitter", orphanRemoval = true, fetch = FetchType.EAGER)
 //    @JsonIgnore
     private List<Certification> certifications = new ArrayList<>();
 
@@ -196,9 +196,9 @@ public class Member {
     // 서비스 레벨에서는 데이터 조회 및 비즈니스 로직 처리 요청만을 하는 것이 좋다.
     public Object toResponse() {
         if (Role.CUSTOMER.equals(this.getRole())) {
-            return new MemberResponse.GetCustomer(this, this.pets);
+            return new MemberResponse.GetCustomer(this);
         } else if (Role.PET_SITTER.equals(this.getRole())) {
-            return new MemberResponse.GetSitter(this, this.certifications);
+            return new MemberResponse.GetSitter(this);
         }
         throw new NoSuchElementException("존재하지 않는 회원입니다.");
     }
