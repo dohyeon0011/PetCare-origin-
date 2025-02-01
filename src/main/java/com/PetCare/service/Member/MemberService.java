@@ -6,6 +6,7 @@ import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.dto.Member.response.MemberResponse;
 import com.PetCare.repository.Member.MemberRepository;
+import com.PetCare.repository.Pet.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PetRepository petRepository;
 
     @Transactional
     public Member save(AddMemberRequest request) {
@@ -43,14 +45,15 @@ public class MemberService {
 
         return member.toResponse();*/
 
-        Role role = memberRepository.findRoleById(id)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
 
-        if (role.equals(Role.CUSTOMER)) {
-            Member member = memberRepository.findByCustomerId(id, role)
-                    .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
-
-            return new MemberResponse.GetCustomer(member, member.getPets());
+        if (member.getRole().equals(Role.CUSTOMER)) {
+            return new MemberResponse.GetCustomer(member);
+        } else if (member.getRole().equals(Role.PET_SITTER)) {
+            return new MemberResponse.GetSitter(member);
+        } else if (member.getRole().equals(Role.ADMIN)) {
+            return new MemberResponse();
         }
 
         throw new NoSuchElementException("존재하지 않는 회원입니다.");
