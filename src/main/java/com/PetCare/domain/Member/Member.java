@@ -169,7 +169,7 @@ public class Member {
     }
 
     @Comment("회원정보 수정")
-    public void update(String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, String role, String profileImgPath, String introduction, Integer careerYear) {
+    public void update(String password, String name, String nickName, String email, String phoneNumber, String zipcode, String address, String profileImgPath, String introduction, Integer careerYear) {
         this.password = password;
         this.name = name;
         this.nickName = nickName;
@@ -177,7 +177,7 @@ public class Member {
         this.phoneNumber = phoneNumber;
         this.zipcode = zipcode;
         this.address = address;
-        this.role = Role.valueOf(role);
+//        this.role = Role.valueOf(role);
         this.profileImgPath = profileImgPath;
         this.introduction = introduction;
 
