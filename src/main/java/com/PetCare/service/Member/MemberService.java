@@ -23,10 +23,10 @@ public class MemberService {
     private final PetRepository petRepository;
 
     @Transactional
-    public Member save(AddMemberRequest request) {
+    public Object save(AddMemberRequest request) {
         validateDuplicateMember(request);
 
-        return memberRepository.save(request.toEntity());
+        return memberRepository.save(request.toEntity()).toResponse();
     }
 
     @Transactional(readOnly = true)
@@ -87,7 +87,7 @@ public class MemberService {
         member.update(
                 request.getPassword(), request.getName(), request.getNickName(), request.getEmail(),
                 request.getPhoneNumber(), request.getZipcode(), request.getAddress(),
-                request.getRole(), request.getProfileImgPath(), request.getIntroduction(), request.getCareerYear()
+                request.getProfileImgPath(), request.getIntroduction(), request.getCareerYear()
         );
 
         return member.toResponse();
