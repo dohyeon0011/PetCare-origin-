@@ -1,6 +1,5 @@
 package com.PetCare.controller.Member.api;
 
-import com.PetCare.domain.Member.Member;
 import com.PetCare.dto.Member.request.AddMemberRequest;
 import com.PetCare.dto.Member.request.UpdateMemberRequest;
 import com.PetCare.service.Member.MemberService;
@@ -46,7 +45,7 @@ public class MemberApiController {
                     .body(errorMessages);
         }
 
-        Member member = memberService.save(request);
+        Object member = memberService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(member);
@@ -85,7 +84,7 @@ public class MemberApiController {
 
     @Operation(description = "회원 정보 수정 API")
     @PutMapping("/{memberId}")
-    public ResponseEntity<Object> updateMember(@PathVariable("memberId") long id, @RequestBody @Valid UpdateMemberRequest request) {
+    public ResponseEntity<Object> updateMember(@PathVariable("memberId") Long id, @RequestBody @Valid UpdateMemberRequest request) {
         Object updateMember = memberService.update(id, request);
 
         return ResponseEntity.ok()
