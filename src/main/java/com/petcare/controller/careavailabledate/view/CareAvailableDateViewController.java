@@ -1,7 +1,7 @@
-package com.PetCare.controller.CareAvailableDate.view;
+package com.petcare.controller.careavailabledate.view;
 
-import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
-import com.PetCare.service.CareAvailableDate.CareAvailableDateService;
+import com.petcare.dto.careavailabledate.response.CareAvailableDateResponse;
+import com.petcare.service.careavailabledate.CareAvailableDateService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.domain.Page;
