@@ -1,6 +1,6 @@
-package com.PetCare.dto.CareAvailableDate.request;
+package com.petcare.dto.careavailabledate.request;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
