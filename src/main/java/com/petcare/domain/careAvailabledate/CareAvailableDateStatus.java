@@ -1,4 +1,4 @@
-package com.PetCare.domain.CareAvailableDate;
+package com.petcare.domain.careAvailabledate;
 
 public enum CareAvailableDateStatus {
     POSSIBILITY, IMPOSSIBILITY
