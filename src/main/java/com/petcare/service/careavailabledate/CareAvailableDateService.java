@@ -1,13 +1,13 @@
-package com.PetCare.service.CareAvailableDate;
+package com.petcare.service.careavailabledate;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.Member.Member;
-import com.PetCare.domain.Member.Role;
-import com.PetCare.dto.CareAvailableDate.request.AddCareAvailableDateRequest;
-import com.PetCare.dto.CareAvailableDate.request.UpdateCareAvailableDateRequest;
-import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
-import com.PetCare.repository.Member.MemberRepository;
-import com.PetCare.repository.CareAvailableDate.CareAvailableDateRepository;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
+import com.petcare.domain.member.Member;
+import com.petcare.domain.member.Role;
+import com.petcare.dto.careavailabledate.request.AddCareAvailableDateRequest;
+import com.petcare.dto.careavailabledate.request.UpdateCareAvailableDateRequest;
+import com.petcare.dto.careavailabledate.response.CareAvailableDateResponse;
+import com.petcare.repository.member.MemberRepository;
+import com.petcare.repository.careavailabledate.CareAvailableDateRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.domain.Page;
