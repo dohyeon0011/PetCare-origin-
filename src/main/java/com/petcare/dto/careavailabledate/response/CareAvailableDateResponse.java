@@ -1,7 +1,7 @@
-package com.PetCare.dto.CareAvailableDate.response;
+package com.petcare.dto.careavailabledate.response;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.CareAvailableDate.CareAvailableDateStatus;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
+import com.petcare.domain.careAvailabledate.CareAvailableDateStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
