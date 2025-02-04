@@ -1,10 +1,10 @@
-package com.PetCare.repository.CareAvailableDate;
+package com.petcare.repository.careavailabledate;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.CareAvailableDate.CareAvailableDateStatus;
-import com.PetCare.domain.Member.Member;
-import com.PetCare.dto.Reservation.QReservationSitterResponse_GetList;
-import com.PetCare.dto.Reservation.ReservationSitterResponse;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
+import com.petcare.domain.careAvailabledate.CareAvailableDateStatus;
+import com.petcare.domain.member.Member;
+import com.petcare.dto.reservation.QReservationSitterResponse_GetList;
+import com.petcare.dto.reservation.ReservationSitterResponse;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.PetCare.domain.CareAvailableDate.QCareAvailableDate.careAvailableDate;
+import static com.petcare.domain.careAvailabledate.QCareAvailableDate.careAvailableDate;
 
 @RequiredArgsConstructor
 public class CareAvailableDateRepositoryImpl implements CareAvailableDateRepositoryCustom {

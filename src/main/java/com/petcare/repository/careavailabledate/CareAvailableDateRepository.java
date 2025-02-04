@@ -1,7 +1,7 @@
-package com.PetCare.repository.CareAvailableDate;
+package com.petcare.repository.careavailabledate;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
+import com.petcare.dto.careavailabledate.response.CareAvailableDateResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +22,7 @@ public interface CareAvailableDateRepository extends JpaRepository<CareAvailable
     Optional<CareAvailableDate> findBySitterIdAndId(long sitterId, long id);
 
     // 특정 회원의 특정 돌봄 가능한 날짜 DTO로 직접 조회
-    @Query("select new com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse$GetDetail(" +
+    @Query("select new com.petcare.dto.careavailabledate.response.CareAvailableDateResponse$GetDetail(" +
             "c.id, c.availableAt, c.price, s.zipcode, s.address, c.status) " +
             "from CareAvailableDate c " +
             "join c.sitter s " +
@@ -33,7 +33,7 @@ public interface CareAvailableDateRepository extends JpaRepository<CareAvailable
     Optional<CareAvailableDate> findBySitterIdAndAvailableAt(long sitterId, LocalDate availableAt);
 
     // 자신이 등록한 돌봄 가능 날짜 조회 페이징
-    @Query("select new com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse$GetList(c.id, c.availableAt, c.price, c.status) " +
+    @Query("select new com.petcare.dto.careavailabledate.response.CareAvailableDateResponse$GetList(c.id, c.availableAt, c.price, c.status) " +
             "from CareAvailableDate c where c.sitter.id = :sitterId")
     Page<CareAvailableDateResponse.GetList> findBySitterId(@Param("sitterId") long sitterId, Pageable pageable);
 

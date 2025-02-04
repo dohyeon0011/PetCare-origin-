@@ -1,8 +1,8 @@
-package com.PetCare.repository.CareAvailableDate;
+package com.petcare.repository.careavailabledate;
 
-import com.PetCare.domain.CareAvailableDate.CareAvailableDate;
-import com.PetCare.domain.Member.Member;
-import com.PetCare.dto.Reservation.ReservationSitterResponse;
+import com.petcare.domain.careAvailabledate.CareAvailableDate;
+import com.petcare.domain.member.Member;
+import com.petcare.dto.reservation.ReservationSitterResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
