@@ -1,7 +1,7 @@
-package com.PetCare.domain.CareAvailableDate;
+package com.petcare.domain.careAvailabledate;
 
-import com.PetCare.domain.Member.Member;
-import com.PetCare.dto.CareAvailableDate.response.CareAvailableDateResponse;
+import com.petcare.domain.member.Member;
+import com.petcare.dto.careavailabledate.response.CareAvailableDateResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
